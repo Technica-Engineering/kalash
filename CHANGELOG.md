@@ -1,0 +1,29 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+Please document changes that haven't been officially released in the [Unreleased][unrl] section of this document and add GitHub changelog references for consecutive versions at the bottom of the file.
+
+## [Unreleased]
+
+[unrl]: #unreleased
+
+## [v4.0.0]
+
+### Added
+
+- Stable typesafe data model in place of unsafe dictionaries
+- Ability to use Python-file config
+- Ability to perform dynamic parametrization (elimination of test cases based on runtime configuration parameters, `allow_when` method on the `TestCase` instances)
+- Speculative runs (`--what-if` flag)
+- Complete documentation for the API
+- Changelog
+
+### Changed
+
+- Upgraded minimum required Python version to 3.7
+- Relaxed constraints on the ID formation
+- Removed ID pattern filtering - using trusty old RegEx instead

@@ -1,0 +1,4 @@
+{
+    "python.linting.enabled": false,
+    "python.envFile": "${workspaceFolder}/set_pythonpath.env"
+}

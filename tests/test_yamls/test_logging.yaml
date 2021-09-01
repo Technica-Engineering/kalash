@@ -1,0 +1,3 @@
+tests:
+  - path: './tests/test_scripts/logger'
+    id: '99999900[12]_*'

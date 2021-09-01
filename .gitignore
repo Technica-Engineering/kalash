@@ -1,0 +1,15 @@
+# General
+stash
+.nox
+
+# Python
+*.egg*
+__pycache__
+dist
+build
+
+# Test results
+*.xml
+results.txt
+htmlcov
+.coverage

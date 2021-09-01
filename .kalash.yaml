@@ -1,0 +1,3 @@
+tests:
+  - path: './tests/test_scripts/test_template_v2'
+    noRecurse: true

@@ -1,0 +1,4 @@
+tests:
+  - path: './tests/test_scripts/failfast_and_return_codes'
+config:
+  report: './kalash_reports'

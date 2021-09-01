@@ -1,0 +1,8 @@
+tests:
+  - path: './tests/test_scripts/f1'
+  - path: './tests/test_scripts/setup_teardown/test_setup_teardown.py'
+
+config:
+  report: './kalash_reports'
+  setup: './tests/test_scripts/setup_teardown/setup_files/setup.py'
+  teardown: './tests/test_scripts/setup_teardown/setup_files/teardown.py'

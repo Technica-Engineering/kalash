@@ -1,0 +1,8 @@
+*__pycache__*
+*.pyc
+stash
+*.pytest*
+<<<<<<< HEAD
+=======
+*.egg*
+>>>>>>> cc21fb3 ([KrCz/PRODTEST-2781] refactor: to a two-package repo)

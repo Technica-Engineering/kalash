@@ -1,0 +1,41 @@
+cli_config:
+  whatif_paths: "paths"
+  whatif_ids: "ids"
+  group_device: "device"
+  group_group: "group"
+  log_formatter: '%(message)s'
+test:
+  tests: "tests"
+  path: "path"
+  usecase: "useCase"
+  no_recurse: "noRecurse"
+  last_result: "lastResult"
+  devices: "devices"
+  workbench: "workbench"
+  id: "id"
+  setup_script: "setup"
+  teardown_script: "teardown"
+  suites: "suites"
+  functionality: "functionality"
+  interp_cwd: "$(WorkDir)"
+  interp_this_file: "$(ThisFile)"
+  ok: 'OK'
+  nok: 'NOK'
+config:
+  # TODO: this one is wrong
+  cfg: 'config'
+  report: 'report'
+  one_time_setup_script: 'setup'
+  one_time_teardown_script: 'teardown'
+  run_only_with: 'run_only_with'
+meta:
+  tts: "META_START\n"
+  tte: "META_END\n"
+  asc: "ASC"
+  dsc: "DSC"
+  related_usecase: "relatedUseCases"
+  workbench: "workbenches"
+  template_version: "version"
+  devices: "devices"
+  suites: "suites"
+  functionality: "functionality"

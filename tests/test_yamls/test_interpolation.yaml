@@ -1,0 +1,19 @@
+tests:
+  # variant 1: THIS_FILE
+  - path: '$(ThisFile)/../test_scripts'
+    id:
+      - '000000003_12_0_1234-SomethingElse'
+  # variant 2: CWD
+  - path: '$(WorkDir)/tests/test_scripts'
+    id:
+      - '000000003_12_0_1234-SomethingElse'
+    setup: '$(ThisFile)/../tests/test_scripts/setup_teardown/setup_files/setup.py'
+    teardown: '$(WorkDir)/tests/test_scripts/setup_teardown/setup_files/teardown.py'
+  # variant 3: relpath, same as CWD
+  - path: './tests/test_scripts'
+    id:
+      - '000000003_12_0_1234-SomethingElse'
+config:
+  report: './kalash_reports'
+  setup: '$(ThisFile)/../tests/test_scripts/setup_teardown/setup_files/setup.py'
+  teardown: '$(WorkDir)/tests/test_scripts/setup_teardown/setup_files/teardown.py'

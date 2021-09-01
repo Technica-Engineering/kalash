@@ -1,0 +1,12 @@
+version: '3.0.2'
+kalash:
+  description: ''
+  long_description: ''
+linter:
+  description: ''
+  long_description: ''
+author: 'Product Testing Technica Engineering GmbH'
+keywords: 
+  - 'automation'
+email: 'krzysztof.czarnecki@technica-engineering.de'
+license: 'proprietary'

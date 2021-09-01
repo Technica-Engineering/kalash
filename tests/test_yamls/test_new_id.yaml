@@ -1,0 +1,3 @@
+tests:
+  - path: './tests/test_scripts/'
+    id: 'PRODTEST_1234_twoja_stara'

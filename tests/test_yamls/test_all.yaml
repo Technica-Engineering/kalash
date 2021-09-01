@@ -1,0 +1,4 @@
+tests:
+  - path: './tests/test_scripts'
+config:
+  report: './kalash_reports'
