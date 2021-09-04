@@ -8,40 +8,41 @@ workbenches:
   - ZZZZ
 META_END
 """
- 
+
 import sys
 import inspect
 from datetime import datetime
 from parameterized import parameterized
 import prost
 from kalash.run import TestCase, main, MetaLoader, get_ts
- 
-class TestTemplate(TestCase): # IMPORTANT: Name of class should be changed here
- 
+
+
+class TestTemplate(TestCase):  # IMPORTANT: Name of class should be changed here
+
     # Declaration of order of execution
     @parameterized.expand([(get_ts(__qualname__))])
-    def test_validation(self, name): # IMPORTANT: This whole method should never be changed
+    def test_validation(self, name):  # IMPORTANT: This whole method should never be changed
         """
         INTERACTION: DEFINITION OF WHAT IS DONE TO INTERACT WITH THE DUTS
         VALIDATION: DEFINITION OF WHAT VALIDATION CONSISTS ON
         TEST OK: DESCRIBE HOW THE TEST CONSIDERS ITSELF OK
         TEST NOK: DESCRIBE HOW THE TEST CONSIDERS ITSELF NOK
- 
+
         Below the description of the test you can write any additional comments you need
         for your test case, as they will be automatically added to the report.
         """
- 
+
         try:
             self.configuration()
             self.interaction()
             self.validation()
         finally:
             self.restoration()
- 
+
     # First step: Configure the DUTs the way we need in order to execute the test
-    def configuration(self): # IMPORTANT: Name of methods never change
+    def configuration(self):  # IMPORTANT: Name of methods never change
         """DEFINITION OF WHAT CONFIGURATION IS DONE TO THE DUTS"""
- 
+
         """
         CODE SHOULD BE:
             CONFIGURATION_CODE_LINE
@@ -49,7 +50,7 @@ class TestTemplate(TestCase): # IMPORTANT: Name of class should be changed here
             FILE_FROM_PATH_OR_URL
             print("READ XYZ FILE")
         """
- 
+
     # Second step: Interact with the DUTs as the test requires
     def interaction(self):  # IMPORTANT: Name of methods never change
         """DEFINITION OF WHAT IS DONE TO INTERACT WITH THE DUTS"""
