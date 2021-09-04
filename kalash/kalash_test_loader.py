@@ -1,8 +1,9 @@
 import os
-from typing import Callable, List
+from typing import Callable
 import unittest
 
-from .config import Collector, CliConfig, CollectorArtifact, OneOrList, PathOrIdForWhatIf, TestPath, Trigger
+from .config import (Collector, CollectorArtifact,
+                     OneOrList, PathOrIdForWhatIf, TestPath, Trigger)
 
 
 def make_test_loader(trigger: Trigger) -> Callable[

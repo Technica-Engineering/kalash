@@ -4,7 +4,7 @@ __doc__ = """"""
 
 from collections import defaultdict
 from types import ModuleType
-from typing import Any, Callable, Dict, Generic, List, Optional, Tuple, Type, TypeVar, Union
+from typing import Any, Callable, Dict, List, Optional, Tuple, TypeVar, Union
 from dataclasses import dataclass, field
 from toolz import pipe
 
@@ -60,6 +60,7 @@ Type Aliases:
 * `OneOrList` = `Union[List[T], T]`
 """
 
+
 @dataclass
 class CliConfig:
     """A class collecting all CLI options fed into
@@ -107,7 +108,6 @@ class CliConfig:
         self.log_format = self.spec.cli_config.log_formatter
 
 
-
 class classproperty(object):
     """https://stackoverflow.com/a/13624858
     Only Python 3.9 allows stacking `@classmethod`
@@ -135,11 +135,11 @@ class SharedMetaElements:
         """Interpolates CWD variable. This variable is used to
         resolve paths within Kalash YAML relative to the current
         working directory. Equivalent to using the dotted file path.
-        
+
         Args:
             ipt (str): input string to interpolate
             yaml_abspath (str): path to the Kalash YAML file.
-        
+
         Returns: interpolated string
         """
         return os.path.normpath(
@@ -151,12 +151,12 @@ class SharedMetaElements:
     def _interpolate_this_file(self, ipt: str, yaml_abspath: str) -> str:
         """Interpolates THIS_FILE variable. THIS_FILE is used to resolve
         paths within Kalash YAML relative to the YAML file itself.
-        
+
         Args:
             ipt (str): input string to interpolate
             yaml_abspath (str): path to the Kalash YAML file
                 or the `.py` configuration file
-        
+
         Returns: interpolated string
         """
         return os.path.normpath(
@@ -168,12 +168,12 @@ class SharedMetaElements:
 
     def _interpolate_all(self, ipt: Union[str, None], yaml_abspath: str) -> Union[str, None]:
         """Interpolates all variable values using a toolz.pipe
-        
+
         Args:
             ipt (str): input string to interpolate
             yaml_abspath (str): path to the Kalash YAML file
                 or the `.py` configuration file
-        
+
         Returns: interpolated string
         """
         if ipt:
@@ -197,7 +197,7 @@ class Base:
     @classmethod
     def from_yaml(cls, yaml_obj: ArbitraryYamlObj, cli_config: CliConfig) -> Base:
         raise NotImplementedError("Base class methods should be overridden")
-    
+
     def get(self, argname: str):
         """`getattr` alias for those who wish to use this
         from within the `TestCase` class.
@@ -279,7 +279,7 @@ class Test(Meta):
             out only the tests that have passed in the last run,
             if `NOK` then it only filters out those tests that
             have failed in the last run
-        setup (Optional[AuxiliaryPath]): path to a setup script; 
+        setup (Optional[AuxiliaryPath]): path to a setup script;
             runs once at the start of the test category run
         teardown (Optional[AuxiliaryPath]): path to a teardown
             script; runs once at the end of the test category
@@ -332,11 +332,11 @@ class Config(Base):
     parameters. Where `Test` defines what tests to collect,
     this class defines global parameters determining how
     to run tests.
-    
+
     Args:
         report (str): directory path where reports will
             be stored in XML format
-        setup (Optional[AuxiliaryPath]): path to a setup script; 
+        setup (Optional[AuxiliaryPath]): path to a setup script;
             runs once at the start of the complete run
         teardown (Optional[AuxiliaryPath]): path to a teardown
             script; runs once at the end of the complete run
@@ -367,7 +367,7 @@ class Config(Base):
 class Trigger:
     """Main configuration class collecting all information for
     a test run, passed down throughout the whole call stack.
-    
+
     Args:
         tests (List[Test]): list of `Test` categories, each
             describing a sliver of a test suite that shares certain
@@ -400,15 +400,15 @@ class Trigger:
         for test in self.tests:
             sm.resolve_interpolables(test, path)
         sm.resolve_interpolables(self.config, path)
-    
+
     @classmethod
     def infer_trigger(cls, cli_config: CliConfig, default_path: str = '.kalash.yaml'):
         """Creates the Trigger instance from a YAML file or
         a Python file.
-        
+
         Args:
             path (str): path to the configuration file.
-        
+
         Returns: `Tests` object
         """
         path = cli_config.file if cli_config.file else default_path

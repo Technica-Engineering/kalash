@@ -1,4 +1,3 @@
-from logging import warn
 import unittest
 import argparse
 import xmlrunner
@@ -10,19 +9,19 @@ from unittest import TestResult
 from unittest.result import failfast
 from unittest.main import TestProgram
 
-from collections import defaultdict
 from types import ModuleType
-from functools import wraps
 from parameterized import parameterized
-from typing import Any, Callable, Dict, Iterator, Optional, Tuple
+from typing import Callable, Dict, Iterator, Optional, Tuple
 
 from .utils import get_ts
 from .filter import apply_filters
 from .smuggle import smuggle
-from .config import Collector, CollectorArtifact, Config, KalashYamlObj, PathOrIdForWhatIf, SharedMetaElements, Spec, CliConfig, Trigger
+from .config import (Collector, CollectorArtifact, Config,
+                     PathOrIdForWhatIf, CliConfig, Trigger)
 from .test_case import TestCase
 from .log import close_all
-from .collectors import _collect_test_case_v1_x, _collect_test_case_v2_0, _collect_test_case_from_module
+from .collectors import (_collect_test_case_v1_x, _collect_test_case_v2_0,
+                         _collect_test_case_from_module)
 
 kalash = ModuleType('kalash')
 
@@ -41,7 +40,7 @@ __all__ = (
 def find_my_yaml(filevar: str, path: str) -> str:
     """
     Figures out the path to the YAML file relative to a given
-    test script, should be used like: 
+    test script, should be used like:
 
     ```python
     YAML = find_my_yaml(__file__, "../yamls/yaml.yaml")
@@ -106,7 +105,7 @@ def prepare_suite(
         # recursive directory search can be set in a config or as a global flag when calling
         no_recurse_from_yaml: Optional[bool] = test_conf.no_recurse
         cli_config = kalash_trigger.cli_config
-        if not no_recurse_from_yaml is None:
+        if no_recurse_from_yaml is not None:
             cli_config.no_recurse = cli_config.no_recurse or no_recurse_from_yaml
 
         yield apply_filters(
@@ -158,7 +157,7 @@ class MetaLoader(TestLoader):
         """
         if not self._kalash_trigger:
             raise Exception(
-                f"No `Trigger` on this `MetaLoader` instance"
+                "No `Trigger` on this `MetaLoader` instance"
             )
         else:
             return self._kalash_trigger
@@ -177,7 +176,7 @@ class MetaLoader(TestLoader):
     def loadTestsFromModule(self, module, *args, pattern=None, **kws):
 
         def tests_generator(suite: unittest.TestSuite):
-            """ 
+            """
             Recursive test generator for unittest.TestSuite
             (because a suite can contain other suites recursively).
 
@@ -334,7 +333,6 @@ def run(
     """
     frame = inspect.stack()[1]
     module = inspect.getmodule(frame[0])
-    module_name = module.__name__ if module else None
     module_path = module.__file__ if module else None
     loader = MetaLoader(
         module_path,
@@ -366,11 +364,6 @@ def make_loader_and_trigger_object(
         A tuple of (`MetaLoader` instance, `Trigger` instance)
     """
     kalash_trigger = Trigger.infer_trigger(config)
-    if config.file:
-        config_file_path_relay = config.file
-    else:
-        signature = inspect.signature(Trigger.infer_trigger)
-        config_file_path_relay = signature.parameters['default_path'].default
 
     loader = MetaLoader(
         local=False,

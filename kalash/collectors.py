@@ -15,9 +15,8 @@ import unittest
 import os
 import inspect
 
-from collections import defaultdict
-
-from .config import CliConfig, CollectorArtifact, Meta, PathOrIdForWhatIf, Spec, Config, TestModule, Trigger
+from .config import (CollectorArtifact, Meta,
+                     PathOrIdForWhatIf, TestModule, Trigger)
 from .smuggle import smuggle
 from .metaparser import parse_metadata_section
 from .test_case import TestCase
@@ -45,18 +44,18 @@ def _collect_test_case_from_module(
 
                     if inspect.isfunction(func) \
                         and funcname.startswith('test') \
-                            and not _id is None:
+                            and _id is not None:
 
                         suite.addTest(obj(
                             funcname, _id, trigger
                         ))
                         if _trigger.cli_config:
                             if _trigger.cli_config.what_if == \
-                                _trigger.cli_config.spec.cli_config.whatif_ids:
-                                    identifiers.append(_id)
+                                    _trigger.cli_config.spec.cli_config.whatif_ids:
+                                identifiers.append(_id)
                             elif _trigger.cli_config.what_if == \
-                                _trigger.cli_config.spec.cli_config.whatif_paths:
-                                    identifiers.append(os.path.abspath(test.__file__))
+                                    _trigger.cli_config.spec.cli_config.whatif_paths:
+                                identifiers.append(os.path.abspath(test.__file__))
                             else:
                                 identifiers.append(os.path.abspath(test.__file__))
 

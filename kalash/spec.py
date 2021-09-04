@@ -1,5 +1,4 @@
 from __future__ import annotations
-from collections import defaultdict
 from dataclasses import dataclass
 from typing import Dict, List
 
@@ -120,7 +119,7 @@ class TestSpec(BaseSpec):
 class ConfigSpec(BaseSpec):
     """
     Config section is free to have any other elements.
-    **All elements here will not be attached as part 
+    **All elements here will not be attached as part
     of the general configuration section to the TestCase class**.
 
     Args:

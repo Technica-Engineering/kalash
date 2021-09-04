@@ -1,5 +1,6 @@
 import nox
-import sys, os
+import sys
+import os
 
 sys.path.append(os.path.dirname(__file__))
 
@@ -15,7 +16,7 @@ test_deps = [
 
 
 class Tasks:
-    test = lambda posargs='': f'python -m unittest discover'
+    test = lambda posargs='': 'python -m unittest discover'
     test_integration = lambda: "python ./tests/run_tests.py"
     coverage = lambda posargs: f'coverage {posargs}'
     build_wheel = 'python -m setup bdist_wheel'
@@ -34,7 +35,7 @@ def test(session: nox.Session):
     # run tests with coverage:
     session.run(*split_cmd(Tasks.coverage('erase')))
     session.run(
-        *split_cmd(Tasks.coverage('run -m unittest discover')), 
+        *split_cmd(Tasks.coverage('run -m unittest discover')),
         *session.posargs
     )
 

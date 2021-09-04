@@ -2,10 +2,9 @@ import os
 import sys
 import logging
 from typing import List, Optional, Set, Union, Callable
-from dataclasses import dataclass
 
 from .utils import get_ts
-from .config import CliConfig, Spec
+from .config import CliConfig
 
 PathType = Union[os.PathLike, str]
 
@@ -111,7 +110,7 @@ def _register_logger(
         log_handler.setFormatter(log_format)
         logger.addHandler(log_handler)
 
-    if logger.name not in [l.name for l in _LOGGERS]:
+    if logger.name not in [l.name for l in _LOGGERS]:  # noqa: E741
         _LOGGERS.add(logger)
         return logger
     # return `None` if logger already existed!
@@ -177,7 +176,7 @@ def get(
     """
     path = _make_tree(id, class_name, config.log_dir, config.group_by)
 
-    l = _get_logger_from_state(class_name)
+    l = _get_logger_from_state(class_name)  # noqa: E741
 
     if not l:
         new_logger = register_logger(class_name, path, config)
@@ -202,9 +201,9 @@ def close(logger: Union[str, logging.Logger]):
     Returns: `None`
     """
     if type(logger) is str:
-        l = _get_logger_from_state(logger)
+        l = _get_logger_from_state(logger)  # noqa: E741
     elif type(logger) is logging.Logger:
-        l = logger
+        l = logger  # noqa: E741
     else:
         raise NameError(
             f'{logger} is not a logger, nor a logger name! '

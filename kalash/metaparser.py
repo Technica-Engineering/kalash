@@ -1,17 +1,13 @@
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Union
 
-import os
 import yaml
 import ast
 import re
 
-from datetime import datetime
 from collections.abc import Iterable
 from functools import reduce
 
-from itertools import chain
-
-from .config import ArbitraryYamlObj, CliConfig, OneOrList, Spec, TestModule, TestPath
+from .config import CliConfig, OneOrList, TestModule, TestPath
 
 
 def iterable_or_scalar(item: OneOrList[Any]):
@@ -71,13 +67,11 @@ def extract_meta_from_test_script_ast(
         if type(node) is ast.Expr:
             ast_const = node.value
             if type(ast_const) is ast.Constant \
-                or type(ast_const) is ast.Str:
-                    yaml_meta_section = ast_const.s
-                    return yaml_meta_section
+                    or type(ast_const) is ast.Str:
+                yaml_meta_section = ast_const.s
+                return yaml_meta_section
 
     # parse the yaml data of the file
-    START = False
-    END = False
     with open(test_script_path) as f:
         read_file = f.read()
     parsed_file_ast = ast.parse(read_file)
@@ -136,7 +130,7 @@ def parse_metadata_section(
     if type(test_script) is TestPath:
         try:
             trimmed_yaml = extract_meta_from_test_script_ast(test_script, cli_config)
-        except:
+        except Exception:
             return dict()  # silently skip files that do not declare a metadata section
     elif type(test_script) is TestModule:
         trimmed_yaml = extract_meta_from_test_module(test_script, cli_config)
@@ -149,7 +143,7 @@ def parse_metadata_section(
         try:
             yaml_data = yaml.full_load(trimmed_yaml)
             return yaml_data
-        except:
+        except Exception:
             return dict()
     return dict()
 

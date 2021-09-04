@@ -9,11 +9,8 @@ workbenches:
 META_END
 """
 
-import sys
-import inspect
-from datetime import datetime
 from parameterized import parameterized
-import prost
+import prost  # noqa: F401
 from kalash.run import TestCase, main, MetaLoader, get_ts
 
 

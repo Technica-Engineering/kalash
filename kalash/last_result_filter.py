@@ -7,8 +7,8 @@ from xml.etree import ElementTree as ET
 
 def is_test_result(xml_attribute):
     """
-    Produces a lambda that checks a list of attributes 
-    in an XML `testcase` section against the one specified 
+    Produces a lambda that checks a list of attributes
+    in an XML `testcase` section against the one specified
     when filling the closure.
 
     Args:
@@ -67,7 +67,7 @@ def filter_for_result(check_lr_tag_function):
 
         Args:
             single_test_path (str): path to a test being currently processed
-                by the callback in `kalash`'s test loader 
+                by the callback in `kalash`'s test loader
                 (see: `metaparser.apply_filters()`)
             reports_path (str): path to the reports folder
 
@@ -85,7 +85,8 @@ def filter_for_result(check_lr_tag_function):
                         # record all underlying tags in XML tree
                         result_tags = [child.tag for child in tc]
                         file_path = tc.attrib['file']              # record file path
-                        # check the result tag in the report (whether it is the one you want when filtering)
+                        # check the result tag in the report
+                        # (whether it is the one you want when filtering)
                         # and if the file path is corresponding to the current test file:
                         if (os.path.abspath(file_path) == os.path.abspath(single_test_path)):
                             results[single_report_path] = \
@@ -100,7 +101,8 @@ def filter_for_result(check_lr_tag_function):
                     result_tags = [child.tag for child in tc]
                     test_cases_that_pass_predicate.append(check_lr_tag_function(result_tags))
         except (KeyError, IndexError):
-            # when key error or IndexError encountered it means that the folder contains no reports yet
+            # when key error or IndexError encountered
+            # it means that the folder contains no reports yet
             test_cases_that_pass_predicate = [False]
 
         return test_cases_that_pass_predicate

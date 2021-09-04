@@ -1,5 +1,4 @@
-from typing import Callable, Dict, List, Optional, Union
-from collections import defaultdict
+from typing import Dict, Union
 from unittest import TestSuite
 from functools import reduce
 
@@ -9,9 +8,8 @@ from .metaparser import iterable_or_scalar, parse_metadata_section, match_id
 from .last_result_filter import is_test_fail_or_error,\
     is_test_pass, filter_for_result
 from .config import (
-    ArbitraryYamlObj, Base, Collector, CollectorArtifact,
-    Meta, OneOrList, Spec, CliConfig,
-    TemplateVersion, Test, TestPath, Trigger)
+    ArbitraryYamlObj, Collector, CollectorArtifact,
+    Meta, OneOrList, TemplateVersion, Test, TestPath, Trigger)
 from .kalash_test_loader import make_test_loader
 
 
@@ -72,8 +70,8 @@ def apply_filters(
         for k, v in data_class.__dict__.items():
             x1, x2 = getattr(OneOrList[str], '__args__')
             if (type(v) is x1 or type(v) is x2) \
-                and k not in Test._non_filters:
-                    selected[k] = (iterable_or_scalar(v))
+                    and k not in Test._non_filters:
+                selected[k] = (iterable_or_scalar(v))
         return selected
 
     def loader_callback(

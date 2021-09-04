@@ -2,7 +2,7 @@ from typing import List, Optional
 import unittest
 import logging
 
-from .config import CliConfig, Config, Trigger
+from .config import CliConfig, Trigger
 from .log import get, close
 
 
@@ -38,7 +38,7 @@ class TestCase(unittest.TestCase):
     Args:
         methodName (str): test method
         id (str): test ID from the metadata tag
-        trigger (Trigger): `Trigger` instance 
+        trigger (Trigger): `Trigger` instance
     """
 
     def __init__(
@@ -76,7 +76,7 @@ class TestCase(unittest.TestCase):
     def allow_when(self, allowed_parameters_config_property: str, parameter_on_test_case: str):
         """When running with a custom configuration class, you can use this
         method to tell your test case to not be skipped on some runtime filter.
-        This is useful mostly when using Kalash with `parameterized`. 
+        This is useful mostly when using Kalash with `parameterized`.
 
         Consider the following example:
         ```python
