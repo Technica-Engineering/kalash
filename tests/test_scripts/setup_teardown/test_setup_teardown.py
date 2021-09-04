@@ -19,15 +19,19 @@ from kalash.testutils import testing_callback
 import os
 from pathlib import Path
 
-yaml_path = Path(os.path.dirname(__file__)) / ".." / ".." / "test_yamls" / "test_setup_and_teardown.yaml"
+yaml_path = Path(
+    os.path.dirname(__file__)
+) / ".." / ".." / "test_yamls" / "test_setup_and_teardown.yaml"
+
 
 class SomeSomeTest(TestCase):
 
     def test_1(self):
         testing_callback(__file__, "test_1")
-    
+
     def test_2(self):
         testing_callback(__file__, "test_2")
+
 
 if __name__ == '__main__':
     main(testLoader=MetaLoader(yaml_path=str(yaml_path)))

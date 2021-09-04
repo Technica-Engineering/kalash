@@ -11,7 +11,7 @@ workbenches:                                  # Workbench where the test is mean
 META_END
 """
 
-from kalash.run import run_test_case, get_ts, find_my_yaml
+from kalash.run import run_test_case, find_my_yaml
 
 # TEST_CASE replaces test class name:
 TEST_CASE = "NextGenTestCase"
@@ -27,18 +27,23 @@ PARAMS = [
 # test file
 YAML = find_my_yaml(__file__, '../../test_yamls/test_v2.yaml')
 
+
 # CIVAR functions are now top-level
 def configuration(*params):
     f"CONF {params[0]}, {params[1]}"
 
+
 def interaction(*params):
     f"INTER {params[0]}, {params[1]}"
+
 
 def validation(*params):
     f"VALID {params[0]}, {params[1]}"
 
+
 def restoration(*params):
     f"RESTORE {params[0]}, {params[1]}"
+
 
 # Simplified main clause, YAML looked up automatically
 if __name__ == "__main__":

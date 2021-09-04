@@ -1,19 +1,14 @@
-from typing import List, Optional
-from kalash.testutils import get_results, clear_results
+from typing import List
+from kalash.testutils import clear_results
 from kalash.run import run_test_suite, make_loader_and_trigger_object
-from kalash.run import main_cli
 from kalash.config import CliConfig
 
 import os
-import subprocess
-import copy
 import time
 import shutil
 import glob
-import tempfile
 
-from functools import reduce
-from unittest import main, TestCase, skip
+from unittest import main, TestCase
 
 
 class TestKalash(TestCase):
@@ -25,7 +20,7 @@ class TestKalash(TestCase):
     def tearDown(self):
         clear_results()
         return super().tearDown()
-    
+
     def test_one_time_setup_and_teardown(self):
         """
         Tests if the one-time setup and teardown fire exactly once.
@@ -37,12 +32,11 @@ class TestKalash(TestCase):
 
         setup = int(os.environ.get('SETUP_RAN', 0))
         teardown = int(os.environ.get('TEARDOWN_RAN', 0))
-        
+
         self.assertEqual(setup, 1)
         self.assertEqual(teardown, 1)
-    
+
     def test_fail_fast_and_return_codes(self):
-        import sys
 
         # This test is equivalent to:
         # sys.argv += [
@@ -61,15 +55,15 @@ class TestKalash(TestCase):
         self.assertEqual(len(result.failures if result else []), 1)
         # return code 1 denotes test failure
         self.assertEqual(return_code, 1)
-    
+
     def test_logging(self):
         result, return_code = run_test_suite(*make_loader_and_trigger_object(CliConfig(
             "./tests/test_yamls/test_logging.yaml",
             "logs", "device",
             False, self._debug, False, False, fail_fast=True)))
         self.assertEqual(len(glob.glob('logs/**/*.log')), 2)
-    
-    def _whatif_helper(self, subdirs: List[str]=[]):
+
+    def _whatif_helper(self, subdirs: List[str] = []):
         test_scripts_dir = os.path.join(
             os.path.dirname(__file__),
             'test_scripts'
@@ -98,7 +92,7 @@ class TestKalash(TestCase):
             "./tests/test_yamls/test_all.yaml",
             "logs", "device",
             False, self._debug, True, fail_fast=True, what_if='paths')),
-                whatif_callback=lambda n: paths_actual.append(os.path.normcase(n)))
+            whatif_callback=lambda n: paths_actual.append(os.path.normcase(n)))
         self.assertListEqual(sorted(paths_actual), sorted(paths_expected))
 
     def test_what_if_some_scripts(self):
@@ -112,7 +106,7 @@ class TestKalash(TestCase):
             "./tests/test_yamls/test_one_time_setup_and_teardown.yaml",
             "logs", "device",
             False, self._debug, True, fail_fast=True, what_if='paths')),
-                whatif_callback=lambda n: paths_actual.append(os.path.normcase(n)))
+            whatif_callback=lambda n: paths_actual.append(os.path.normcase(n)))
         self.assertListEqual(sorted(paths_actual), sorted(paths_expected))
 
     def test_advanced_runtime_filtering(self):
@@ -123,6 +117,7 @@ class TestKalash(TestCase):
         time.sleep(0.1)
         shutil.rmtree("logs")
         time.sleep(0.1)
-            
+
+
 if __name__ == '__main__':
     main()

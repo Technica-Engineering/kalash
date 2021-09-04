@@ -12,11 +12,7 @@ devices:
 META_END
 """
 
-from typing import List, Optional
 from kalash.run import MetaLoader, TestCase, main, parameterized
-from kalash.run import smuggle
-
-import os
 
 
 class TestAdvancedFiltering1(TestCase):

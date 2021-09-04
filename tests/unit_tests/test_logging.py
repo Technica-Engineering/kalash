@@ -5,7 +5,7 @@ import glob
 import time
 
 from kalash.config import CliConfig
-from kalash.log import (_make_tree, _make_log_tree_from_id, 
+from kalash.log import (_make_tree, _make_log_tree_from_id,
                         register_logger, _LOGGERS, get, close, close_all)
 
 
@@ -42,12 +42,12 @@ class TestLogging(unittest.TestCase):
         _make_tree(self.testid, "TestLog", "logs")
         if not os.path.exists(self.expected_log_path):
             self.fail('Target path for logs not created properly!')
-    
+
     def test_register_logger(self):
         register_logger(__name__, 'log.log', CliConfig(None))
         self.assertEqual(len(_LOGGERS), 1)
         close_all()
-    
+
     def test_logger_user_facing_functions(self):
         logger = get(
             self.testid,
@@ -62,7 +62,7 @@ class TestLogging(unittest.TestCase):
         close(logger)
         time.sleep(0.5)
         self.assertGreater(len(glob.glob('logs2/**/*.log')), 0)
-    
+
     @unittest.skip("Awaiting reimplementation of grouping")
     def test_logfile_grouping(self):
         pass

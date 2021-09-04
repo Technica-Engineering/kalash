@@ -10,7 +10,6 @@ META_END
 """
 
 from kalash.run import MetaLoader, TestCase, main
-from kalash.testutils import testing_callback
 
 
 class TestSomethingElse(TestCase):
@@ -20,7 +19,7 @@ class TestSomethingElse(TestCase):
 
     def test_2(self):
         self.fail("Xfail")
-    
+
     def test_3(self):
         pass
 

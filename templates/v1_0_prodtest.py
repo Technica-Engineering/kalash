@@ -51,22 +51,22 @@ class TestTemplate(TestCase): # IMPORTANT: Name of class should be changed here
         """
  
     # Second step: Interact with the DUTs as the test requires
-    def interaction(self): # IMPORTANT: Name of methods never change
+    def interaction(self):  # IMPORTANT: Name of methods never change
         """DEFINITION OF WHAT IS DONE TO INTERACT WITH THE DUTS"""
- 
+
         """
         CODE SHOULD BE:
             INTERACTION_CODE_LINE
             print("LOG WHAT HAS BEEN DONE")
         """
- 
+
     # Third step: Validate data within the DUTs in order to evaluate if the test is OK or NOK
-    def validation(self): # IMPORTANT: Name of methods never change
+    def validation(self):  # IMPORTANT: Name of methods never change
         """DEFINITION OF WHAT VALIDATION CONSISTS ON"""
- 
+
         # List of NOK messages to be shown as failed in the error output of the report
         message_nok_list = []
- 
+
         """
         CODE SHOULD BE:
             print("STARTING TO DO VALIDATION XYZ")
@@ -78,21 +78,23 @@ class TestTemplate(TestCase): # IMPORTANT: Name of class should be changed here
                 message_nok_list.append(message)
             print(message)
         """
- 
-        # Determines if the test was NOK or OK based on wheteher the list of NOK messages has values or not
+
+        # Determines if the test was NOK or OK based on wheteher the list of
+        # NOK messages has values or not
         self.assertListEqual(message_nok_list, [], message_nok_list)
- 
+
     # Fourth step: Restore the DUTs to their default state
-    def restoration(self): # IMPORTANT: Name of methods never change
+    def restoration(self):  # IMPORTANT: Name of methods never change
         """DEFINITION OF HOW WE RESTORE THE DUTS TO THEIR DEFAULT STATE"""
- 
+
         """
         CODE SHOULD BE:
             RESTORING_CODE_LINE
             print("LOG WHAT HAS BEEN DONE")
         NOTE THAT YOU MUST CHECK BEFORE RESTORING IF THE DUT HAS BEEN CONNECTED
         """
- 
+
+
 # Executes the test and configures the report destination on local executions
 if __name__ == '__main__':
     main(testLoader=MetaLoader(yaml_path='./yamls/.kalash.yaml'))

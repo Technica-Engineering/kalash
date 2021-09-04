@@ -1,21 +1,29 @@
 import unittest
 
 from kalash.config import CliConfig, Trigger
-from kalash.run import _collect_test_case_v2_0, prepare_suite
+from kalash.run import _collect_test_case_v2_0
 import os
 from pathlib import Path
-import inspect
 
 
 class TestV2Collection(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.test_path = str(Path(os.path.dirname(__file__)) / '..' / 'test_scripts' / 'test_template_v2' / 'test_template_v2.py')
-        cls.yaml_path = str(Path(os.path.dirname(__file__)) / '..' / 'test_yamls' / 'test_v2.yaml')
+        cls.test_path = str(
+            Path(
+                os.path.dirname(__file__)
+            ) / '..' / 'test_scripts' / 'test_template_v2' / 'test_template_v2.py'
+        )
+        cls.yaml_path = str(
+            Path(
+                os.path.dirname(__file__)
+            ) / '..' / 'test_yamls' / 'test_v2.yaml'
+        )
 
     def test_v2_template_collection(self):
-        self.assertRaises(Exception, lambda: _collect_test_case_v2_0(self.test_path,
+        self.assertRaises(Exception, lambda: _collect_test_case_v2_0(
+            self.test_path,
             Trigger.from_yaml(
                 self.yaml_path,
                 CliConfig(
@@ -25,6 +33,7 @@ class TestV2Collection(unittest.TestCase):
                 )
             )
         ))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -10,7 +10,6 @@ META_END
 """
 
 from kalash.run import MetaLoader, TestCase, main
-from kalash.testutils import testing_callback
 
 
 class TestLogger1(TestCase):

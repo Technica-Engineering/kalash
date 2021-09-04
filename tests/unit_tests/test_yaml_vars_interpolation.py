@@ -3,14 +3,17 @@ import unittest
 from pathlib import Path
 
 from kalash.run import prepare_suite
-from kalash.config import CliConfig, Test, Trigger, SharedMetaElements, Spec
+from kalash.config import CliConfig, Trigger, SharedMetaElements
 
 
 class TestYamlVarsInterpolation(unittest.TestCase):
-    
+
     @classmethod
     def setUpClass(cls) -> None:
-        cls.yaml_path = str(Path(os.path.dirname(__file__)) / '..' / 'test_yamls' / 'test_interpolation.yaml')
+        cls.yaml_path = str(
+            Path(
+                os.path.dirname(__file__)
+            ) / '..' / 'test_yamls' / 'test_interpolation.yaml')
         cls.trigger = lambda cls: Trigger.from_yaml(cls.yaml_path, CliConfig(
             cls.yaml_path,
             no_log=True,
