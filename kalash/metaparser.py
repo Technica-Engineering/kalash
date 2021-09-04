@@ -18,12 +18,12 @@ def iterable_or_scalar(item: OneOrList[Any]):
     """
     Simple helper function that wraps scalars into
     a list.
-    
+
     Args:
         item (OneOrList[Any]): an item that can be
             either a singular value (scalar) or an
             iterator
-    
+
     Returns:
         `item` or `[item]` if item is a scalar
     """
@@ -54,15 +54,15 @@ def extract_meta_from_test_script_ast(
 ) -> str:
     """Extracts YAML metadata tag as string from
     a given test path.
-    
+
     Args:
         test_script (str): script path
         cli_config (CliConfig): `CliConfig` instance
-    
+
     Returns:
         Trimmed YAML section as string (parsable by `pyyaml`)
     """
-    
+
     def _find_meta_in_ast(node: ast.stmt) -> Optional[str]:
         """Typesafe walk of the AST tree
         to make linters and lanugage servers
@@ -101,11 +101,11 @@ def extract_meta_from_test_script_ast(
 def extract_meta_from_test_module(test: TestModule, cli_config: CliConfig):
     """Extracts YAML metadata tag as string from
     a given `TestModule` instance.
-    
+
     Args:
         test (TestModule): test module
         cli_config (CliConfig): `CliConfig` instance
-    
+
     Returns:
         Trimmed YAML section as string (parsable by `pyyaml`)
     """
@@ -123,12 +123,12 @@ def parse_metadata_section(
     """Extracts YAML metadata tag from
     a given test path or module and
     reworks it into a dictionary.
-    
+
     Args:
         test_script (Union[TestPath, TestModule]): script path
             or test module
         cli_config (CliConfig): `CliConfig` instance
-    
+
     Returns:
         A dictionary corresponding to the original YAML
             metadata tag.
@@ -137,7 +137,7 @@ def parse_metadata_section(
         try:
             trimmed_yaml = extract_meta_from_test_script_ast(test_script, cli_config)
         except:
-            return dict() # silently skip files that do not declare a metadata section
+            return dict()  # silently skip files that do not declare a metadata section
     elif type(test_script) is TestModule:
         trimmed_yaml = extract_meta_from_test_module(test_script, cli_config)
     else:
@@ -152,7 +152,7 @@ def parse_metadata_section(
         except:
             return dict()
     return dict()
-    
+
 
 def match_id(test_id: Optional[str], patterns: Optional[Union[str, List[str]]]) -> bool:
     """
@@ -164,7 +164,7 @@ def match_id(test_id: Optional[str], patterns: Optional[Union[str, List[str]]]) 
         test_id (str): a test ID
         patterns: single RegEx pattern or a list
             of patterns to match against
-    
+
     Returns:
         `True` if any of the patterns matched the query ID
     """

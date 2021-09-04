@@ -22,19 +22,19 @@ class TestCase(unittest.TestCase):
     id: test_something_12345
     META_END
     \"\"\"
-    
+
     from kalash.run import main, TestCase, MetaLoader
 
 
     class TestSomething(TestCase):
         test_something(self):
             self.assertTrue(True)
-    
+
 
     if __name__ == '__main__'
         main(testLoader=MetaLoader())
     ```
-    
+
     Args:
         methodName (str): test method
         id (str): test ID from the metadata tag
@@ -72,12 +72,12 @@ class TestCase(unittest.TestCase):
                 for h in self.logger.handlers:
                     h.close()
                 self.logger.handlers = []
-    
+
     def allow_when(self, allowed_parameters_config_property: str, parameter_on_test_case: str):
         """When running with a custom configuration class, you can use this
         method to tell your test case to not be skipped on some runtime filter.
         This is useful mostly when using Kalash with `parameterized`. 
-        
+
         Consider the following example:
         ```python
         class TestAdvancedFiltering1(TestCase):
@@ -98,7 +98,8 @@ class TestCase(unittest.TestCase):
                 allowed list, coming from the test case
         """
         if self.trigger:
-            run_with: Optional[List[str]] = self.trigger.config.get(allowed_parameters_config_property)
+            run_with: Optional[List[str]] = self.trigger.config.get(
+                allowed_parameters_config_property)
             if run_with:
                 if parameter_on_test_case in run_with:
                     return

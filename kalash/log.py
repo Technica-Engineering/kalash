@@ -30,19 +30,19 @@ def _create_tree_if_not_exists(path: PathType) -> None:
 def _make_log_tree_from_id(
     id: str,
     class_name: str,
-    groupby: Optional[str]=None
+    groupby: Optional[str] = None
 ):
     """Creates log tree structure representation based on the
     test template keys. By default it does not group
     the logs at all. Any key from the metadata tag
     can be used to group by.
-    
+
     Args:
         id (str): test ID from the metadata tag
         class_name (str): test class name
         groupby (Optional[str]): what property to group log
             directories by
-    
+
     Returns:
         A `str` path to the target directory where logs will
             be stored.
@@ -57,7 +57,7 @@ def _make_log_tree_from_id(
 
 def _make_trunk(
     log_name: PathType,
-    log_base_path: Optional[PathType]=None
+    log_base_path: Optional[PathType] = None
 ):
     """Creates a trunk directory structure
     for the logs if it does not exist, returns
@@ -85,8 +85,8 @@ def _make_trunk(
 def _make_tree(
     id: str,
     class_name: str,
-    log_base_path: Optional[PathType]=None,
-    groupby: str=None
+    log_base_path: Optional[PathType] = None,
+    groupby: str = None
 ):
     """Combines `_make_trunk_` with `_make_log_tree_from_id`."""
     return _make_trunk(
@@ -138,7 +138,7 @@ def register_logger(
         config (CliConfig): a `CliConfig` instance representing
             the configuration that the application user
             provided via the CLI
-    
+
     Return:
         `logging.Logger` instance if a new logger instance
             has been created. `None` if the logger instance
@@ -164,21 +164,21 @@ def get(
 ) -> logging.Logger:
     """Creates or returns an existing `logging.Logger` instance
     associated with a particular `class_name`.
-    
+
     Args:
         id (str): unique ID of the test
         class_name (str): name of the test class
         config (CliConfig): a `CliConfig` instance representing
             the configuration that the application user
             provided via the CLI
-    
+
     Returns:
         Associated `logging.Logger` instance
     """
     path = _make_tree(id, class_name, config.log_dir, config.group_by)
 
     l = _get_logger_from_state(class_name)
-    
+
     if not l:
         new_logger = register_logger(class_name, path, config)
         if not new_logger:
@@ -198,7 +198,7 @@ def close(logger: Union[str, logging.Logger]):
     Args:
         logger (logging.Logger): the `logging.Logger` instance
             to close
-    
+
     Returns: `None`
     """
     if type(logger) is str:

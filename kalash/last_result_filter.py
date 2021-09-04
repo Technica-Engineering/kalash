@@ -13,7 +13,7 @@ def is_test_result(xml_attribute):
 
     Args:
         xml_attribute (str): attribute of the section searched for
-    
+
     Returns:
         function that takes a list of attributes as a parameter
     """
@@ -47,7 +47,7 @@ def filter_for_result(check_lr_tag_function):
 
         Args:
             path_to_xml (str): path to a valid XMLRunner report
-        
+
         Returns:
             List of XML Elements (xml.etree.ElementTree.Element)
             or an empty list when `_ErrorHolder` is encountered
@@ -70,7 +70,7 @@ def filter_for_result(check_lr_tag_function):
                 by the callback in `kalash`'s test loader 
                 (see: `metaparser.apply_filters()`)
             reports_path (str): path to the reports folder
-        
+
         Returns:
             Array of booleans as used in `metaparser.apply_filters()`
         """
@@ -82,13 +82,15 @@ def filter_for_result(check_lr_tag_function):
                 test_cases = process_xml_tree(single_report_path)
                 if test_cases:
                     for tc in test_cases:
-                        result_tags = [child.tag for child in tc]  # record all underlying tags in XML tree
+                        # record all underlying tags in XML tree
+                        result_tags = [child.tag for child in tc]
                         file_path = tc.attrib['file']              # record file path
                         # check the result tag in the report (whether it is the one you want when filtering)
                         # and if the file path is corresponding to the current test file:
                         if (os.path.abspath(file_path) == os.path.abspath(single_test_path)):
                             results[single_report_path] = \
-                                datetime.datetime.strptime(tc.attrib['timestamp'], "%Y-%m-%dT%H:%M:%S")
+                                datetime.datetime.strptime(
+                                    tc.attrib['timestamp'], "%Y-%m-%dT%H:%M:%S")
         try:
             last_report_path = [k for k, _ in sorted(results.items(), key=lambda x: x[1])][-1]
             test_cases_that_pass_predicate = []
@@ -100,8 +102,7 @@ def filter_for_result(check_lr_tag_function):
         except (KeyError, IndexError):
             # when key error or IndexError encountered it means that the folder contains no reports yet
             test_cases_that_pass_predicate = [False]
-        
+
         return test_cases_that_pass_predicate
 
     return closure
-

@@ -37,11 +37,12 @@ __all__ = (
 # Public Utilities
 # ====================
 
+
 def find_my_yaml(filevar: str, path: str) -> str:
     """
     Figures out the path to the YAML file relative to a given
     test script, should be used like: 
-    
+
     ```python
     YAML = find_my_yaml(__file__, "../yamls/yaml.yaml")
     ```
@@ -49,7 +50,7 @@ def find_my_yaml(filevar: str, path: str) -> str:
     Args:
         filevar (str): should always be set to `__file__`
         path (str): relative path component that points to the YAML
-    
+
     Returns:
         Normalized absolute path to the correct YAML file
     """
@@ -95,13 +96,13 @@ def prepare_suite(
     """
 
     for test_idx, test_conf in enumerate(kalash_trigger.tests):
-        
+
         # set up path (if exists) and non-filter keys
         path = test_conf.path
 
         if not path:
             path = '.'  # default to CWD
-        
+
         # recursive directory search can be set in a config or as a global flag when calling
         no_recurse_from_yaml: Optional[bool] = test_conf.no_recurse
         cli_config = kalash_trigger.cli_config
@@ -120,8 +121,8 @@ class MetaLoader(TestLoader):
 
     def __init__(
         self,
-        yaml_path: str=None,
-        trigger: Optional[Trigger]=None,
+        yaml_path: str = None,
+        trigger: Optional[Trigger] = None,
         local=True
     ):
         """
@@ -148,7 +149,7 @@ class MetaLoader(TestLoader):
             self._kalash_trigger = Trigger()
         self._local = local
         self.suite = unittest.TestSuite()
-    
+
     @property
     def trigger(self) -> Trigger:
         """Typesafe handler of `KalashYamlObj`.
@@ -241,7 +242,7 @@ class MetaLoader(TestLoader):
             if relpath_to_script:
                 p = os.path.abspath(relpath_to_script)
                 smuggle(p)
-    
+
     def one_time_setup(self):
         """Runs One-time-setup script"""
         self._smuggle_fixture_module(True)
@@ -285,7 +286,7 @@ def run_test_suite(
     suite, whatif_names = loader.loadTestsFromKalashYaml()
 
     return_code = 0
-    
+
     if not kalash_trigger.cli_config.what_if:
         loader.one_time_setup()
         report = "."
@@ -304,9 +305,9 @@ def run_test_suite(
             return_code = 1
         elif len(result.errors) > 0:
             return_code = 2
-        
+
         return result, return_code
-    
+
     else:
         for n in whatif_names:
             whatif_callback(n)
@@ -326,7 +327,7 @@ def run(
             or an equivalent Python file
         whatif_callback (Callable[[str], None]): the function
             to call when running in a what-if mode
-    
+
     Returns:
         Return code, 0 if all collected tests are passing.
             A non-zero return code indicates failure.
@@ -340,11 +341,11 @@ def run(
         local=False,
         trigger=kalash_trigger
     )
-    
+
     _, return_code = run_test_suite(loader, kalash_trigger, whatif_callback)
-    
+
     close_all()
-    
+
     return return_code
 
 
@@ -353,14 +354,14 @@ def make_loader_and_trigger_object(
 ) -> Tuple[MetaLoader, Trigger]:
     """Prepares a ``MetaLoader`` based
     on the YAML file parameters.
-    
+
     Args:
         cli_config (CliConfig): a `CliConfig` object representing
             command-line parameters used to trigger the test run
             modifying behavior of certain aspects of the application
             like logging or triggering speculative runs instead of
             real runs
-    
+
     Returns:
         A tuple of (`MetaLoader` instance, `Trigger` instance)
     """
@@ -397,19 +398,19 @@ def main_cli():
         '-d', '--debug',
         action='store_true', help='Run in debug mode')
     parser.add_argument(
-        '-ff',  '--fail-fast',
+        '-ff', '--fail-fast',
         action='store_true', help='Fail suite if at least one test fails')
     parser.add_argument(
         '-nl', '--no-log',
         action='store_true', help='Disable logging')
     parser.add_argument(
-        '-ne',  '--no-log-echo',
+        '-ne', '--no-log-echo',
         action='store_true', help='If set, log calls will not be echoed to STDOUT')
     parser.add_argument(
-        '-ld',  '--log-dir',
+        '-ld', '--log-dir',
         type=str, help='Log base directory')
     parser.add_argument(
-        '-ll',  '--log-level',
+        '-ll', '--log-level',
         type=int, help='Python `logging` log level ('
                        'CRITICAL = 50, '
                        'ERROR = 40, '
@@ -423,7 +424,7 @@ def main_cli():
                        'from the package directory.'
     )
     parser.add_argument(
-        '-lf',  '--log-format',
+        '-lf', '--log-format',
         type=str, help=f'Log format string, default is %{config.spec.cli_config.log_formatter}')
     parser.add_argument(
         '-g', '--group-by',
@@ -459,7 +460,7 @@ def main_cli():
     if args.what_if:
         config.what_if = args.what_if
 
-    loader, kalash_trigger= make_loader_and_trigger_object(
+    loader, kalash_trigger = make_loader_and_trigger_object(
         config
     )
 

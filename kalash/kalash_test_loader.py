@@ -6,7 +6,7 @@ from .config import Collector, CliConfig, CollectorArtifact, OneOrList, PathOrId
 
 
 def make_test_loader(trigger: Trigger) -> Callable[
-    [OneOrList[TestPath],Collector], CollectorArtifact
+    [OneOrList[TestPath], Collector], CollectorArtifact
 ]:
     """Creates a test loader function based on a
     provided `Trigger` instance.
@@ -14,7 +14,7 @@ def make_test_loader(trigger: Trigger) -> Callable[
     Args:
         trigger (Trigger): `Trigger` instance
     """
-    
+
     def test_loader(
         paths: OneOrList[TestPath],
         callback: Collector
@@ -31,7 +31,7 @@ def make_test_loader(trigger: Trigger) -> Callable[
                 or directories of tests
             callback (Collector): callback that adds tests to suite
                 based on a test template definition
-        
+
         Returns:
             A `CollectorArtifact`
         """
@@ -55,11 +55,11 @@ def make_test_loader(trigger: Trigger) -> Callable[
 
         suite = unittest.TestSuite()
         identifiers: PathOrIdForWhatIf = []
-        
+
         if type(paths) is str:
             # wrap paths in a list if the test conf contains just a single path
             paths = [paths]
-        
+
         for path in paths:
             if path.endswith(".py"):
                 # if it's a path to a single test, just run it

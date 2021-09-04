@@ -40,7 +40,7 @@ class CliConfigSpec(BaseSpec):
 class MetaSpec(BaseSpec):
     """
     Metadata section Spec.
-    
+
     Args:
         tts (SpecKey): test template start of metadata section
         tte (SpecKey): test template end of metadata section

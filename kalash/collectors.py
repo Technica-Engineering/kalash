@@ -75,12 +75,12 @@ def _collect_test_case_v1_x(
     trigger: Trigger
 ) -> CollectorArtifact:
     # import the test from absolute or relative path
-    # path should be relative to current working directory when calling kalash      
+    # path should be relative to current working directory when calling kalash
 
     test = smuggle(os.path.abspath(file))
     # meta = defaultdict(lambda: None, parse_metadata_section(file))['values']
     # meta = defaultdict(lambda: None, meta) if meta else defaultdict(lambda: None)
-    
+
     return _collect_test_case_from_module(test, trigger)
 
 # =============================================================================
@@ -92,7 +92,7 @@ def _collect_test_case_v1_x(
 def _collect_test_case_v2_0(
     file: str,
     trigger: Trigger
-)-> CollectorArtifact:
+) -> CollectorArtifact:
     raise NotImplementedError("Test case V2 has not been implemented yet")
 
 # =============================================================================

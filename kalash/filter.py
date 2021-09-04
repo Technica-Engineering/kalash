@@ -11,7 +11,7 @@ from .last_result_filter import is_test_fail_or_error,\
 from .config import (
     ArbitraryYamlObj, Base, Collector, CollectorArtifact,
     Meta, OneOrList, Spec, CliConfig,
-    TemplateVersion, Test, TestPath, Trigger )
+    TemplateVersion, Test, TestPath, Trigger)
 from .kalash_test_loader import make_test_loader
 
 
@@ -23,7 +23,7 @@ def dict_intersection(selected: ArbitraryYamlObj, parsed: ArbitraryYamlObj):
     Args:
         selected (dict): dictionary of selected values
         parsed (dict): dictionary of parsed values
-    
+
     Returns:
         `True` if any of the selected values coincides to be
         within the parsed values as well. `False` otherwise.
@@ -42,7 +42,7 @@ def dict_intersection(selected: ArbitraryYamlObj, parsed: ArbitraryYamlObj):
 
 
 def apply_filters(
-    test_collection_config: Test, 
+    test_collection_config: Test,
     tests_directory: OneOrList[TestPath],
     collector_functions: Dict[TemplateVersion, Collector],
     trigger: Trigger
@@ -65,7 +65,7 @@ def apply_filters(
     Returns:
         A `CollectorArtifact`.
     """
-    
+
     # TODO: generic way of filtering without the need to specify separate filter tags
     def _get_filterables(data_class: Union[Meta, Test]):
         selected = {}
@@ -73,7 +73,7 @@ def apply_filters(
             x1, x2 = getattr(OneOrList[str], '__args__')
             if (type(v) is x1 or type(v) is x2) \
                 and k not in Test._non_filters:
-                selected[k] = (iterable_or_scalar(v))
+                    selected[k] = (iterable_or_scalar(v))
         return selected
 
     def loader_callback(
@@ -99,13 +99,13 @@ def apply_filters(
         except TypeError:
             if cli_config.debug:
                 warnings.warn(
-                    f"\nFile: {single_test_path}\n" + \
-                    "does not contain any metadata tag, so " +
+                    f"\nFile: {single_test_path}\n"
+                    "does not contain any metadata tag, so "
                     "we ignore it!"
                 )
-            return TestSuite(), [] # silently skip files that do not declare a metadata section
+            return TestSuite(), []  # silently skip files that do not declare a metadata section
             # we assume any file that doesn't have meta is NOT a test file
-            
+
         # -----------------------------
         # Last result filter:
         # -----------------------------
@@ -126,7 +126,7 @@ def apply_filters(
                                  f"{cli_config.spec.test.ok} or None!")
         else:
             parsed_last_result = []
-        
+
         # -----------------------------
         # CALLBACK SWITCH:
         # -----------------------------
