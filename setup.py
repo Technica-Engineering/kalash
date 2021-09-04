@@ -14,6 +14,8 @@ import yaml
 with open(os.path.join(os.path.dirname(__file__), 'meta.yaml')) as f:
     meta = yaml.full_load(f)
 
+with open("README.md", "r") as f:
+    readme = f.read()
 
 SETUP_DEPENDENCIES = ['setuptools', 'wheel']
 KALASH_REQUIRES = [
@@ -38,14 +40,16 @@ setup(
         "dev": [
             'pdoc3',
             'flake8',
-            'twine'
+            'twine',
+            'setuptools'
         ]
     },
     setup_requires=SETUP_DEPENDENCIES,
     install_requires=KALASH_REQUIRES,
     version=meta['version'],
     description=meta['kalash']['description'],
-    long_description=meta['kalash']['long_description'],
+    long_description=readme,
+    long_description_content_type='text/markdown',
     keywords=meta['keywords'],
     author=meta['author'],
     author_email=meta['email'],

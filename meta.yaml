@@ -1,12 +1,10 @@
-version: '3.0.2'
+version: '4.0.0'
 kalash:
-  description: ''
-  long_description: ''
-linter:
-  description: ''
-  long_description: ''
+  description: >
+    Test runner made for scalable automation
+    based on standard Python's `unittest`
 author: 'Product Testing Technica Engineering GmbH'
 keywords: 
   - 'automation'
 email: 'krzysztof.czarnecki@technica-engineering.de'
-license: 'proprietary'
+license: 'GPLv3'
