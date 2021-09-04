@@ -264,7 +264,7 @@ def run_test_suite(
     loader: MetaLoader,
     kalash_trigger: Trigger,
     whatif_callback: Callable[[str], None] = print
-) -> Tuple[Optional[unittest.TextTestResult], int]:
+) -> Tuple[Optional[xmlrunner.runner._XMLTestResult], int]:
     """Accepts a loader and a `Trigger` object
     and triggers the test run.
 
@@ -291,7 +291,7 @@ def run_test_suite(
         report = "."
         if kalash_trigger.config:
             report = kalash_trigger.config.report
-        result: unittest.TextTestResult = xmlrunner.XMLTestRunner(
+        result: xmlrunner.runner._XMLTestResult = xmlrunner.XMLTestRunner(
             output=report,
             failfast=kalash_trigger.cli_config.fail_fast
         ).run(suite)
