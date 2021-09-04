@@ -10,3 +10,5 @@
 .. include:: ./doc/contributing.md
 .. include:: ./doc/trailer.md
 """
+
+__version__ = "4.0.0"
