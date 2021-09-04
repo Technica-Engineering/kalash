@@ -15,18 +15,18 @@ from .config import (
 from .kalash_test_loader import make_test_loader
 
 
-def list_intersection(selected: ArbitraryYamlObj, parsed: ArbitraryYamlObj):
+def dict_intersection(selected: ArbitraryYamlObj, parsed: ArbitraryYamlObj):
     """
-    Checks whether a list of values filtered against in YAML (selected)
+    Checks whether a dict of values filtered against in YAML (selected)
     intersects with the parsed values:
 
     Args:
-        selected (list): list of selected values
-        parsed (list): list of parsed values
+        selected (dict): dictionary of selected values
+        parsed (dict): dictionary of parsed values
     
     Returns:
-        True if any of the selected values coincides to be
-        within the parsed values as well. False otherwise.
+        `True` if any of the selected values coincides to be
+        within the parsed values as well. `False` otherwise.
     """
     if selected and parsed:  # both shall be not-None
         for k, v in selected.items():
@@ -46,25 +46,24 @@ def apply_filters(
     tests_directory: OneOrList[TestPath],
     collector_functions: Dict[TemplateVersion, Collector],
     trigger: Trigger
-):
+) -> CollectorArtifact:
     """
     Main filtering function allowing testers to dynamically
     change the behavior of the test loader by modifying
     the contents of the YAML file.
 
     Args:
-        filter_dict (dict): dictionary of filter elements as parsed from main YAML
-        tests_directory (str): path to a test or a collection of tests
-        collector_functions (Dict[str, Callable]): a dictionary of collector functions
-            where each handles different versions of the test template
-        trigger: parsed kalash YAML file (passed separately to map to reports)
-        no_recurse (bool): if True, no os.walk is done when grabbing tests
-        debug (bool): if True, prints the name of the functions and
-                    file paths from which they were picked up
-        log (bool): if True, logging is enabled,
-        log_echo (bool): if True, log calls are echoed to STDOUT/STDERR
+        test_collection_config (Test): a single `Test` collection
+            config block
+        tests_directory (OneOrList[TestPath]): path to a base
+            directory to scour for tests
+        collector_functions (Dict[TemplateVersion, Collector]):
+            a map of `Collector` functions that are tied
+            to particular versions of the test template
+        trigger (Trigger): `Trigger` master instance
+
     Returns:
-        None
+        A `CollectorArtifact`.
     """
     
     # TODO: generic way of filtering without the need to specify separate filter tags
@@ -86,8 +85,8 @@ def apply_filters(
 
         Args:
             single_test_path (str): path to a test under analysis
-            debug (bool): if True, prints the name of the functions and
-                file paths from which they were picked up
+            trigger (Trigger): `Trigger` instance
+
         Returns:
             None
         """
@@ -150,7 +149,7 @@ def apply_filters(
             # of a filter saying whether the test should run:
             run_this_test = [
                 # TODO: generic way of filtering without the need to specify separate filter tags
-                list_intersection(
+                dict_intersection(
                     _get_filterables(parsed_meta),
                     _get_filterables(test_collection_config)
                 ),

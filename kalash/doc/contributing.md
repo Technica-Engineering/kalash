@@ -24,3 +24,12 @@ Before submitting a pull request you must make sure that the CI pipeline passes 
 **Note: requests to merge directly to `master` will be automatically rejected**.
 
 New releases are prepared periodically by merging a stable `develop` branch into `master`. When the merge happens documentation is built and a new package will be created and published in PyPI. **Individuals merging to `master` should heed to change the version tag in `meta.yaml`**.
+
+## Code quality
+
+Few things to heed:
+
+* **If `flake8` tells you your code is crap, fix it before creating a pull request**. We want this project to have high code quality standards.
+* If you're using type aliases consider adding them in `"config.py"` and documenting them in the `__doc__` attribute. `"config.py"` contains the base data model for Kalash, we want to keep it that way so that it's easy to reason about type dependencies. **Type aliases are recommended** because if whenever you decide you need a different type, you only need to change one line (unless the type is incompatible) 😀
+* **Use type hints**. Seriosusly. Code that takes little care of the types will be rejected right away. We know Python is dynamically typed but we don't like it. It seems like a pain in the neck in the beginning but spend a month with type hints and you'll never go back. It's much easier to catch nasty bugs when you use them.
+* **Create tests**. Generally, small fixes *might* be accepted without tests, usually when we're dealing with something that's blatantly obvious. But you should always prefer to create tests for your changes and test locally before creating a pull request.

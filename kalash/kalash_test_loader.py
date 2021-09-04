@@ -1,16 +1,24 @@
 import os
-from typing import List
+from typing import Callable, List
 import unittest
 
-from .config import Collector, CliConfig, OneOrList, PathOrIdForWhatIf, TestPath, Trigger
+from .config import Collector, CliConfig, CollectorArtifact, OneOrList, PathOrIdForWhatIf, TestPath, Trigger
 
 
-def make_test_loader(trigger: Trigger):
+def make_test_loader(trigger: Trigger) -> Callable[
+    [OneOrList[TestPath],Collector], CollectorArtifact
+]:
+    """Creates a test loader function based on a
+    provided `Trigger` instance.
+
+    Args:
+        trigger (Trigger): `Trigger` instance
+    """
     
     def test_loader(
         paths: OneOrList[TestPath],
         callback: Collector
-    ):
+    ) -> CollectorArtifact:
         """
         Main loader function that iterates over directories and
         grabs tests. If the path leads to a single Python file,
@@ -19,12 +27,13 @@ def make_test_loader(trigger: Trigger):
         potential candidate files containing tests.
 
         Args:
-            path (str): path to test or directory of tests
-            callback (callable): callback that adds tests to suite
+            paths (OneOrList[TestPath]): one or more paths to tests
+                or directories of tests
+            callback (Collector): callback that adds tests to suite
+                based on a test template definition
         
         Returns:
-            unittest.TestSuite() or List[str] with IDs or Test Paths
-            for --what-if
+            A `CollectorArtifact`
         """
 
         def _handle_one_test(

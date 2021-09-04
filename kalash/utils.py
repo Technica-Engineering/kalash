@@ -8,12 +8,12 @@ def get_ts(name='', format="%Y%m%d%H%M%S", sep='-'):
     templates.
 
     Args:
-        name (:obj:`str`): name to add ``"-timestamp"`` to
-        format (:obj:`str`): ``strftime`` format string
+        name (str): name to add `"-timestamp"` to
+        format (str): `strftime` format string
     
     Returns:
-        When called with e.g. ``Something`` at
+        When called with e.g. `"Something"` at
         9 AM 2020.02.14, it will return a string like
-        ``Something-20200214090000``
+        `"Something-20200214090000"`
     """
     return name + sep + datetime.datetime.now().strftime(format)

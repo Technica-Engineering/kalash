@@ -1,3 +1,7 @@
+"""
+Adapted from: https://pypi.org/project/smuggle/ with minor changes
+related to path handling.
+"""
 import inspect
 import os
 import sys

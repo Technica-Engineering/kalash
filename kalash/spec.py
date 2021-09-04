@@ -19,6 +19,16 @@ class BaseSpec:
 
 @dataclass
 class CliConfigSpec(BaseSpec):
+    """
+    `CliConfig` specification.
+
+    Args:
+        whatif_paths (SpecKey): key used to switch on what-if paths callback
+        whatif_ids (SpecKey): key used to switch on what-if IDs callback
+        group_device (SpecKey): what key to group log files by - devices element
+        group_group (SpecKey): what key to group log files by - group element
+        log_formatter (SpecKey): key mapping to the log formatter parameter
+    """
     whatif_paths: SpecKey
     whatif_ids: SpecKey
     group_device: SpecKey
@@ -30,17 +40,18 @@ class CliConfigSpec(BaseSpec):
 class MetaSpec(BaseSpec):
     """
     Metadata section Spec.
-
-    tts - test template start of metadata section
-    tte - test template end of metadata section
-    asc - not used now (will be needed for GUI app)
-    dsc - not used now (will be needed for GUI app)
-    related_usecase - related use case
-    workbench - workbench list
-    template_version - template version
-    devices - device list
-    suites - suite list
-    functionality - functionality list
+    
+    Args:
+        tts (SpecKey): test template start of metadata section
+        tte (SpecKey): test template end of metadata section
+        asc (SpecKey): not used now (will be needed for GUI app)
+        dsc (SpecKey): not used now (will be needed for GUI app)
+        related_usecase (SpecKey): related use case
+        workbench (SpecKey): workbench list
+        template_version (SpecKey): template version
+        devices (SpecKey): device list
+        suites (SpecKey): suite list
+        functionality (SpecKey): functionality list
     """
     tts: SpecKey
     tte: SpecKey
@@ -61,20 +72,21 @@ class TestSpec(BaseSpec):
     that declares at least the `path` or `filter`
     fields.
 
-    tests - tests top-level section key
-    path - path to a folder of tests or a single test
-    usecase - use cases to filter against
-    no_recurse - disable recursive iteration over test directories
-    last_result - filtering by last result
-    devices - devices section (experimental device injection)
-    parameters - parameters (experimental parameters injection)
-    workbench - workbench that the filtered test is supposed to run on
-    id - test ID key
-    interp_cwd - point to the current working directory
-    interp_this_file - points to the current YAML file path
-    ok - value used for a test that passed last time
-    nok - value used for a test that failed or errored out last time
-    non_filters - list of properties that cannot be used like standard filters
+    Args:
+        tests (SpecKey): tests top-level section key
+        path (SpecKey): path to a folder of tests or a single test
+        usecase (SpecKey): use cases to filter against
+        no_recurse (SpecKey): disable recursive iteration over test directories
+        last_result (SpecKey): filtering by last result
+        devices (SpecKey): devices section (experimental device injection)
+        parameters (SpecKey): parameters (experimental parameters injection)
+        workbench (SpecKey): workbench that the filtered test is supposed to run on
+        id (SpecKey): test ID key
+        interp_cwd (SpecKey): point to the current working directory
+        interp_this_file (SpecKey): points to the current YAML file path
+        ok (SpecKey): value used for a test that passed last time
+        nok (SpecKey): value used for a test that failed or errored out last time
+        non_filters (SpecKey): list of properties that cannot be used like standard filters
     """
     tests: SpecKey
     path: SpecKey
@@ -111,10 +123,11 @@ class ConfigSpec(BaseSpec):
     **All elements here will not be attached as part 
     of the general configuration section to the TestCase class**.
 
-    cfg - config section key
-    report - location of the report folder
-    one_time_setup_script - setup script key
-    one_time_teardown_script - teardown script key
+    Args:
+        cfg (SpecKey): config section key
+        report (SpecKey): location of the report folder
+        one_time_setup_script (SpecKey): setup script key
+        one_time_teardown_script (SpecKey): teardown script key
     """
     cfg: SpecKey
     report: SpecKey
@@ -141,7 +154,9 @@ class Spec(BaseSpec):
     should be key:string pairs and converted
     to other types inplace when necessary.
     Please maintain type consistency accross
-    this file.
+    this file. You should always use the `load_spec`
+    classmethod to instantiate `Spec`. The default
+    constructor remains there for true hackers.
     """
 
     cli_config: CliConfigSpec

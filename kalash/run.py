@@ -41,13 +41,17 @@ def find_my_yaml(filevar: str, path: str) -> str:
     """
     Figures out the path to the YAML file relative to a given
     test script, should be used like: 
-    ``YAML = find_my_yaml(__file__, "../yamls/yaml.yaml")``
+    
+    ```python
+    YAML = find_my_yaml(__file__, "../yamls/yaml.yaml")
+    ```
 
     Args:
-        filevar (:obj:``str``): should always be set to ``__file__``
-        path (:obj:``str``): relative path component that points to the YAML
+        filevar (str): should always be set to `__file__`
+        path (str): relative path component that points to the YAML
     
-    Returns: normalized absolute path to the correct YAML file
+    Returns:
+        Normalized absolute path to the correct YAML file
     """
     return os.path.normpath(
         os.path.abspath(
@@ -73,38 +77,21 @@ def prepare_suite(
     kalash_trigger: Trigger
 ) -> Iterator[CollectorArtifact]:
     """
-    Importable run function. Higher-order suite definition function.
+    Higher-order suite definition function.
     As opposed to `Collector`, this function iterates over the
-    YAML config and calls `Collector` on a per-test basis,
-    using a callback system that also performs optional injection
-    of parameters and configuration.
+    YAML config and calls `Collector` on a per-test basis.
 
-    Although `Collector` populates the suite directly,
-    we use callbacks to dispatch the YAML blocks either directly
-    towards the loader or to `apply_filters` function based on
-    the form of the YAML. That's necessary to provide enough
-    flexibility: the tester might want to take the whole repository
-    and filter all tests or set per-directory filters. The call stack
-    can be summarized as follows: `prepare_suite` -> (
-        `apply_filters` OR `test_loader`
-    ) -> (
-        `fill_all_injection_closures` AND `Collector`
-    )
-    **This call stack should not be changed to ensure flexibility
-    of the system is maintained**. Changes to `apply_filters`
-    or `fill_params_and_add_to_suite` are welcome as long
-    as all function signatures stay intact.
+    This function calls `apply_filters`. If no filters are
+    provided the `kalash_test_loader` will be called directly,
+    otherwise the collected tests will be skimmed to match the
+    provided filters.
 
     Args:
-        kalash_trigger (dict): dict returned from YAML parser
-        no_recurse (bool): flag that switches on non-recursive directory search
-        debug (bool): if True, prints the name of the functions and
-            file paths from which they were picked up
-        log (bool): if True, logging is enabled
-        log_echo (bool): if True, log calls are echoed to STDOUT/STDERR
+        kalash_trigger (Trigger): `Trigger` object collecting
+            all configuration elements.
 
     Yields:
-        unittest.TestSuite, List[str] of identifiers
+        One or more `CollectArtifact` elements.
     """
 
     for test_idx, test_conf in enumerate(kalash_trigger.tests):
@@ -138,15 +125,17 @@ class MetaLoader(TestLoader):
         local=True
     ):
         """
-        Custom `TestLoader` for `kalash`. This provides consistency
+        Custom `TestLoader` for Kalash. This provides consistency
         between running local and remote tests.
 
         Args:
             yaml_path (str): for backwards compatibility with Kalash YAML files,
                 set instantly to the `config_file_path` value
-            local (bool): if True, run only this test even when YAML
-                is provided when in local context
-            config (`CliConfig`): configuration object
+            trigger (Optional[Trigger]): `Trigger` instance providing the
+                entire configuration model or `None` if the test is run
+                in a local context
+            local (bool): if True, run only this test even when `Trigger`
+                or `yaml_path` is provided when in local context
         """
         if yaml_path and not trigger:
             self._kalash_trigger = Trigger()
@@ -174,6 +163,7 @@ class MetaLoader(TestLoader):
             return self._kalash_trigger
 
     def loadTestsFromKalashYaml(self) -> CollectorArtifact:
+        """Loads tests from associated YAML or `Trigger`"""
         whatif_names: PathOrIdForWhatIf = []
         for a in prepare_suite(
             self.trigger
@@ -187,7 +177,7 @@ class MetaLoader(TestLoader):
 
         def tests_generator(suite: unittest.TestSuite):
             """ 
-            Recursive test generator from unittest.TestSuite
+            Recursive test generator for unittest.TestSuite
             (because a suite can contain other suites recursively).
 
             Args:
@@ -253,28 +243,44 @@ class MetaLoader(TestLoader):
                 smuggle(p)
     
     def one_time_setup(self):
+        """Runs One-time-setup script"""
         self._smuggle_fixture_module(True)
 
     def one_time_teardown(self):
+        """Runs One-time-teardown script"""
         self._smuggle_fixture_module(False)
 
 
+# -----------------------------------------------------------------
+
 main = TestProgram
-"""
-Exporting `unittest` components required in tests from `kalash`
-results in testers not needing to touch unittest itself.
-"""
+
+# Exporting `unittest` components required in tests from `kalash`
+# results in testers not needing to touch unittest itself.
+# -----------------------------------------------------------------
 
 
 def run_test_suite(
     loader: MetaLoader,
     kalash_trigger: Trigger,
     whatif_callback: Callable[[str], None] = print
-):
-    """Accepts a loader and Kalash YAML Object
+) -> Tuple[Optional[unittest.TextTestResult], int]:
+    """Accepts a loader and a `Trigger` object
     and triggers the test run.
+
+    Args:
+        loader (MetaLoader): `MetaLoader` instance extending
+            `unittest.TestLoader` with extra goodies
+        kalash_trigger (Trigger): `Trigger` instance which
+            directly translates to a YAML configuration file
+            or an equivalent Python file
+        whatif_callback (Callable[[str], None]): the function
+            to call when running in a what-if mode
+
     Returns:
-        (unittest Result object, return code)
+        A tuple of (unittest Result object, return code) or
+            a tuple of (`None`, return code) when running
+            in the what-if mode
     """
     suite, whatif_names = loader.loadTestsFromKalashYaml()
 
@@ -285,7 +291,7 @@ def run_test_suite(
         report = "."
         if kalash_trigger.config:
             report = kalash_trigger.config.report
-        result = xmlrunner.XMLTestRunner(
+        result: unittest.TextTestResult = xmlrunner.XMLTestRunner(
             output=report,
             failfast=kalash_trigger.cli_config.fail_fast
         ).run(suite)
@@ -309,11 +315,21 @@ def run_test_suite(
 
 def run(
     kalash_trigger: Trigger,
-    config: Optional[CliConfig] = None,
     whatif_callback: Callable[[str], None] = print
-):
+) -> int:
     """User-friendly alias of the `run_test_suite` command
     for importable use in Python-based files.
+
+    Args:
+        kalash_trigger (Trigger): `Trigger` instance which
+            directly translates to a YAML configuration file
+            or an equivalent Python file
+        whatif_callback (Callable[[str], None]): the function
+            to call when running in a what-if mode
+    
+    Returns:
+        Return code, 0 if all collected tests are passing.
+            A non-zero return code indicates failure.
     """
     frame = inspect.stack()[1]
     module = inspect.getmodule(frame[0])
@@ -334,11 +350,19 @@ def run(
 
 def make_loader_and_trigger_object(
     config: CliConfig
-):
+) -> Tuple[MetaLoader, Trigger]:
     """Prepares a ``MetaLoader`` based
     on the YAML file parameters.
+    
+    Args:
+        cli_config (CliConfig): a `CliConfig` object representing
+            command-line parameters used to trigger the test run
+            modifying behavior of certain aspects of the application
+            like logging or triggering speculative runs instead of
+            real runs
+    
     Returns:
-        (MetaLoader instance, Kalash YAML Object)
+        A tuple of (`MetaLoader` instance, `Trigger` instance)
     """
     kalash_trigger = Trigger.infer_trigger(config)
     if config.file:

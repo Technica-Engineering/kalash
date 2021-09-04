@@ -1,8 +1,16 @@
 # Basic Usage
 
+## Before installation
+
+We require **Python 3.7 or higher version** to be installed on your system before Kalash can be installed.
+
+Describing how to get Python working is out of the scope of our documentation.
+
 ## Installation
 
 Simply run `pip install kalash`.
+
+Note: for this to work `pip` needs to be in your `PATH`.
 
 ## Why use Kalash
 

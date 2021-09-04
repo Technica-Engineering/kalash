@@ -7,6 +7,39 @@ from .log import get, close
 
 
 class TestCase(unittest.TestCase):
+    """
+    Lightweight `unittest.TestCase` wrapper.
+
+    When declaring your own tests you're supposed to
+    inherit from this class and treat it pretty much
+    the same as a good old-fashioned `unittest.TestCase`.
+
+    For example:
+
+    ```python
+    \"\"\"
+    META_START
+    id: test_something_12345
+    META_END
+    \"\"\"
+    
+    from kalash.run import main, TestCase, MetaLoader
+
+
+    class TestSomething(TestCase):
+        test_something(self):
+            self.assertTrue(True)
+    
+
+    if __name__ == '__main__'
+        main(testLoader=MetaLoader())
+    ```
+    
+    Args:
+        methodName (str): test method
+        id (str): test ID from the metadata tag
+        trigger (Trigger): `Trigger` instance 
+    """
 
     def __init__(
         self,
@@ -14,13 +47,6 @@ class TestCase(unittest.TestCase):
         id: str,
         trigger: Optional[Trigger]
     ) -> None:
-        """
-        Lightweight `unittest.TestCase` wrapper.
-        Args:
-            `methodName` (`str`): test method
-            `id` (`str`): test ID from the metadata tag
-            `trigger` (`Trigger`): Trigger instance 
-        """
         super().__init__(methodName=methodName)
         cli_config = trigger.cli_config if trigger else CliConfig()
         self._id = id

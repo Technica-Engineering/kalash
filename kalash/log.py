@@ -38,7 +38,14 @@ def _make_log_tree_from_id(
     can be used to group by.
     
     Args:
-        
+        id (str): test ID from the metadata tag
+        class_name (str): test class name
+        groupby (Optional[str]): what property to group log
+            directories by
+    
+    Returns:
+        A `str` path to the target directory where logs will
+            be stored.
     """
     # LATER: improved grouping based on arbitrary keys from the meta tag
     dir_name = id + '_' + class_name
@@ -52,6 +59,10 @@ def _make_trunk(
     log_name: PathType,
     log_base_path: Optional[PathType]=None
 ):
+    """Creates a trunk directory structure
+    for the logs if it does not exist, returns
+    the path to a concrete log file.
+    """
     if log_base_path:
         log_path = os.path.join(
             log_base_path,
@@ -77,6 +88,7 @@ def _make_tree(
     log_base_path: Optional[PathType]=None,
     groupby: str=None
 ):
+    """Combines `_make_trunk_` with `_make_log_tree_from_id`."""
     return _make_trunk(
         _make_log_tree_from_id(id, class_name, groupby=groupby),
         log_base_path
@@ -89,7 +101,9 @@ def _register_logger(
     log_level: int,
     log_format: logging.Formatter
 ) -> Optional[logging.Logger]:
-
+    """
+    Creates and registers logger instances.
+    """
     logger = logging.getLogger(logger_name)
     logger.setLevel(log_level)
 
@@ -109,6 +123,27 @@ def register_logger(
     log_file_path: str,
     config: CliConfig
 ) -> Optional[logging.Logger]:
+    """
+    Creates and registers logger instances.
+    Declares default path handlers and if `no_log_echo`
+    is `False` (default) a STDOUT handler will be added
+    so all log calls will be echoed to the calling console.
+
+    Args:
+        logger_name (str): class name that becomes the unique
+            name of the logger. If you have two classes with
+            the same name, then the same logger will be used
+        log_file_path (str): path to the associated log file
+            where logger calls will be written
+        config (CliConfig): a `CliConfig` instance representing
+            the configuration that the application user
+            provided via the CLI
+    
+    Return:
+        `logging.Logger` instance if a new logger instance
+            has been created. `None` if the logger instance
+            already existed for this particular `logger_name`
+    """
     handlers = [f(log_file_path) for f in HANDLERS]
     if not config.no_log_echo:
         # extend with a console handler piping to STDOUT
@@ -127,6 +162,19 @@ def get(
     class_name: str,
     config: CliConfig
 ) -> logging.Logger:
+    """Creates or returns an existing `logging.Logger` instance
+    associated with a particular `class_name`.
+    
+    Args:
+        id (str): unique ID of the test
+        class_name (str): name of the test class
+        config (CliConfig): a `CliConfig` instance representing
+            the configuration that the application user
+            provided via the CLI
+    
+    Returns:
+        Associated `logging.Logger` instance
+    """
     path = _make_tree(id, class_name, config.log_dir, config.group_by)
 
     l = _get_logger_from_state(class_name)
@@ -142,6 +190,17 @@ def get(
 
 
 def close(logger: Union[str, logging.Logger]):
+    """
+    Closes open file handles used by an associated `logger`,
+    removes the handlers and removes loggers from
+    the managed set.
+
+    Args:
+        logger (logging.Logger): the `logging.Logger` instance
+            to close
+    
+    Returns: `None`
+    """
     if type(logger) is str:
         l = _get_logger_from_state(logger)
     elif type(logger) is logging.Logger:
@@ -163,4 +222,9 @@ def close(logger: Union[str, logging.Logger]):
 
 
 def close_all():
+    """
+    Forces all loggers to perform a managed `shutdown`.
+    Should always be called by the method/function
+    running the Kalash tests.
+    """
     logging.shutdown()

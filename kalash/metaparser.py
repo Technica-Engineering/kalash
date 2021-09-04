@@ -11,19 +11,21 @@ from functools import reduce
 
 from itertools import chain
 
-from .config import ArbitraryYamlObj, CliConfig, Spec, TestModule, TestPath
+from .config import ArbitraryYamlObj, CliConfig, OneOrList, Spec, TestModule, TestPath
 
 
-def iterable_or_scalar(item):
+def iterable_or_scalar(item: OneOrList[Any]):
     """
     Simple helper function that wraps scalars into
     a list.
     
     Args:
-        item (iterable or scalar)
+        item (OneOrList[Any]): an item that can be
+            either a singular value (scalar) or an
+            iterator
     
     Returns:
-        item or [item] if item is a scalar
+        `item` or `[item]` if item is a scalar
     """
     if item:  # make sure None is not included
         # selected values can be either scalars or arrays:
@@ -32,6 +34,7 @@ def iterable_or_scalar(item):
         else:
             # just wrap in a list if it's not iterable
             return [item]
+
 
 def __trim_yaml(yaml_meta_section: str, cli_config: CliConfig):
     # since we allow additional comments in the original meta docstring
@@ -54,6 +57,7 @@ def extract_meta_from_test_script_ast(
     
     Args:
         test_script (str): script path
+        cli_config (CliConfig): `CliConfig` instance
     
     Returns:
         Trimmed YAML section as string (parsable by `pyyaml`)
@@ -95,6 +99,16 @@ def extract_meta_from_test_script_ast(
 
 
 def extract_meta_from_test_module(test: TestModule, cli_config: CliConfig):
+    """Extracts YAML metadata tag as string from
+    a given `TestModule` instance.
+    
+    Args:
+        test (TestModule): test module
+        cli_config (CliConfig): `CliConfig` instance
+    
+    Returns:
+        Trimmed YAML section as string (parsable by `pyyaml`)
+    """
     if hasattr(test, '__doc__') and test.__doc__:
         yaml_meta_section = __trim_yaml(test.__doc__, cli_config)
         if yaml_meta_section:
@@ -106,6 +120,19 @@ def parse_metadata_section(
     test_script: Union[TestPath, TestModule],
     cli_config: CliConfig
 ) -> Dict[str, Any]:
+    """Extracts YAML metadata tag from
+    a given test path or module and
+    reworks it into a dictionary.
+    
+    Args:
+        test_script (Union[TestPath, TestModule]): script path
+            or test module
+        cli_config (CliConfig): `CliConfig` instance
+    
+    Returns:
+        A dictionary corresponding to the original YAML
+            metadata tag.
+    """
     if type(test_script) is TestPath:
         try:
             trimmed_yaml = extract_meta_from_test_script_ast(test_script, cli_config)
@@ -129,16 +156,17 @@ def parse_metadata_section(
 
 def match_id(test_id: Optional[str], patterns: Optional[Union[str, List[str]]]) -> bool:
     """
-    Function analogous to list intersection function in apply_filters.
-    It checks the explicit name IDs coming from the main YAML file
-    (or RegEx patterns) against a given test ID.
+    Checks the explicit name IDs (or RegEx patterns) coming
+    from the main YAML/Python configuration file
+    against a given test ID.
 
     Args:
-        test_id (str): a valid ID mathching the regexp defined in SPOM
-        patterns: single pattern or a list of patterns to match against
+        test_id (str): a test ID
+        patterns: single RegEx pattern or a list
+            of patterns to match against
     
     Returns:
-        True if any of the patterns matched the query ID
+        `True` if any of the patterns matched the query ID
     """
     if not test_id:
         # if the ID is `None` ignore filtering
