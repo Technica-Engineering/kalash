@@ -3,25 +3,25 @@ Adapted from: https://pypi.org/project/smuggle/ with minor changes
 related to path handling.
 """
 import inspect
+from kalash.config import AuxiliaryPath, TestPath
 import os
 import sys
 import importlib.util
-from typing import Optional
+from types import ModuleType
+from typing import List, Optional, Union
 
 
-def smuggle(*args, **kwargs):
+def smuggle(module_file: Union[TestPath, AuxiliaryPath]) -> ModuleType:
     """
-    Returns the provided soure file as a module.
+    Loads an arbitrary Python file as a module.
 
-    Usage:
-
-        weapons = smuggle('weapons.py')
-        drugs, alcohol = smuggle('drugs', 'alcohol', source='contraband.py')
+    Args:
+        module_file (Union[TestPath, AuxiliaryPath]): path to
+            the file containing the module to be loaded
+    
+    Returns:
+        `ModuleType`
     """
-    source = kwargs.pop('source', None)
-
-    # Be careful when moving the contents of this
-    module_file: Optional[str] = args[0] if len(args) == 1 else source
 
     if module_file:
         module_name = os.path.splitext(os.path.basename(module_file))[0]
@@ -42,12 +42,6 @@ def smuggle(*args, **kwargs):
                 exec_module = getattr(spec.loader, 'exec_module')
                 exec_module(module)
 
-            if len(args) == 1:
-                return module
+            return module
 
-            # Can't use a comprehension here since module wouldn't be in the
-            # comprehensions scope for the eval
-            returns = []
-            for arg in args:
-                returns.append(eval('module.{}'.format(arg)))
-            return returns
+    raise NameError("Module could not be loaded! Check if the path is correct")
