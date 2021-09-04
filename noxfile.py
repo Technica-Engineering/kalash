@@ -21,6 +21,7 @@ class Tasks:
     coverage = lambda posargs: f'coverage {posargs}'
     build_wheel = 'python -m setup bdist_wheel'
     send = r'twine upload dist/*.whl'
+    docs = 'pdoc --html kalash --force'
 
 
 @nox.session()
@@ -47,6 +48,16 @@ def cov_report(session: nox.Session):
         'coverage'
     )
     session.run(*split_cmd(Tasks.coverage('xml')), '-i')
+
+
+@nox.session()
+def docs(session: nox.Session):
+    """Build HTML documentation."""
+    session.install('pdoc3', '.')
+    cwd = os.getcwd()
+    session.chdir('kalash/built_docs')
+    session.run(*split_cmd(Tasks.docs))
+    session.chdir(cwd)
 
 
 @nox.session()

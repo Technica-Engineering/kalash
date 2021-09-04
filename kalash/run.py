@@ -3,6 +3,7 @@ import argparse
 import xmlrunner
 import os.path
 import inspect
+import webbrowser
 
 from unittest import TextTestRunner, TestLoader
 from unittest import TestResult
@@ -373,6 +374,14 @@ def make_loader_and_trigger_object(
     return loader, kalash_trigger
 
 
+def docs():
+    """Open bundled documentation in the web browser."""
+    base_dir = os.path.dirname(__file__)
+    rel_docpath = ['built_docs', 'html', 'kalash', 'index.html']
+    docpath = os.path.join(base_dir, *rel_docpath)
+    webbrowser.open(f"file:\\\\\\{os.path.join(docpath)}", new=2)
+
+
 def main_cli():
     """
     Main function. Expected to be run from CLI and used
@@ -433,7 +442,14 @@ def main_cli():
                        f'{config.spec.cli_config.whatif_ids}> '
                        'to modify the output behavior of the what-if flag.'
     )
+    parser.add_argument(
+        '-dd', '--docs',
+        action='store_true', help='Display bundled documentation')
     args = parser.parse_args()
+
+    if args.docs:
+        docs()
+        return 0
 
     if args.file:
         config.file = args.file

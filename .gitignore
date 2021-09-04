@@ -13,3 +13,7 @@ build
 results.txt
 htmlcov
 .coverage
+
+# Docs
+html
+**/built_docs

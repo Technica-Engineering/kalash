@@ -3,20 +3,18 @@ Adapted from: https://pypi.org/project/smuggle/ with minor changes
 related to path handling.
 """
 import inspect
-from kalash.config import AuxiliaryPath, TestPath
 import os
 import sys
 import importlib.util
 from types import ModuleType
-from typing import Union
 
 
-def smuggle(module_file: Union[TestPath, AuxiliaryPath]) -> ModuleType:
+def smuggle(module_file: str) -> ModuleType:
     """
     Loads an arbitrary Python file as a module.
 
     Args:
-        module_file (Union[TestPath, AuxiliaryPath]): path to
+        module_file (str): path to
             the file containing the module to be loaded
 
     Returns:

@@ -32,7 +32,7 @@ Kalash has grown out to include a number of amazing features:
 
 Kalash is originally intended for an automation system defined as:
 
-<img src="../../res/kalash_flow.svg" alt="logo"/>
+<img src="../../../res/kalash_flow.svg" alt="logo"/>
 
 What do you need to do to use it for test automation?
 
