@@ -8,7 +8,7 @@ import os
 import sys
 import importlib.util
 from types import ModuleType
-from typing import List, Optional, Union
+from typing import Union
 
 
 def smuggle(module_file: Union[TestPath, AuxiliaryPath]) -> ModuleType:
@@ -18,7 +18,7 @@ def smuggle(module_file: Union[TestPath, AuxiliaryPath]) -> ModuleType:
     Args:
         module_file (Union[TestPath, AuxiliaryPath]): path to
             the file containing the module to be loaded
-    
+
     Returns:
         `ModuleType`
     """
