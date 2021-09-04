@@ -20,7 +20,7 @@ This will install the latest stable version of Kalash. Of course having Python a
 
 Please refer to the [documentation](./kalash/doc/basic_usage.md) within this repository.
 
-For full code documentation please go [here]().
+For full code documentation please go [here]() or run `kalash --docs` - this should display a web browser window with the contents of the documentation bundled within the Python package.
 
 ## Credits
 
