@@ -60,7 +60,7 @@ def _copy_and_sanitize_paths_for_pdoc3(doc_source_path, target_path):
     else:
         shutil.rmtree(target_path)
         shutil.copytree(doc_source_path, target_path)
-    
+
     for root, dirs, files in os.walk(target_path):
         for file in files:
             if file.endswith('.md'):

@@ -380,7 +380,7 @@ def docs():
     base_dir = os.path.dirname(__file__)
     rel_docpath = ['built_docs', 'html', 'kalash', 'index.html']
     docpath = os.path.join(base_dir, *rel_docpath)
-    _platform = platform.system() 
+    _platform = platform.system()
     if _platform == "Darwin" or "Linux":
         url = f"file://{os.path.join(docpath)}"
     elif _platform == "Windows":
