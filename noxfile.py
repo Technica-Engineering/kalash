@@ -1,6 +1,7 @@
 import nox
 import sys
 import os
+import shutil
 
 sys.path.append(os.path.dirname(__file__))
 
@@ -78,3 +79,19 @@ def send(session: nox.Session):
         'twine'
     )
     session.run(*split_cmd(Tasks.send))
+
+
+@nox.session()
+def clean(session: nox.Session):
+    """Remove potentially lingering files"""
+    to_delete = [
+        ".coverage",
+        "kalash_reports"
+    ]
+    for p in to_delete:
+        if os.path.exists(p):
+            if os.path.isdir(p):
+                shutil.rmtree(p)
+            else:
+                os.remove(p)
+
