@@ -3,6 +3,8 @@ import sys
 import os
 import shutil
 
+from pathlib import Path
+
 sys.path.append(os.path.dirname(__file__))
 
 
@@ -54,11 +56,15 @@ def cov_report(session: nox.Session):
 @nox.session()
 def docs(session: nox.Session):
     """Build HTML documentation."""
+    built_docs_dir = 'kalash/built_docs'
+    if not os.path.exists(built_docs_dir):
+        os.makedirs(built_docs_dir)
     session.install('pdoc3', '.')
     cwd = os.getcwd()
-    session.chdir('kalash/built_docs')
+    session.chdir(built_docs_dir)
     session.run(*split_cmd(Tasks.docs))
     session.chdir(cwd)
+    shutil.copytree('kalash/res', Path(built_docs_dir) / 'html' / 'res')
 
 
 @nox.session()
