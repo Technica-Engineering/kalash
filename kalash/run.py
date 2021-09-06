@@ -2,6 +2,7 @@ import unittest
 import argparse
 import xmlrunner
 import os.path
+import platform
 import inspect
 import webbrowser
 
@@ -379,7 +380,14 @@ def docs():
     base_dir = os.path.dirname(__file__)
     rel_docpath = ['built_docs', 'html', 'kalash', 'index.html']
     docpath = os.path.join(base_dir, *rel_docpath)
-    webbrowser.open(f"file:\\\\\\{os.path.join(docpath)}", new=2)
+    _platform = platform.system() 
+    if _platform == "Darwin" or "Linux":
+        url = f"file://{os.path.join(docpath)}"
+    elif _platform == "Windows":
+        url = f"file:\\\\\\{os.path.join(docpath)}"
+    else:
+        raise SystemError("Web browser handler for this platform is not supported")
+    webbrowser.open(url, new=2)
 
 
 def main_cli():
