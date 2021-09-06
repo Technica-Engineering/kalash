@@ -12,15 +12,21 @@ Kalash decouples the work of a QA Engineer from the need to manage automation se
 
 ## Installation
 
-Run `pip install kalash`.
+Run `pip install kalash` command.
 
 This will install the latest stable version of Kalash. Of course having Python and `pip` working is a prerequisite.
+
+Alternatively you can install this package in development mode after cloning with `pip install -e '[docs]'` command.
 
 ## Usage
 
 Please refer to the [documentation](./kalash/doc/basic_usage.md) within this repository.
 
 For full code documentation please go [here]() or run `kalash --docs` - this should display a web browser window with the contents of the documentation bundled within the Python package.
+
+## Contributing
+
+Please read carefully our [Contribution guidelines](./kalash/doc/contributing.md) before contributing to this project.
 
 ## Credits
 
