@@ -1,14 +1,14 @@
 """
-.. include:: ./doc/header.md
+.. include:: ./pdoc/header.md
 
-.. include:: ./doc/features.md
-.. include:: ./doc/basic_usage.md
-.. include:: ./doc/automation_servers.md
-.. include:: ./doc/yaml_spec.md
-.. include:: ./doc/python_spec.md
-.. include:: ./doc/advanced_config.md
-.. include:: ./doc/contributing.md
-.. include:: ./doc/trailer.md
+.. include:: ./pdoc/features.md
+.. include:: ./pdoc/basic_usage.md
+.. include:: ./pdoc/automation_servers.md
+.. include:: ./pdoc/yaml_spec.md
+.. include:: ./pdoc/python_spec.md
+.. include:: ./pdoc/advanced_config.md
+.. include:: ./pdoc/contributing.md
+.. include:: ./pdoc/trailer.md
 """
 
 __version__ = "4.0.0"
