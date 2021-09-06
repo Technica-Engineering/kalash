@@ -96,7 +96,7 @@ if __name__ == '__main__':
 
 ```
 
-The name `trigger` comes from the name of the class used in [Python configuration files](python_spec.md).
+The name `trigger` comes from the name of the class used in [Python configuration files](python_spec.md#python-config-file-specification).
 
 ## Hypothetical runs
 

@@ -45,7 +45,7 @@ What do you need to do to use it for test automation?
 A suite is defined by a singular configuration file. The file may be:
 
 * `.py` file - should contain exactly one `kalash.config.Trigger` instance
-* `.yaml` file - should follow a specification described in [yaml specification][YAML Spec]
+* `.yaml` file - should follow a specification described in [yaml specification](yaml_spec.md#yaml-config-file-specification)
 
 Kalash will collect only test cases following a rigid template.
 
@@ -122,7 +122,7 @@ To trigger a particular test suite you may run `kalash -f ./path/to/config.py` a
 
 [Reports]: #reports
 
-By default test reports will be written to the current working directory, unless overridden by the `report` key in the `config` section (see: [yaml specification][YAML Spec]).
+By default test reports will be written to the current working directory, unless overridden by the `report` key in the `config` section (see: [yaml specification](yaml_spec.md#yaml-config-file-specification)).
 
 The reports produced by Kalash are standard XML XUnit reports that can be parsed and displayed by a treasure trove of open-source applications.
 

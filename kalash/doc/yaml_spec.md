@@ -47,7 +47,7 @@ The configuration file is split into two components: `tests` and `config`.
 
 ## Advanced features
 
-Read [advanced configuration options][Interpolate WorkDir ThisFile] to learn more about the more advanced configuration options using the YAML file.
+Read [advanced configuration options](advanced_config.md#base-directory-resolution-in-config-files) to learn more about the more advanced configuration options using the YAML file.
 
 ## Example YAML (complex)
 
