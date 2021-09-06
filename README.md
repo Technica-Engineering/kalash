@@ -16,7 +16,7 @@ Run `pip install kalash` command.
 
 This will install the latest stable version of Kalash. Of course having Python and `pip` working is a prerequisite.
 
-Alternatively you can install this package in development mode after cloning with `pip install -e '[docs]'` command.
+Alternatively you can install this package in development mode after cloning with `pip install -e '.[dev]'` command.
 
 ## Usage
 
@@ -26,7 +26,7 @@ For full code documentation please go [here]() or run `kalash --docs` - this sho
 
 ## Contributing
 
-Please read carefully our [Contribution guidelines](./kalash/doc/contributing.md) before contributing to this project.
+Please read carefully our [contribution guidelines](./kalash/doc/contributing.md) before contributing to this project.
 
 ## Credits
 
