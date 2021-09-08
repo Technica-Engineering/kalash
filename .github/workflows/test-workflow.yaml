@@ -1,10 +1,10 @@
 name: Basic Workflow
 on:
   push:
-    branches:    
+    branches:
       - develop
       - master
-  pull-request:
+  pull_request:
     branches:
       - develop
       - master

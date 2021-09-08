@@ -21,6 +21,5 @@ jobs:
       - name: Archive package
         uses: actions/upload-artifact@v2
         with:
-          name: 
           path: |
             dist/*.whl
