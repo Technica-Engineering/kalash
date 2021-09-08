@@ -9,7 +9,7 @@ on:
       - develop
       - master
 jobs:
-  Basic-Job:
+  Test-Job:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
