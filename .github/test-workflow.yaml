@@ -1,0 +1,33 @@
+name: Basic Workflow
+on:
+  push:
+    branches:    
+      - develop
+      - master
+  pull-request:
+    branches:
+      - develop
+      - master
+jobs:
+  Basic-Job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.7'
+          architecture: x64
+      - name: Install Python dependencies
+        run: |
+          pip install nox
+      - name: Run tests
+        run: |
+          nox -e test
+          nox -e cov_report
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v2
+        with:
+          name: code-coverage-report
+          path: htmlcov/**

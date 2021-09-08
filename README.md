@@ -1,5 +1,7 @@
 <img src="kalash/res/kalash2.svg" alt="logo" width="50" style="display: block;margin-left: auto;margin-right: auto;"/>
 
+![Test Workflow](https://github.com/Technica-Engineering/kalash/actions/workflows/test-workflow.yaml/badge.svg)
+
 # Kalash
 
 Kalash is a simple test runner built for large-scale test automation which relies on a simple YAML-based configuration or Python file configuration.

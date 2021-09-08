@@ -1,0 +1,26 @@
+name: Deploy Package
+on:
+  release:
+    types: [published]
+jobs:
+  Deploy-Package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.7'
+          architecture: x64
+      - name: Install Python dependencies
+        run: |
+          pip install nox
+      - name: Deploy new release
+        run: |
+          nox -e whl
+          nox -e send
+      - name: Archive package
+        uses: actions/upload-artifact@v2
+        with:
+          name: 
+          path: |
+            dist/*.whl
