@@ -30,4 +30,10 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: code-coverage-report
-          path: htmlcov/**
+          path: |
+            coverage.xml
+      - uses: codecov/codecov-action@v2
+        with:
+          files: ./coverage.xml
+          fail_ci_if_error: true
+          verbose: true
