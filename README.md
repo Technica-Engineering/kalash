@@ -2,6 +2,8 @@
 
 ![Test Workflow](https://github.com/Technica-Engineering/kalash/actions/workflows/test-workflow.yaml/badge.svg)
 
+[![codecov](https://codecov.io/gh/Technica-Engineering/kalash/branch/master/graph/badge.svg?token=D6KS2QVG6D)](https://codecov.io/gh/Technica-Engineering/kalash)
+
 # Kalash
 
 Kalash is a simple test runner built for large-scale test automation which relies on a simple YAML-based configuration or Python file configuration.
