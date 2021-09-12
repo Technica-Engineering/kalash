@@ -59,9 +59,9 @@ class TestKalash(TestCase):
     def test_logging(self):
         result, return_code = run_test_suite(*make_loader_and_trigger_object(CliConfig(
             "./tests/test_yamls/test_logging.yaml",
-            "logs", "device",
+            "logs", "devices",
             False, self._debug, False, False, fail_fast=True)))
-        self.assertEqual(len(glob.glob('logs/**/*.log')), 2)
+        self.assertEqual(len(glob.glob('logs/**/**/*.log')), 2)
 
     def _whatif_helper(self, subdirs: List[str] = []):
         test_scripts_dir = os.path.join(

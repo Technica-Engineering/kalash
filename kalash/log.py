@@ -4,7 +4,7 @@ import logging
 from typing import List, Optional, Set, Union, Callable
 
 from .utils import get_ts
-from .config import CliConfig
+from .config import CliConfig, Meta, OneOrList
 
 PathType = Union[os.PathLike, str]
 
@@ -29,6 +29,7 @@ def _create_tree_if_not_exists(path: PathType) -> None:
 def _make_log_tree_from_id(
     id: str,
     class_name: str,
+    meta: Meta,
     groupby: Optional[str] = None
 ):
     """Creates log tree structure representation based on the
@@ -46,12 +47,23 @@ def _make_log_tree_from_id(
         A `str` path to the target directory where logs will
             be stored.
     """
-    # LATER: improved grouping based on arbitrary keys from the meta tag
     dir_name = id + '_' + class_name
-    # PRODTEST_1234_test_something_TestSomething_0_cancombo
     log_name = get_ts(sep='') + '_' + dir_name
-    # 00000000_PRODTEST_1234_test_something_TestSomething_0_cancombo
-    return os.path.join(dir_name, log_name)
+    full_path = ""
+    if groupby:
+        _group_dir_name: OneOrList[str] = getattr(meta, groupby)
+        group_dir_name: Optional[str] = ""
+        if type(_group_dir_name) is list:
+            group_dir_name = "_".join(_group_dir_name)
+        elif type(_group_dir_name) is str:
+            group_dir_name = _group_dir_name
+        else:
+            group_dir_name = None
+        group_dir_name = group_dir_name if group_dir_name else "unknown_group"
+        full_path = os.path.join(dir_name, group_dir_name, log_name)
+    else:
+        full_path = os.path.join(dir_name, log_name)
+    return full_path
 
 
 def _make_trunk(
@@ -84,12 +96,13 @@ def _make_trunk(
 def _make_tree(
     id: str,
     class_name: str,
+    meta: Meta,
     log_base_path: Optional[PathType] = None,
     groupby: str = None
 ):
     """Combines `_make_trunk_` with `_make_log_tree_from_id`."""
     return _make_trunk(
-        _make_log_tree_from_id(id, class_name, groupby=groupby),
+        _make_log_tree_from_id(id, class_name, meta, groupby=groupby),
         log_base_path
     )
 
@@ -159,6 +172,7 @@ def register_logger(
 def get(
     id: str,
     class_name: str,
+    meta: Meta,
     config: CliConfig
 ) -> logging.Logger:
     """Creates or returns an existing `logging.Logger` instance
@@ -174,7 +188,7 @@ def get(
     Returns:
         Associated `logging.Logger` instance
     """
-    path = _make_tree(id, class_name, config.log_dir, config.group_by)
+    path = _make_tree(id, class_name, meta, config.log_dir, config.group_by)
 
     l = _get_logger_from_state(class_name)  # noqa: E741
 
