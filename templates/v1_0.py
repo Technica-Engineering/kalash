@@ -2,7 +2,7 @@
 META_START
 ---
 id: 999999002_99-Blah_9-Whatever              # ID of the test
-relatedUseCases:                              # JIRA ticket names
+use_cases:                              # JIRA ticket names
   - FearFactory                               # Example JIRA ticket name
 workbenches:                                  # Workbench where the test is meant to be run
   - Gojira                                    # Example workbench

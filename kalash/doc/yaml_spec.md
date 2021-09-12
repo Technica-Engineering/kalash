@@ -12,7 +12,7 @@ A conventional metadata tag in a test template looks like this:
 META_START
 ---
 id: 000000003_12_0_1234-SomethingElse 
-relatedUseCases:
+use_cases:
   - Some Jira ticket
 workbenches:
   - BloodhoundGang

@@ -2,7 +2,7 @@
 META_START
 ---
 id: X-DEV.Y-GROUP-Z-TEST
-relatedUseCases:
+use_cases:
   - PRODTEST-YYYY
 workbenches:
   - ZZZZ

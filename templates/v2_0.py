@@ -4,7 +4,7 @@ META_START
 ---
 version: 2.0                                  # Version of the test template
 id: 001111111_12_0_1234-NextGenTestCase       # ID of the test
-relatedUseCases:                              # JIRA codes of the related use cases
+use_cases:                              # JIRA codes of the related use cases
   - PRODTEST-2787                             # Example JIRA code
 workbenches:                                  # Workbench where the test is meant to be run
   - BloodhoundGang                            # Example workbench

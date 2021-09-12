@@ -7,9 +7,9 @@ cli_config:
 test:
   tests: "tests"
   path: "path"
-  usecase: "useCase"
-  no_recurse: "noRecurse"
-  last_result: "lastResult"
+  usecase: "use_case"
+  no_recurse: "no_recurse"
+  last_result: "last_result"
   devices: "devices"
   workbench: "workbench"
   id: "id"
@@ -22,7 +22,6 @@ test:
   ok: 'OK'
   nok: 'NOK'
 config:
-  # TODO: this one is wrong
   cfg: 'config'
   report: 'report'
   one_time_setup_script: 'setup'
@@ -33,7 +32,7 @@ meta:
   tte: "META_END\n"
   asc: "ASC"
   dsc: "DSC"
-  related_usecase: "relatedUseCases"
+  related_usecase: "use_cases"
   workbench: "workbenches"
   template_version: "version"
   devices: "devices"

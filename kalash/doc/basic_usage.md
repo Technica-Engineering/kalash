@@ -88,7 +88,7 @@ A more built-out example would be:
 META_START
 ---
 id: 999999002_99-Blah_9-Whatever              # ID of the test
-relatedUseCases:                              # JIRA ticket names of the related use cases
+use_cases:                              # JIRA ticket names of the related use cases
   - FearFactory                               # Example JIRA ticket name
 workbenches:                                  # Workbench where the test is meant to be run
   - Gojira                                    # Example workbench

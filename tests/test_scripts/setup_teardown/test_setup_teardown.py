@@ -2,7 +2,7 @@
 META_START
 ---
 id: 000000678_12_0_1234-SomethingElse         # ID of the test
-relatedUseCases:                              # JIRA codes of the related use cases
+use_cases:                              # JIRA codes of the related use cases
   - PRODTEST-2787                             # Example JIRA code
 workbenches:                                  # Workbench where the test is meant to be runned
   - BloodhoundGang                            # Example workbench
