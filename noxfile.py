@@ -26,6 +26,7 @@ class Tasks:
     build_wheel = 'python -m setup bdist_wheel'
     send = r'twine upload dist/*.whl'
     docs = 'pdoc --html kalash --force'
+    quality = 'flake8'
 
 
 @nox.session()
@@ -72,6 +73,12 @@ def _copy_and_sanitize_paths_for_pdoc3(doc_source_path, target_path):
                 replacement_text = re.sub(pattern, r'\g<1>\g<4>', text)
                 with open(file_full_path, 'w') as f:
                     f.write(replacement_text)
+
+
+@nox.session()
+def quality(session: nox.Session):
+    session.install('flake8')
+    session.run(Tasks.quality)
 
 
 @nox.session()

@@ -64,7 +64,7 @@ Because this is a Python file you can either run it directly or still use Kalash
 
 ### Running with Kalash CLI
 
-Simply put: `kalash -f ./path/to/config.py`.
+Simply put: `kalash run -f ./path/to/config.py`.
 
 ### Runing directly with Python
 

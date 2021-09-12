@@ -104,5 +104,5 @@ The name `trigger` comes from the name of the class used in [Python configuratio
 
 If you wish to see what tests Kalash would run if it were to be triggered use the `--what-if` flag.
 
-* `kalash -f some.yaml --what-if paths` - list all collected test paths
-* `kalash -f some.yaml --what-if ids` - list all collected test ids
+* `kalash run -f some.yaml --what-if paths` - list all collected test paths
+* `kalash run -f some.yaml --what-if ids` - list all collected test ids

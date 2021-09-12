@@ -34,7 +34,7 @@ Imagine it's saved under `test_something.py`. The simplest way to run the test c
     - path: './test_something.py'
     ```
 
-2. Run `kalash -f ./something.yaml`.
+2. Run `kalash run -f ./something.yaml`.
 
 ## Config section
 

@@ -397,29 +397,43 @@ def main_cli():
     """
     config = CliConfig()
 
-    parser = argparse.ArgumentParser(description='Test automation wrapper')
+    parser = argparse.ArgumentParser(description='Test automation runner')
+    subparsers = parser.add_subparsers()
+
     parser.add_argument(
+        '-sc', '--spec-config',
+        type=str, help='Path to YAML specification YAML, default is `spec.yaml` '
+                       'from the package directory.'
+    )
+    parser.add_argument(
+        '-dd', '--docs',
+        action='store_true', help='Display bundled documentation'
+    )
+
+    # `run` subcommand:
+    parser_run = subparsers.add_parser('run', help='run an analysis')
+    parser_run.add_argument(
         '-f', '--file',
         type=str, help='Path to .kalash.yaml')
-    parser.add_argument(
+    parser_run.add_argument(
         '-n', '--no-recurse',
         action='store_true', help='Do not walk directories')
-    parser.add_argument(
+    parser_run.add_argument(
         '-d', '--debug',
         action='store_true', help='Run in debug mode')
-    parser.add_argument(
+    parser_run.add_argument(
         '-ff', '--fail-fast',
         action='store_true', help='Fail suite if at least one test fails')
-    parser.add_argument(
+    parser_run.add_argument(
         '-nl', '--no-log',
         action='store_true', help='Disable logging')
-    parser.add_argument(
+    parser_run.add_argument(
         '-ne', '--no-log-echo',
         action='store_true', help='If set, log calls will not be echoed to STDOUT')
-    parser.add_argument(
+    parser_run.add_argument(
         '-ld', '--log-dir',
         type=str, help='Log base directory')
-    parser.add_argument(
+    parser_run.add_argument(
         '-ll', '--log-level',
         type=int, help='Python `logging` log level ('
                        'CRITICAL = 50, '
@@ -428,20 +442,15 @@ def main_cli():
                        'INFO = 20, '
                        'DEBUG = 10, '
                        'NOTSET = 0, default level is INFO)')
-    parser.add_argument(
-        '-sc', '--spec-config',
-        type=str, help='Path to YAML specification YAML, default is `spec.yaml` '
-                       'from the package directory.'
-    )
-    parser.add_argument(
+    parser_run.add_argument(
         '-lf', '--log-format',
         type=str, help=f'Log format string, default is %{config.spec.cli_config.log_formatter}')
-    parser.add_argument(
+    parser_run.add_argument(
         '-g', '--group-by',
         type=str, help='Log directories grouping: '
                        f'<{config.spec.cli_config.group_device}|'
                        f'{config.spec.cli_config.group_group}>')
-    parser.add_argument(
+    parser_run.add_argument(
         '-wi', '--what-if',
         type=str, help='Collects the tests but does not run them '
                        'and produces a list of paths or IDs that have been '
@@ -450,9 +459,7 @@ def main_cli():
                        f'{config.spec.cli_config.whatif_ids}> '
                        'to modify the output behavior of the what-if flag.'
     )
-    parser.add_argument(
-        '-dd', '--docs',
-        action='store_true', help='Display bundled documentation')
+
     args = parser.parse_args()
 
     if args.docs:
