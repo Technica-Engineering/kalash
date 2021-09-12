@@ -105,10 +105,10 @@ def prepare_suite(
             path = '.'  # default to CWD
 
         # recursive directory search can be set in a config or as a global flag when calling
-        no_recurse_from_yaml: Optional[bool] = test_conf.no_recurse
+        no_recurse_from_file: Optional[bool] = test_conf.no_recurse
         cli_config = kalash_trigger.cli_config
-        if no_recurse_from_yaml is not None:
-            cli_config.no_recurse = cli_config.no_recurse or no_recurse_from_yaml
+        if no_recurse_from_file is not None:
+            cli_config.no_recurse = cli_config.no_recurse or no_recurse_from_file
 
         yield apply_filters(
             test_conf,

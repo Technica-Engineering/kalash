@@ -29,7 +29,7 @@ def _collect_test_case_from_module(
     identifiers: PathOrIdForWhatIf = []
     suite = unittest.TestSuite()
     _trigger: Trigger = trigger if trigger else Trigger()
-    meta = Meta.from_yaml(
+    meta = Meta.from_yaml_obj(
         parse_metadata_section(test, _trigger.cli_config),
         _trigger.cli_config
     )
