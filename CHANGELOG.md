@@ -29,3 +29,7 @@ Please document changes that haven't been officially released in the [Unreleased
 - Upgraded minimum required Python version to 3.7
 - Relaxed constraints on the ID formation
 - Removed ID pattern filtering - using trusty old RegEx instead
+
+### Fixed
+
+- Log file grouping now supports any tags used in the metadata tag
