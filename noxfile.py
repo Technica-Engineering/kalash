@@ -3,6 +3,7 @@ import sys
 import os
 import shutil
 import re
+import json
 
 from pathlib import Path
 
@@ -79,6 +80,14 @@ def _copy_and_sanitize_paths_for_pdoc3(doc_source_path, target_path):
 def quality(session: nox.Session):
     session.install('flake8')
     session.run(Tasks.quality)
+
+
+@nox.session()
+def json_schema(session: nox.Session):
+    session.install('.')
+    from kalash.config import Trigger
+    with open('kalash/spec.schema.json', 'w') as f:
+        json.dump(Trigger.json_schema(), f, indent=4)
 
 
 @nox.session()

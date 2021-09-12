@@ -7,6 +7,7 @@ from types import ModuleType
 from typing import Any, Callable, Dict, List, Optional, Tuple, TypeVar, Union
 from dataclasses import dataclass, field
 from toolz import pipe
+from dataclasses_jsonschema import JsonSchemaMixin
 
 import unittest
 import logging
@@ -206,7 +207,7 @@ class Base:
 
 
 @dataclass
-class Meta(Base):
+class Meta(Base, JsonSchemaMixin):
     """Provides a specification outline for the Metadata tag
     in test templates.
 
@@ -262,7 +263,7 @@ class Meta(Base):
 
 
 @dataclass
-class Test(Meta):
+class Test(Meta, JsonSchemaMixin):
     """Provides a specification outline for a single category
     of tests that should be collected, e.g. by path, ID or any
     other parameter inherited from `Meta`.
@@ -327,7 +328,7 @@ class Test(Meta):
 
 
 @dataclass
-class Config(Base):
+class Config(Base, JsonSchemaMixin):
     """Provides a specification outline for the runtime
     parameters. Where `Test` defines what tests to collect,
     this class defines global parameters determining how
@@ -364,7 +365,7 @@ class Config(Base):
 
 
 @dataclass
-class Trigger:
+class Trigger(JsonSchemaMixin):
     """Main configuration class collecting all information for
     a test run, passed down throughout the whole call stack.
 
@@ -413,7 +414,7 @@ class Trigger:
         Returns: `Tests` object
         """
         path = cli_config.file if cli_config.file else default_path
-        if path.endswith('.yaml'):
+        if path.endswith('.yaml') or path.endswith('.json'):
             t = cls()
             t = Trigger.from_file(os.path.abspath(path), cli_config)
             t._resolve_interpolables(path)

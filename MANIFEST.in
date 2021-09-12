@@ -1,5 +1,7 @@
 include kalash\spec.yaml
 include kalash/spec.yaml
+include kalash\spec.schema.json
+include kalash/spec.schema.json
 recursive-include kalash/pdoc *.*
 recursive-include kalash\pdoc *.*
 recursive-include kalash/built_docs *.*
