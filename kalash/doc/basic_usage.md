@@ -161,7 +161,11 @@ The logger can be configured using the following CLI switches:
 * `--log-dir` - base directory for logs
 * `--log-level` - Python's `logging` library log verbosity
 * `--log-format` - Python's `logging` library formatter string
-* `--group-by` - *not done yet*, grouping log files by metadata tags
+* `--group-by` - grouping log files by metadata tags
+
+By default logs are written to a `logs` folder in the current working directory. Each test case gets its separate folder and log files contained within start with a timestamp.
+
+If `--group-by` is used, those test case folders are grouped by any specified property from the metadata tag. For example `--group-by devices` will group test cases by the `devices` key. If `devices` is a single string e.g. `"cancombo"` the log tree will be `"logs/cancombo/TestCaseID/123456789_TestCaseID"`. If `devices` is a list, e.g. `["cancombo", "lincombo"]`, the log tree will be `"logs/cancombo_lincombo/TestCaseID/123456789_TestCaseID"`.
 
 ### JSON Schema
 
