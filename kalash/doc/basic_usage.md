@@ -36,7 +36,7 @@ Kalash is originally intended for an automation system defined as:
 
 What do you need to do to use it for test automation?
 
-1. You create a YAML and name it as you want. You put that file in the `yamls` folder in a test repository. We recommend to name the YAML file after the job name.
+1. You create a YAML and name it as you want. You put that file in the `yamls` folder in a test repository. We recommend to name the YAML file after the job name. If you want a `json` create a JSON. It will work as well.
 2. You contact IT so they can create an automated job for you. Or create a CI job on your own if you're not working in a team.
 3. Once you have a job created any updates you make to the YAML file will affect the test collection you've specified.
 
@@ -162,3 +162,35 @@ The logger can be configured using the following CLI switches:
 * `--log-level` - Python's `logging` library log verbosity
 * `--log-format` - Python's `logging` library formatter string
 * `--group-by` - *not done yet*, grouping log files by metadata tags
+
+### JSON Schema
+
+You can make use of a JSON schema to make writing your YAML or JSON files a little easier. The schema is located [here](https://raw.githubusercontent.com/Technica-Engineering/kalash/master/kalash/spec.schema.json).
+
+#### Example schema setup - VSCode
+
+Every editor handles JSON schemas a little differently. Here is an example on how to configure Visual Studio Code.
+
+1. Open Settings (Ctrl+Shift+P and type in settings) as JSON.
+2. Modify or add `"yaml.schemas"` like this:
+
+    ```json
+    "yaml.schemas": {
+        "https://raw.githubusercontent.com/Technica-Engineering/kalash/feature/7-8-schemas-and-json/kalash/spec.schema.json": "*.k.yaml"
+    },
+    ```
+
+3. Name Kalash YAML files with `.k.yaml` extension. When you open such file, the schema will be automatically loaded and will suggest what keys are allowed in the YAML file.
+
+If you are using JSON files instead, you could do this:
+
+1. Open Settings (Ctrl+Shift+P and type in settings) as JSON.
+2. Modify or add `"json.schemas"` like this:
+
+    ```json
+    "json.schemas": {
+        "https://raw.githubusercontent.com/Technica-Engineering/kalash/feature/7-8-schemas-and-json/kalash/spec.schema.json": "*.k.json"
+    },
+    ```
+
+3. Name Kalash JSON files with `.k.json` extension. When you open such file, the schema will be automatically loaded and will suggest what keys are allowed in the JSON file.
