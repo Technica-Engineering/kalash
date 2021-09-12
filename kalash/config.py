@@ -195,7 +195,7 @@ class Base:
     inherit from this minimal pseudo-abstract base class.
     """
     @classmethod
-    def from_yaml(cls, yaml_obj: ArbitraryYamlObj, cli_config: CliConfig) -> Base:
+    def from_yaml_obj(cls, yaml_obj: ArbitraryYamlObj, cli_config: CliConfig) -> Base:
         raise NotImplementedError("Base class methods should be overridden")
 
     def get(self, argname: str):
@@ -244,7 +244,7 @@ class Meta(Base):
             SharedMetaElements(self.cli_config).resolve_interpolables(self, module_path)
 
     @classmethod
-    def from_yaml(cls, yaml_obj: ArbitraryYamlObj, cli_config: CliConfig) -> Meta:
+    def from_yaml_obj(cls, yaml_obj: ArbitraryYamlObj, cli_config: CliConfig) -> Meta:
         block_spec = cli_config.spec.test
         meta_spec = cli_config.spec.meta
         params = dict(
@@ -301,11 +301,11 @@ class Test(Meta):
             SharedMetaElements(self.cli_config).resolve_interpolables(self, module_path)
 
     @classmethod
-    def from_yaml(cls, yaml_obj: ArbitraryYamlObj, cli_config: CliConfig) -> Test:
+    def from_yaml_obj(cls, yaml_obj: ArbitraryYamlObj, cli_config: CliConfig) -> Test:
         """Loads `Test` blocks from a YAML object."""
 
         block_spec = cli_config.spec.test
-        base_class_instance = super().from_yaml(yaml_obj, cli_config)
+        base_class_instance = super().from_yaml_obj(yaml_obj, cli_config)
         return Test(
             path=yaml_obj.get(block_spec.path, None),
             no_recurse=yaml_obj.get(block_spec.no_recurse, None),
@@ -350,7 +350,7 @@ class Config(Base):
         SharedMetaElements(self.cli_config).resolve_interpolables(self, __file__)
 
     @classmethod
-    def from_yaml(cls, yaml_obj: Optional[ArbitraryYamlObj], cli_config: CliConfig) -> Config:
+    def from_yaml_obj(cls, yaml_obj: Optional[ArbitraryYamlObj], cli_config: CliConfig) -> Config:
         """Loads `Test` blocks from a YAML object."""
         config_spec = cli_config.spec.config
         if yaml_obj:
@@ -385,14 +385,15 @@ class Trigger:
     cli_config: CliConfig = field(default_factory=lambda: CliConfig())
 
     @classmethod
-    def from_yaml(cls, yaml_path: str, cli_config: CliConfig):
-        with open(yaml_path, 'r') as f:
+    def from_file(cls, file_path: str, cli_config: CliConfig):
+        """Creates a `Trigger` instance from a YAML or JSON file."""
+        with open(file_path, 'r') as f:
             yaml_obj: ArbitraryYamlObj = defaultdict(lambda: None, yaml.safe_load(f))
         list_blocks: List[ArbitraryYamlObj] = \
             yaml_obj[cli_config.spec.test.tests]
         cfg_section: ArbitraryYamlObj = yaml_obj[cli_config.spec.config.cfg]
-        tests = [Test.from_yaml(i, cli_config) for i in list_blocks]
-        config = Config.from_yaml(cfg_section, cli_config)
+        tests = [Test.from_yaml_obj(i, cli_config) for i in list_blocks]
+        config = Config.from_yaml_obj(cfg_section, cli_config)
         return Trigger(tests, config, cli_config)
 
     def _resolve_interpolables(self, path: str):
@@ -414,7 +415,7 @@ class Trigger:
         path = cli_config.file if cli_config.file else default_path
         if path.endswith('.yaml'):
             t = cls()
-            t = Trigger.from_yaml(os.path.abspath(path), cli_config)
+            t = Trigger.from_file(os.path.abspath(path), cli_config)
             t._resolve_interpolables(path)
             return t
         else:

@@ -90,7 +90,7 @@ def apply_filters(
         """
         cli_config = trigger.cli_config
         try:
-            parsed_meta = Meta.from_yaml(
+            parsed_meta = Meta.from_yaml_obj(
                 parse_metadata_section(single_test_path, cli_config),
                 cli_config
             )

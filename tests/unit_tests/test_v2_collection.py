@@ -24,7 +24,7 @@ class TestV2Collection(unittest.TestCase):
     def test_v2_template_collection(self):
         self.assertRaises(Exception, lambda: _collect_test_case_v2_0(
             self.test_path,
-            Trigger.from_yaml(
+            Trigger.from_file(
                 self.yaml_path,
                 CliConfig(
                     self.yaml_path,

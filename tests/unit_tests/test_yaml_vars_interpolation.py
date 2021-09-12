@@ -14,7 +14,7 @@ class TestYamlVarsInterpolation(unittest.TestCase):
             Path(
                 os.path.dirname(__file__)
             ) / '..' / 'test_yamls' / 'test_interpolation.yaml')
-        cls.trigger = lambda cls: Trigger.from_yaml(cls.yaml_path, CliConfig(
+        cls.trigger = lambda cls: Trigger.from_file(cls.yaml_path, CliConfig(
             cls.yaml_path,
             no_log=True,
             no_log_echo=True
