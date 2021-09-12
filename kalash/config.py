@@ -414,7 +414,7 @@ class Trigger(JsonSchemaMixin):
         Returns: `Tests` object
         """
         path = cli_config.file if cli_config.file else default_path
-        if path.endswith('.yaml'):
+        if path.endswith('.yaml') or path.endswith('.json'):
             t = cls()
             t = Trigger.from_file(os.path.abspath(path), cli_config)
             t._resolve_interpolables(path)
