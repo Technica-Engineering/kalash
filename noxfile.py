@@ -25,7 +25,7 @@ class Tasks:
     test_integration = lambda: "python ./tests/run_tests.py"
     coverage = lambda posargs: f'coverage {posargs}'
     build_wheel = 'python -m setup bdist_wheel'
-    send = r'twine upload dist/*.whl'
+    send = r'twine upload dist/*.whl -u __token__ -p'
     docs = 'pdoc --html kalash --force'
     quality = 'flake8'
 
@@ -127,7 +127,10 @@ def send(session: nox.Session):
     session.install(
         'twine'
     )
-    session.run(*split_cmd(Tasks.send))
+    token = os.environ.get("TWINE_TOKEN")
+    if not token:
+        raise ValueError("PyPi upload token not set!")
+    session.run(*split_cmd(Tasks.send), token)
 
 
 @nox.session()

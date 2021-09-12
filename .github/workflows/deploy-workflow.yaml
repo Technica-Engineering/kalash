@@ -15,7 +15,10 @@ jobs:
         run: |
           pip install nox
       - name: Deploy new release
+        env:
+          TWINE_TOKEN: ${{ secrets.pypi_token }}
         run: |
+          nox -e docs
           nox -e whl
           nox -e send
       - name: Archive package
