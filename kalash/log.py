@@ -4,7 +4,7 @@ import logging
 from typing import List, Optional, Set, Union, Callable
 
 from .utils import get_ts
-from .config import CliConfig, Meta
+from .config import CliConfig, Meta, OneOrList
 
 PathType = Union[os.PathLike, str]
 
@@ -51,7 +51,14 @@ def _make_log_tree_from_id(
     log_name = get_ts(sep='') + '_' + dir_name
     full_path = ""
     if groupby:
-        group_dir_name = getattr(meta, groupby)
+        _group_dir_name: OneOrList[str] = getattr(meta, groupby)
+        group_dir_name: Optional[str] = ""
+        if type(_group_dir_name) is list:
+            group_dir_name = "_".join(_group_dir_name)
+        elif type(_group_dir_name) is str:
+            group_dir_name = _group_dir_name
+        else:
+            group_dir_name = None
         group_dir_name = group_dir_name if group_dir_name else "unknown_group"
         full_path = os.path.join(dir_name, group_dir_name, log_name)
     else:

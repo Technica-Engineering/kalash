@@ -28,8 +28,18 @@ class TestLogging(unittest.TestCase):
             "devices"
         )
         self.assertRegex(path, self.log_path_pattern(device_group))
-    
-    def test_grouping_(self):
+
+    def test_grouping_devices_list(self):
+        device_group = ["cancombo", "lincombo"]
+        path = _make_log_tree_from_id(
+            self.testid,
+            "TestLog",
+            Meta.from_yaml_obj({"id": self.testid, "devices": device_group}, CliConfig(None)),
+            "devices"
+        )
+        self.assertRegex(path, self.log_path_pattern("_".join(device_group)))
+
+    def test_grouping_use_cases(self):
         use_cases = "PRODTEST-1234"
         path = _make_log_tree_from_id(
             self.testid,
