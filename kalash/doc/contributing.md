@@ -23,11 +23,9 @@ Before submitting a pull request you must make sure that the CI pipeline passes 
 11. Update the `CHANGELOG`. Use the [correct](https://keepachangelog.com/en/1.0.0/) style guidelines for the changelog.
 12. Push code to your fork.
 13. Run the CI pipeline (will run tests, code quality checks).
-14. Create a pull request to the **`develop` branch**.
+14. Create a pull request to the **`master` branch**.
 
-**Note: requests to merge directly to `master` will be automatically rejected**.
-
-New releases are prepared periodically by merging a stable `develop` branch into `master`. When the merge happens documentation is built and a new package will be created and published in PyPI. **Maintainers merging to `master` should heed to change the version tag in `setup.cfg`**.
+New releases are prepared periodically by checking out a stable `master` branch. When the release is published documentation is built and a new package will be created and published in PyPI. **Maintainers creating releases should heed to change the version tag in `setup.cfg`**.
 
 ## Processes and Conventions 👮‍♀️
 
@@ -47,8 +45,8 @@ We use a slightly modified GitFlow practice in our development:
         * `refactor`
         * etc.
 2. Each commit should start with the aforementioned keywords, e.g. `chore: updating version tag`.
-3. There are 2 protected branches: `develop` and `master`.
-4. When creating a pull request you should **create a pull request for `develop` branch**. In our workflow `master` contains only stable code most of the times equivalent to the latest release.
+3. There is one protected branch: `master`.
+4. When creating a pull request you should **create a pull request for `master` branch**. Nobody is permitted to merge broken and untested code to `master`.
 
 ## Code quality 💯
 
