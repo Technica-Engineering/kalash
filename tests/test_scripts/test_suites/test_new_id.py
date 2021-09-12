@@ -2,7 +2,7 @@
 META_START
 ---
 id: PRODTEST_1234_twoja_stara                 # ID of the test
-relatedUseCases:                              # JIRA codes of the related use cases
+use_cases:                              # JIRA codes of the related use cases
   - FearFactory                               # Example JIRA code
 workbenches:                                  # Workbench where the test is meant to be runned
   - Gojira                                    # Example workbench

@@ -15,14 +15,15 @@ Before submitting a pull request you must make sure that the CI pipeline passes 
 3. Install Kalash in develop mode: `pip install -e '.[dev]'`.
 4. Implement tests for your change (Test-Driven Development).
 5. Implement your change.
-6. Run tests locally using `nox -e test`.
-7. Check whether your tests have satisfactory coverage: Run `coverage html` after triggering the tests and check `htmlcov/index.html`. Our minimum target coverage is 85%.
-8. Run `flake8` at the root of this repository and correct any code-style deviations.
-9. Document the change.
-10. Update the `CHANGELOG`. Use the [correct](https://keepachangelog.com/en/1.0.0/) style guidelines for the changelog.
-11. Push code to your fork.
-12. Run the CI pipeline (will run tests, code quality checks).
-13. Create a pull request to the **`develop` branch**.
+6. If you have modified the user-facing data model (e.g. `Trigger`, `Test` or `Meta` classes), make sure to regenerate the JSON schema (`nox -e json_schema`).
+7. Run tests locally using `nox -e test`.
+8. Check whether your tests have satisfactory coverage: Run `coverage html` after triggering the tests and check `htmlcov/index.html`. Our minimum target coverage is 85%.
+9. Run `flake8` at the root of this repository and correct any code-style deviations.
+10. Document the change.
+11. Update the `CHANGELOG`. Use the [correct](https://keepachangelog.com/en/1.0.0/) style guidelines for the changelog.
+12. Push code to your fork.
+13. Run the CI pipeline (will run tests, code quality checks).
+14. Create a pull request to the **`develop` branch**.
 
 **Note: requests to merge directly to `master` will be automatically rejected**.
 

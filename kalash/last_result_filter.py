@@ -37,7 +37,7 @@ def filter_for_result(check_lr_tag_function):
             section of the XML report
 
     Returns:
-        A closure function bound to specific "OK"/"NOK" `lastResult`
+        A closure function bound to specific "OK"/"NOK" `last_result`
     """
 
     def process_xml_tree(path_to_xml):

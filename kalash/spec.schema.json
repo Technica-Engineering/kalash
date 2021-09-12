@@ -1,0 +1,230 @@
+{
+    "type": "object",
+    "properties": {
+        "tests": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/Test"
+            },
+            "default": []
+        },
+        "config": {
+            "$ref": "#/definitions/Config",
+            "default": {
+                "report": "kalash_reports",
+                "setup": null,
+                "teardown": null,
+                "cli_config": {
+                    "file": null,
+                    "log_dir": ".",
+                    "group_by": null,
+                    "no_recurse": false,
+                    "debug": false,
+                    "no_log": false,
+                    "no_log_echo": false,
+                    "spec_path": "spec.yaml",
+                    "log_level": 20,
+                    "log_format": "%(message)s",
+                    "what_if": null,
+                    "fail_fast": false
+                }
+            }
+        },
+        "cli_config": {
+            "default": {
+                "file": null,
+                "log_dir": ".",
+                "group_by": null,
+                "no_recurse": false,
+                "debug": false,
+                "no_log": false,
+                "no_log_echo": false,
+                "spec_path": "spec.yaml",
+                "log_level": 20,
+                "log_format": "%(message)s",
+                "what_if": null,
+                "fail_fast": false
+            }
+        }
+    },
+    "description": "Main configuration class collecting all information for\n    a test run, passed down throughout the whole call stack.\n\n    Args:\n        tests (List[Test]): list of `Test` categories, each\n            describing a sliver of a test suite that shares certain\n            test collection parameters\n        config (Config): a `Config` object defining parameters\n            telling Kalash *how* to run the tests\n        cli_config (CliConfig): a `CliConfig` object representing\n            command-line parameters used to trigger the test run\n            modifying behavior of certain aspects of the application\n            like logging or triggering speculative runs instead of\n            real runs\n    ",
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "definitions": {
+        "Test": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/Meta"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "oneOf": [
+                                {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                {
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "path": {
+                            "oneOf": [
+                                {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                {
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "no_recurse": {
+                            "type": "boolean"
+                        },
+                        "last_result": {
+                            "type": "string"
+                        },
+                        "setup": {
+                            "type": "string"
+                        },
+                        "teardown": {
+                            "type": "string"
+                        }
+                    }
+                }
+            ],
+            "description": "Provides a specification outline for a single category\n    of tests that should be collected, e.g. by path, ID or any\n    other parameter inherited from `Meta`.\n\n    Args:\n        path (Optional[OneOrList[TestPath]]): path to a test\n            directory or a single test path\n        id (Optional[OneOrList[TestId]]): one or more IDs to\n            filter for\n        no_recurse (Optional[Toggle]): if `True`, subfolders\n            will not be searched for tests, intended for use with\n            the `path` parameter\n        last_result (Optional[LastResult]): if `OK` then filters\n            out only the tests that have passed in the last run,\n            if `NOK` then it only filters out those tests that\n            have failed in the last run\n        setup (Optional[AuxiliaryPath]): path to a setup script;\n            runs once at the start of the test category run\n        teardown (Optional[AuxiliaryPath]): path to a teardown\n            script; runs once at the end of the test category\n            run\n    "
+        },
+        "Meta": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "string"
+                },
+                "use_cases": {
+                    "oneOf": [
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "workbenches": {
+                    "oneOf": [
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "devices": {
+                    "oneOf": [
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "suites": {
+                    "oneOf": [
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "functionality": {
+                    "oneOf": [
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "cli_config": {
+                    "default": {
+                        "file": null,
+                        "log_dir": ".",
+                        "group_by": null,
+                        "no_recurse": false,
+                        "debug": false,
+                        "no_log": false,
+                        "no_log_echo": false,
+                        "spec_path": "spec.yaml",
+                        "log_level": 20,
+                        "log_format": "%(message)s",
+                        "what_if": null,
+                        "fail_fast": false
+                    }
+                }
+            },
+            "description": "Provides a specification outline for the Metadata tag\n    in test templates.\n\n    Args:\n        id (Optional[TestId]): unique test ID\n        version (Optional[TemplateVersion]): template version\n        use_cases (Optional[OneOrList[UseCase]]): one or more\n            use case IDs (preferably from a task tracking system\n            like Jira) that a particular test refers to\n        workbenches (Optional[OneOrList[Workbench]]): one or more\n            physical workbenches where the test should be triggered\n        devices (Optional[OneOrList[Device]]): one or more device\n            categories for which this test has been implemented\n        suites (Optional[OneOrList[Suite]]): one or more arbitrary\n            suite tags (should be used only if remaining tags don't\n            provide enough possibilities to describe the context of\n            the test script)\n        functionality (Optional[OneOrList[FunctionalityItem]]): one\n            or more functionality descriptors for the test script\n    "
+        },
+        "Config": {
+            "type": "object",
+            "properties": {
+                "report": {
+                    "type": "string",
+                    "default": "./kalash_reports"
+                },
+                "setup": {
+                    "type": "string"
+                },
+                "teardown": {
+                    "type": "string"
+                },
+                "cli_config": {
+                    "default": {
+                        "file": null,
+                        "log_dir": ".",
+                        "group_by": null,
+                        "no_recurse": false,
+                        "debug": false,
+                        "no_log": false,
+                        "no_log_echo": false,
+                        "spec_path": "spec.yaml",
+                        "log_level": 20,
+                        "log_format": "%(message)s",
+                        "what_if": null,
+                        "fail_fast": false
+                    }
+                }
+            },
+            "description": "Provides a specification outline for the runtime\n    parameters. Where `Test` defines what tests to collect,\n    this class defines global parameters determining how\n    to run tests.\n\n    Args:\n        report (str): directory path where reports will\n            be stored in XML format\n        setup (Optional[AuxiliaryPath]): path to a setup script;\n            runs once at the start of the complete run\n        teardown (Optional[AuxiliaryPath]): path to a teardown\n            script; runs once at the end of the complete run\n    "
+        }
+    }
+}
