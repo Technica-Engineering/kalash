@@ -47,7 +47,7 @@ def _collect_test_case_from_module(
                             and _id is not None:
 
                         suite.addTest(obj(
-                            funcname, _id, trigger
+                            funcname, _id, meta, trigger
                         ))
                         if _trigger.cli_config:
                             if _trigger.cli_config.what_if == \

@@ -2,7 +2,7 @@ from typing import List, Optional
 import unittest
 import logging
 
-from .config import CliConfig, Trigger
+from .config import CliConfig, Meta, Trigger
 from .log import get, close
 
 
@@ -45,6 +45,7 @@ class TestCase(unittest.TestCase):
         self,
         methodName: str,
         id: str,
+        meta: Meta,
         trigger: Optional[Trigger]
     ) -> None:
         super().__init__(methodName=methodName)
@@ -53,6 +54,7 @@ class TestCase(unittest.TestCase):
         self.log_base_path = cli_config.log_dir if cli_config else None
         self.groupby = cli_config.group_by if cli_config else None
         self.no_log_echo = cli_config.no_log_echo if cli_config else None
+        self.meta = meta
         self.trigger = trigger
 
         # inject logger:
@@ -61,6 +63,7 @@ class TestCase(unittest.TestCase):
                 self.logger = get(
                     id,
                     self.__class__.__name__,
+                    self.meta,
                     cli_config
                 )
             else:
