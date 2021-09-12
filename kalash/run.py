@@ -399,7 +399,7 @@ def main_cli():
 
     parser = argparse.ArgumentParser(description='Test automation runner')
     subparsers = parser.add_subparsers()
-    
+
     parser.add_argument(
         '-sc', '--spec-config',
         type=str, help='Path to YAML specification YAML, default is `spec.yaml` '
