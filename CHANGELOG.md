@@ -24,6 +24,7 @@ Please document changes that haven't been officially released in the [Unreleased
 
 ### Changed
 
+- Using `run` subcommand for the test run instead of plain `kalash` (`kalash run -f some.yaml` instead of `kalash -f some.yaml`)
 - Upgraded minimum required Python version to 3.7
 - Relaxed constraints on the ID formation
 - Removed ID pattern filtering - using trusty old RegEx instead
