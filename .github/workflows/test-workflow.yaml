@@ -8,6 +8,8 @@ on:
     branches:
       - develop
       - master
+  release:
+    types: [published]
 jobs:
   Test-Job:
     runs-on: ubuntu-latest
