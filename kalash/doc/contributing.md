@@ -16,7 +16,7 @@ Before submitting a pull request you must make sure that the CI pipeline passes 
 4. Implement tests for your change (Test-Driven Development).
 5. Implement your change.
 6. Run tests locally using `nox -e test`.
-7. Check whether your tests have satisfactory coverage under `htmlcov/index.html`. Our minimum target coverage is 80%.
+7. Check whether your tests have satisfactory coverage: Run `coverage html` after triggering the tests and check `htmlcov/index.html`. Our minimum target coverage is 85%.
 8. Run `flake8` at the root of this repository and correct any code-style deviations.
 9. Document the change.
 10. Update the `CHANGELOG`. Use the [correct](https://keepachangelog.com/en/1.0.0/) style guidelines for the changelog.
