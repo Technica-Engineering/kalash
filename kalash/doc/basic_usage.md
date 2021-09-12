@@ -116,7 +116,7 @@ if __name__ == '__main__':
 
 ### Running the tests
 
-To trigger a particular test suite you may run `kalash -f ./path/to/config.py` and if you need more configuration options run `kalash --help`.
+To trigger a particular test suite you may run `kalash run -f ./path/to/config.py` and if you need more configuration options run `kalash --help`.
 
 ### Reports
 
