@@ -26,7 +26,7 @@ class Tasks:
     coverage = lambda posargs: f'coverage {posargs}'
     build_wheel = 'python -m setup bdist_wheel'
     send = r'twine upload dist/*.whl -u __token__ -p'
-    docs = 'pdoc --html kalash --force'
+    docs = 'pdoc kalash -o .'
     quality = 'flake8'
 
 
@@ -100,7 +100,7 @@ def docs(session: nox.Session):
     if not os.path.exists(built_docs_dir):
         os.makedirs(built_docs_dir)
     _copy_and_sanitize_paths_for_pdoc3('kalash/doc', pdoc_dir)
-    session.install('pdoc3', '.')
+    session.install('pdoc', '.')
     cwd = os.getcwd()
     session.chdir(built_docs_dir)
     session.run(*split_cmd(Tasks.docs))

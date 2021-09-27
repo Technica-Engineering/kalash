@@ -10,5 +10,5 @@
 .. include:: ./pdoc/contributing.md
 .. include:: ./pdoc/trailer.md
 """
-
+__docformat__ = "restructuredtext"
 __version__ = "4.0.0"

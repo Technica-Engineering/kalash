@@ -378,7 +378,7 @@ def make_loader_and_trigger_object(
 def docs():
     """Open bundled documentation in the web browser."""
     base_dir = os.path.dirname(__file__)
-    rel_docpath = ['built_docs', 'html', 'kalash', 'index.html']
+    rel_docpath = ['built_docs', 'kalash.html']
     docpath = os.path.join(base_dir, *rel_docpath)
     _platform = platform.system()
     if _platform == "Darwin" or "Linux":
