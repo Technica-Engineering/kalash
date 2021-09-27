@@ -1,4 +1,7 @@
 from __future__ import annotations
+
+__docformat__ = "google"
+
 from dataclasses import dataclass
 from typing import Dict, List
 

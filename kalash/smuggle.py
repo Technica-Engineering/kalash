@@ -2,6 +2,8 @@
 Adapted from: https://pypi.org/project/smuggle/ with minor changes
 related to path handling.
 """
+__docformat__ = "google"
+
 import inspect
 import os
 import sys

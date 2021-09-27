@@ -1,3 +1,5 @@
+__docformat__ = "google"
+
 from typing import Any, Dict, List, Optional, Union
 
 import yaml

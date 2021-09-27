@@ -1,3 +1,5 @@
+__docformat__ = "google"
+
 import os
 from typing import Callable
 import unittest

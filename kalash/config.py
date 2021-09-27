@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+__docformat__ = "google"
 __doc__ = """"""
 
 from collections import defaultdict

@@ -9,6 +9,7 @@ type). A `TestModule` will be scanned for objects that will
 be relevant to a test definition. For example V1 template
 collection looks for `TestCase` instances.
 """
+__docformat__ = "google"
 
 from typing import Optional
 import unittest

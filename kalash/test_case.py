@@ -1,3 +1,5 @@
+__docformat__ = "google"
+
 from typing import List, Optional
 import unittest
 import logging

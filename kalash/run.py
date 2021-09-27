@@ -1,3 +1,5 @@
+__docformat__ = "google"
+
 import unittest
 import argparse
 import xmlrunner

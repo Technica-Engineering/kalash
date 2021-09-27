@@ -1,3 +1,5 @@
+__docformat__ = "google"
+
 from typing import Dict, Union
 from unittest import TestSuite
 from functools import reduce
