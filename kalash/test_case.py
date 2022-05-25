@@ -45,7 +45,7 @@ class TestCase(unittest.TestCase):
 
     def __init__(
         self,
-        methodName: str,
+        methodName: str,  # noqa: N803 `methodName` is a `unittest` arg, we don't modify the name
         id: str,
         meta: Meta,
         trigger: Optional[Trigger]

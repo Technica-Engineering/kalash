@@ -110,7 +110,7 @@ class CliConfig:
         self.log_format = self.spec.cli_config.log_formatter
 
 
-class classproperty(object):
+class classproperty(object):  # noqa: N801 using lowercase name to emulate function decorator naming
     """https://stackoverflow.com/a/13624858
     Only Python 3.9 allows stacking `@classmethod`
     and `@property` decorators to obtain static
@@ -318,7 +318,7 @@ class Test(Meta, JsonSchemaMixin):
         )
 
     @classproperty
-    def _non_filters(cls):
+    def _non_filters(cls):  # noqa: N805 this is in fact a class property
         # ID is listed as non-filter beacuse it's handled
         # differently. A `Test` definition can filter for
         # multiple IDs. A `Meta` definition can only have
@@ -382,9 +382,9 @@ class Trigger(JsonSchemaMixin):
             like logging or triggering speculative runs instead of
             real runs
     """
-    tests:  List[Test] = field(default_factory=list)
-    config: Config     = field(default_factory=lambda: Config())
-    cli_config: CliConfig = field(default_factory=lambda: CliConfig())
+    tests:      List[Test] = field(default_factory=list)
+    config:     Config     = field(default_factory=lambda: Config())
+    cli_config: CliConfig  = field(default_factory=lambda: CliConfig())
 
     @classmethod
     def from_file(cls, file_path: str, cli_config: CliConfig):

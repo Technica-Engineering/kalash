@@ -166,7 +166,7 @@ class MetaLoader(TestLoader):
         else:
             return self._kalash_trigger
 
-    def loadTestsFromKalashYaml(self) -> CollectorArtifact:
+    def loadTestsFromKalashYaml(self) -> CollectorArtifact:  # noqa: E501,N802 keeping in line with `unittest` camelCase naming
         """Loads tests from associated YAML or `Trigger`"""
         whatif_names: PathOrIdForWhatIf = []
         for a in prepare_suite(
@@ -177,7 +177,7 @@ class MetaLoader(TestLoader):
             whatif_names.extend(one_whatif_names)
         return self.suite, list(set(whatif_names))
 
-    def loadTestsFromModule(self, module, *args, pattern=None, **kws):
+    def loadTestsFromModule(self, module, *args, pattern=None, **kws):  # noqa: E501,N802 keeping in line with `unittest` camelCase naming
 
         def tests_generator(suite: unittest.TestSuite):
             """

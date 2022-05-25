@@ -17,7 +17,7 @@ from kalash.run import TestCase, main, MetaLoader, get_ts
 class TestTemplate(TestCase):  # IMPORTANT: Name of class should be changed here
 
     # Declaration of order of execution
-    @parameterized.expand([(get_ts(__qualname__))])
+    @parameterized.expand([(get_ts(__qualname__))])  # noqa: F821 `__qualname__` exists at runtime
     def test_validation(self, name):  # IMPORTANT: This whole method should never be changed
         """
         INTERACTION: DEFINITION OF WHAT IS DONE TO INTERACT WITH THE DUTS

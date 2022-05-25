@@ -4,7 +4,7 @@ import os
 import re
 import datetime
 
-from xml.etree import ElementTree as ET
+from xml.etree import ElementTree
 
 
 def is_test_result(xml_attribute):
@@ -55,7 +55,7 @@ def filter_for_result(check_lr_tag_function):
             or an empty list when `_ErrorHolder` is encountered
         """
         if str(path_to_xml).endswith('.xml'):
-            xml_tree = ET.parse(path_to_xml)
+            xml_tree = ElementTree.parse(path_to_xml)
             xml_tree_root = xml_tree.getroot()
             if re.search(r'_ErrorHolder', xml_tree_root.attrib['name']):
                 # parsing unittest._ErrorHolder cases is not supported
