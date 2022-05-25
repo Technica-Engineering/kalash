@@ -295,6 +295,11 @@ def run_test_suite(
         report = "."
         if kalash_trigger.config:
             report = kalash_trigger.config.report
+            if report is None:
+                raise ValueError(
+                    "Missing report directory configuration. Check if the YAML config you used "
+                    "declares an output directory path for the test reports"
+                )
         result: xmlrunner.runner._XMLTestResult = xmlrunner.XMLTestRunner(
             output=report,
             failfast=kalash_trigger.cli_config.fail_fast
