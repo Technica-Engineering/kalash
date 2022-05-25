@@ -56,9 +56,11 @@ def _collect_test_case_from_module(
                                 identifiers.append(_id)
                             elif _trigger.cli_config.what_if == \
                                     _trigger.cli_config.spec.cli_config.whatif_paths:
-                                identifiers.append(os.path.abspath(test.__file__))
+                                identifiers.append(os.path.abspath(test.__file__))  # type: ignore
+                                                        # `__file__` always exists in this context
                             else:
-                                identifiers.append(os.path.abspath(test.__file__))
+                                identifiers.append(os.path.abspath(test.__file__)) # type: ignore
+                                                        # `__file__` always exists in this context
 
                         if _trigger.cli_config and _trigger.cli_config.debug:
                             print(f"ADDED: {funcname} from {test.__file__}")

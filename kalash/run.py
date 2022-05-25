@@ -124,7 +124,7 @@ class MetaLoader(TestLoader):
 
     def __init__(
         self,
-        yaml_path: str = None,
+        yaml_path: Optional[str] = None,
         trigger: Optional[Trigger] = None,
         local=True
     ):
