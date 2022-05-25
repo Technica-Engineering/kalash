@@ -16,4 +16,4 @@ What's happenning there? If you add this to your Jenkinsfile in tests repository
 
 In practice every `".kalash.yaml"` file will translate to a single specific job that will have a corresponding `Jenkinsfile`. The reason we split `kalash` away from Jenkins is to allow the QA engineers to specify test configuration themselves without meddling into CI server pipeline, where it's way easier to break stuff and the file looks way more daunting to even understand.
 
-For example: `Jenkinsfile`s may be created in a `jenkinsfiles` folder in each test repository and `yamls` folder wilcouldl contain the YAMLs managed by QA engineers. In Jenkins, use SCM checkout and specify the path to correct `Jenkinsfile` that maps to a given job requested by QA engineers.
+For example: `Jenkinsfile`s may be created in a `jenkinsfiles` folder in each test repository and `yamls` folder could contain the YAMLs managed by QA engineers. In Jenkins, use SCM checkout and specify the path to correct `Jenkinsfile` that maps to a given job requested by QA engineers.
