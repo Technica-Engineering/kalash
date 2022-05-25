@@ -51,7 +51,9 @@ def find_my_yaml(filevar: str, path: str) -> str:
     ```
 
     Args:
-        filevar (str): should always be set to `__file__`
+        filevar (str): should always be set to `__file__`, it's not
+            hardcoded for improved readability (indicates you're
+            looking for a YAML relative to the current test script)
         path (str): relative path component that points to the YAML
 
     Returns:
