@@ -2,9 +2,9 @@
 
 ## Prerequisites
 
-All you need to develop for this project is to `pip install nox`.
+All you need to develop for this project is to `pip install -e .[dev]` which will install all development dependencies for Kalash and Kalash itself in your virtual environment of choice. If you're unfamiliar what `pip install -e .` does, _now_ would be the time to read the documentation of the `pip` package manager.
 
-`nox` is a build and test automation driver for Python development that will automatically prepare your environment for testing.
+Most build and test automation relies on `nox`. `nox` is a build and test automation driver for Python development that will automatically prepare your environment for testing.
 
 ## Contributing - process 🖋
 
@@ -55,5 +55,15 @@ Few things to heed:
 * **If `flake8` tells you your code is crap, fix it before creating a pull request**. We want this project to have high code quality standards. The pipeline will check it for you, so if it doesn't pass you will have to correct yourself before proceeding. 😄
 * **Use type hints**. Seriosusly. Code that takes little care of the types will be rejected right away. We know Python is dynamically typed but we don't like it. It seems like a pain in the neck in the beginning but spend a month with type hints and you'll never go back. It's much easier to catch nasty bugs when you use them.
 * **Create tests**. Generally, small fixes *might* be accepted without tests, usually when we're dealing with something that's blatantly obvious. But you should always prefer to create tests for your changes and test locally before creating a pull request.
-* **Use a good editor or an IDE**. You should aim for no red squiggly lines, be it in VSCode or PyCharm, doesn't matter. But be sure that if one of the maintainers pulls your change and sees red squiggly lines, you will need to correct your changes accordingly before anything can be merged.
+* **Use a good editor or an IDE**. You should aim for no red squiggly lines, be it in VSCode or PyCharm, doesn't matter. But be sure that if one of the maintainers pulls your change and sees red squiggly lines, you will need to correct your changes accordingly before anything can be merged. **We strongly recommend VSCode with Pylance Python Server**, always the latest stable version.
 * If you're using **type aliases** consider adding them in `"config.py"` and documenting them in the `__doc__` attribute. `"config.py"` contains the base data model for Kalash, we want to keep it that way so that it's easy to reason about type dependencies. **Type aliases are recommended** because if whenever you decide you need a different type, you only need to change one line (unless the type is incompatible). 😀
+
+## How the release is built 🔨
+
+1. The changes in the `Unreleased` section of `CHANGELOG.md` are moved under a new version tag.
+2. The CI pipeline for the latest `master` commit is proven to be green through-and-through.
+3. The maintainer tags the release using unannotated `git tag` with the `v` prefix, e.g. `git tag v4.0.0`.
+4. The tag is pushed to remote using `git push --tags`.
+5. The maintainer creates a Release in the [Release view](https://github.com/Technica-Engineering/kalash/releases) on GitHub.
+6. When the new release is posted the pipeline runs automatically with steps as defined in `.github/workflows/deploy-workflow.yaml`.
+7. Final result: the Python Package Wheel is pushed to PyPI and is now installable with the `pip` package manager.
