@@ -31,7 +31,7 @@ Imagine it's saved under `test_something.py`. The simplest way to run the test c
 
     ```yaml
     tests:
-    - path: './test_something.py'
+      - path: './test_something.py'
     ```
 
 2. Run `kalash run -f ./something.yaml`.
@@ -41,7 +41,7 @@ Imagine it's saved under `test_something.py`. The simplest way to run the test c
 The configuration file is split into two components: `tests` and `config`.
 
 * `tests` - this section defines **solely the test collection process**.
-* `config` - this section **modifies runtime behavior of the test cases.
+* `config` - this section **modifies runtime behavior of the test cases**.
 
 `config` section is optional.
 
@@ -64,4 +64,4 @@ config:
 
 ## Full API specification
 
-The allowed up-to date values for the YAML specification are outlined in the documentation of the [`Spec` class][Kalash Spec From Code].
+The allowed up-to date values for the YAML specification are outlined in the documentation of the [`Spec` class][kalash.config.Spec].
