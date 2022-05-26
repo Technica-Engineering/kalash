@@ -4,3 +4,4 @@ no_log: false
 no_log_echo: false
 log_dir: "logs"
 log_level: 20  # `logging` level `INFO`
+log_file_name_format: '$(Timestamp)_$(ID)_$(TestClassName)'

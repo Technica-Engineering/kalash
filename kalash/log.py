@@ -22,6 +22,9 @@ HANDLERS: List[Callable[..., logging.Handler]] = [lambda n: logging.FileHandler(
 
 
 def _get_logger_from_state(logger_name: str) -> Optional[logging.Logger]:
+    """Attempt getting a logger of a specific name from the set of
+    existing loggers. Returns `None` if logger wasn't found.
+    """
     loggers = list(filter(lambda l: l.name == logger_name, _LOGGERS))
     if len(loggers) > 0:
         return loggers[0]
@@ -30,10 +33,15 @@ def _get_logger_from_state(logger_name: str) -> Optional[logging.Logger]:
 
 
 def _create_tree_if_not_exists(path: PathType) -> None:
+    """Creates a tree of directories if the directories don't
+    exist already.
+    """
+    # TODO: move to utils
     if not os.path.exists(path):
         os.makedirs(path)
 
 
+# TODO: make log tree segregation more flexible by allowing a callback to be injected with a signature like this function here
 def _make_log_tree_from_id(
     id: str,
     class_name: str,
@@ -56,10 +64,11 @@ def _make_log_tree_from_id(
             be stored.
     """
     dir_name = id + '_' + class_name
+    # TODO: it should be possible to inject log file format too!
     log_name = get_ts(sep='') + '_' + dir_name
     full_path = ""
     if groupby:
-        _group_dir_name: OneOrList[str] = getattr(meta, groupby)
+        _group_dir_name: OneOrList[str] = meta.group_by or []
         group_dir_name: Optional[str] = ""
         if type(_group_dir_name) is list:
             group_dir_name = "_".join(_group_dir_name)
@@ -101,6 +110,7 @@ def _make_trunk(
     return log_path + '.log'
 
 
+# TODO: this is clunky, it's hard to follow, refactor
 def _make_tree(
     id: str,
     class_name: str,

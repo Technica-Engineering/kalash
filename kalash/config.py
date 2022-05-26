@@ -30,6 +30,7 @@ Workbench = str
 Device = str
 Suite = str
 FunctionalityItem = str
+GroupingItem = str
 Toggle = bool
 KalashYamlObj = Dict[str, Any]
 ArbitraryYamlObj = Dict[str, Any]
@@ -270,6 +271,7 @@ class Meta(Base, JsonSchemaMixin):
     devices:       Optional[OneOrList[Device]] = None
     suites:        Optional[OneOrList[Suite]] = None
     functionality: Optional[OneOrList[FunctionalityItem]] = None
+    group_by:      Optional[OneOrList[GroupingItem]] = None
     cli_config:    CliConfig = CliConfig()
 
     def __post_init__(self):
@@ -291,6 +293,7 @@ class Meta(Base, JsonSchemaMixin):
             workbenches=yaml_obj.get(meta_spec.workbench, None),
             devices=yaml_obj.get(block_spec.devices, None),
             suites=yaml_obj.get(block_spec.suites, None),
+            group_by=yaml_obj.get(block_spec.group_by, None),
             functionality=yaml_obj.get(block_spec.functionality, None)
         )
         return Meta(

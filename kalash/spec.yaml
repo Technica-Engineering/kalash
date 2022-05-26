@@ -38,3 +38,4 @@ meta:
   devices: "devices"
   suites: "suites"
   functionality: "functionality"
+  group_by: "group_by"

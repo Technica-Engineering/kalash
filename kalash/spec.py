@@ -66,6 +66,7 @@ class MetaSpec(BaseSpec):
     devices: SpecKey
     suites: SpecKey
     functionality: SpecKey
+    group_by: SpecKey
 
 
 @dataclass
