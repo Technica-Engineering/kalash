@@ -173,24 +173,10 @@ class Spec(BaseSpec):
     @classmethod
     def load_spec(cls, spec_path: SpecPath) -> Spec:
         with open(spec_path, 'r') as f:
-            yaml_obj = yaml.full_load(f)
-        yaml_obj: Dict[str, Dict[str, SpecKey]] = yaml_obj
-        return cls(
-            CliConfigSpec.from_kwargs(
-                **yaml_obj['cli_config']
-            ),
-            TestSpec.from_kwargs(
-                **yaml_obj['test']
-            ),
-            ConfigSpec.from_kwargs(
-                **yaml_obj['config']
-            ),
-            MetaSpec(
-                **yaml_obj['meta']
-            )
-        )
+            yaml_obj = yaml.unsafe_load(f)
+        return yaml_obj
 
     def save_spec(self, spec_path: SpecPath):
         # FIXME: unable to dump objects that do not implement `to_yaml` explicitly
         with open(spec_path, 'w') as f:
-            f.write(yaml.safe_dump(self))
+            f.write(yaml.dump(self))
