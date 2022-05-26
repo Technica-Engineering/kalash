@@ -21,6 +21,7 @@ test:
   interp_this_file: "$(ThisFile)"
   ok: 'OK'
   nok: 'NOK'
+  group_by: "group_by"
 config:
   cfg: 'config'
   report: 'report'
@@ -38,4 +39,3 @@ meta:
   devices: "devices"
   suites: "suites"
   functionality: "functionality"
-  group_by: "group_by"
