@@ -66,7 +66,6 @@ class MetaSpec(BaseSpec):
     devices: SpecKey
     suites: SpecKey
     functionality: SpecKey
-    group_by: SpecKey
 
 
 @dataclass
@@ -91,6 +90,7 @@ class TestSpec(BaseSpec):
         ok (SpecKey): value used for a test that passed last time
         nok (SpecKey): value used for a test that failed or errored out last time
         non_filters (SpecKey): list of properties that cannot be used like standard filters
+        group_by (SpecKey): which metadata tag should the logs be grouped on
     """
     tests: SpecKey
     path: SpecKey
@@ -108,6 +108,7 @@ class TestSpec(BaseSpec):
     interp_this_file: SpecKey
     ok: SpecKey
     nok: SpecKey
+    group_by: SpecKey
 
     def __post_init__(self):
         self.non_filters: List[SpecKey] = [
@@ -116,7 +117,8 @@ class TestSpec(BaseSpec):
             self.setup_script,
             self.teardown_script,
             self.interp_cwd,
-            self.interp_this_file
+            self.interp_this_file,
+            self.group_by
         ]
 
 
