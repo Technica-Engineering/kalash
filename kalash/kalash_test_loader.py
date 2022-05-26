@@ -4,7 +4,7 @@ import os
 from typing import Callable
 import unittest
 
-from .config import (Collector, CollectorArtifact,
+from .model import (Collector, CollectorArtifact,
                      OneOrList, PathOrIdForWhatIf, TestPath, Trigger)
 
 

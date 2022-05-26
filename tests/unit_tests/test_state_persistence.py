@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from kalash.config import CliConfig
+from kalash.model import CliConfig
 from pathlib import Path
 
 

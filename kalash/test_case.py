@@ -4,7 +4,7 @@ from typing import List, Optional
 import unittest
 import logging
 
-from .config import CliConfig, Meta, Trigger
+from .model import CliConfig, Meta, Trigger
 from .log import get, close
 
 

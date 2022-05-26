@@ -3,7 +3,7 @@ import unittest
 from pathlib import Path
 
 from kalash.run import prepare_suite
-from kalash.config import CliConfig, Trigger, InterpolableMixin
+from kalash.model import CliConfig, Trigger, InterpolableMixin
 
 
 class TestYamlVarsInterpolation(unittest.TestCase):

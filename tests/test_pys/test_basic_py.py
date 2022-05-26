@@ -1,5 +1,5 @@
 from typing import List
-from kalash.config import Config, Trigger, Test, dataclass, field
+from kalash.model import Config, Trigger, Test, dataclass, field
 from kalash.run import run
 
 

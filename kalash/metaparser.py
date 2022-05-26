@@ -9,7 +9,7 @@ import re
 from collections.abc import Iterable
 from functools import reduce
 
-from .config import CliConfig, OneOrList, TestModule, TestPath
+from .model import CliConfig, OneOrList, TestModule, TestPath
 
 
 def iterable_or_scalar(item: OneOrList[Any]):

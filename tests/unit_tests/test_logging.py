@@ -4,7 +4,7 @@ import os
 import glob
 import time
 
-from kalash.config import CliConfig, Meta
+from kalash.model import CliConfig, Meta
 from kalash.log import (_make_tree, _make_log_tree_from_id,
                         register_logger, _LOGGERS, get, close, close_all)
 

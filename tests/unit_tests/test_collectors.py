@@ -1,6 +1,6 @@
 import unittest
 
-from kalash.config import CliConfig, Trigger
+from kalash.model import CliConfig, Trigger
 from kalash.collectors import _collect_test_case_v1_x
 
 

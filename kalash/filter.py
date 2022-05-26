@@ -9,7 +9,7 @@ import warnings
 from .metaparser import iterable_or_scalar, parse_metadata_section, match_id
 from .last_result_filter import is_test_fail_or_error,\
     is_test_pass, filter_for_result
-from .config import (
+from .model import (
     ArbitraryYamlObj, Collector, CollectorArtifact,
     Meta, OneOrList, TemplateVersion, Test, TestPath, Trigger)
 from .kalash_test_loader import make_test_loader

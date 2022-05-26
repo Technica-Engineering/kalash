@@ -20,7 +20,7 @@ from typing import Callable, Dict, Iterator, Optional, Tuple
 from .utils import get_ts
 from .filter import apply_filters
 from .smuggle import smuggle
-from .config import (Collector, CollectorArtifact, Config,
+from .model import (Collector, CollectorArtifact, Config,
                      PathOrIdForWhatIf, CliConfig, Trigger)
 from .test_case import TestCase
 from .log import close_all

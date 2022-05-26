@@ -16,7 +16,7 @@ import unittest
 import os
 import inspect
 
-from .config import (CollectorArtifact, Meta,
+from .model import (CollectorArtifact, Meta,
                      PathOrIdForWhatIf, TestModule, Trigger)
 from .smuggle import smuggle
 from .metaparser import parse_metadata_section

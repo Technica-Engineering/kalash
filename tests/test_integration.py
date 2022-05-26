@@ -1,7 +1,7 @@
 from typing import List
 from kalash.testutils import clear_results
 from kalash.run import run_test_suite, make_loader_and_trigger_object
-from kalash.config import CliConfig
+from kalash.model import CliConfig
 
 import os
 import time

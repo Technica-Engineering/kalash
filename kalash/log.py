@@ -6,7 +6,7 @@ import logging
 from typing import List, Optional, Set, Union, Callable
 
 from .utils import get_ts
-from .config import CliConfig, Meta, OneOrList
+from .model import CliConfig, Meta, OneOrList
 
 PathType = Union[os.PathLike, str]
 
