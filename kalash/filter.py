@@ -6,7 +6,7 @@ from functools import reduce
 
 import warnings
 
-from .metaparser import iterable_or_scalar, parse_metadata_section, match_id
+from .metaparser import wrap_as_iterable, parse_metadata_section, match_id
 from .last_result_filter import is_test_fail_or_error,\
     is_test_pass, filter_for_result
 from .model import (
@@ -73,7 +73,7 @@ def apply_filters(
             x1, x2 = getattr(OneOrList[str], '__args__')
             if (type(v) is x1 or type(v) is x2) \
                     and k not in Test._non_filters:
-                selected[k] = (iterable_or_scalar(v))
+                selected[k] = (wrap_as_iterable(v))
         return selected
 
     def loader_callback(
@@ -153,7 +153,7 @@ def apply_filters(
                     _get_filterables(parsed_meta),
                     _get_filterables(test_collection_config)
                 ),
-                match_id(parsed_meta.id, iterable_or_scalar(test_collection_config.id))
+                match_id(parsed_meta.id, wrap_as_iterable(test_collection_config.id))
             ] + parsed_last_result
 
             # if all filters applied evaluate to true for a given test, run callback:
