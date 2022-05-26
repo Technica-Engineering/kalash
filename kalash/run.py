@@ -410,11 +410,6 @@ def main_cli():
     subparsers = parser.add_subparsers()
 
     parser.add_argument(
-        '-sc', '--spec-config',
-        type=str, help='Path to YAML specification YAML, default is `spec.yaml` '
-                       'from the package directory.'
-    )
-    parser.add_argument(
         '-dd', '--docs',
         action='store_true', help='Display bundled documentation'
     )
@@ -453,12 +448,14 @@ def main_cli():
                        'NOTSET = 0, default level is INFO)')
     parser_run.add_argument(
         '-lf', '--log-format',
-        type=str, help=f'Log format string, default is %{config.spec.cli_config.log_formatter}')
+        type=str, help=f'Log format string, default is %{config.log_format}')
     parser_run.add_argument(
         '-g', '--group-by',
         type=str, help='Log directories grouping: '
                        f'<{config.spec.cli_config.group_device}|'
                        f'{config.spec.cli_config.group_group}>')
+    # ---
+    # This one doesn't belong in internal config:
     parser_run.add_argument(
         '-wi', '--what-if',
         type=str, help='Collects the tests but does not run them '
@@ -468,16 +465,41 @@ def main_cli():
                        f'{config.spec.cli_config.whatif_ids}> '
                        'to modify the output behavior of the what-if flag.'
     )
+    
+    # `configure` subcommand
+    parser_configure = subparsers.add_parser('configure', help='Perfoms stateful configuration of Kalash')
+    parser_configure.add_argument(
+        '-cfg', '--config-file',
+        type=str, help='Path to the internal config file that you want to use instead of '
+                       'the default `internal-config.yaml` from the package directory.'
+    )
+    parser_configure.add_argument(
+        '-cfgd', '--config-file-display',
+        action="store_true", help='Display the currently used internal configuration path. '
+                                  'Tip: pipe into `cat` to display the contents of the file.'
+    )
 
     args = parser.parse_args()
 
     if args.docs:
         docs()
+        close_all()
+        return 0
+
+    if args.config_file:
+        config.change_internal_config_path(args.config_file)
+        close_all()
+        return 0
+
+    if args.config_file_display:
+        print(config.resolved_internal_cfg_path)
+        close_all()
         return 0
 
     if args.file:
         config.file = args.file
 
+    # FIXME: `args.spec_config` is no more
     if args.spec_config:
         config.spec_path = args.spec_config
     config.__post_init__()

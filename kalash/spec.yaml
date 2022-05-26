@@ -1,9 +1,9 @@
 cli_config:
+  internal_config_path: "$(ThisFile)/internal-config.yaml"
   whatif_paths: "paths"
   whatif_ids: "ids"
   group_device: "device"
   group_group: "group"
-  log_formatter: '%(message)s'
 test:
   tests: "tests"
   path: "path"

@@ -18,6 +18,7 @@ import inspect
 
 from .smuggle import smuggle
 from .spec import Spec
+from .utils import _interpolate_this_file, _interpolate_workdir, _interpolate_all
 
 T = TypeVar('T')
 TestPath = str
@@ -105,9 +106,51 @@ class CliConfig:
     fail_fast:   bool          = False
 
     def __post_init__(self):
-        spec_abspath = os.path.join(os.path.dirname(__file__), self.spec_path)
-        self.spec = Spec.load_spec(spec_abspath)
-        self.log_format = self.spec.cli_config.log_formatter
+        self._spec_abspath = os.path.join(os.path.dirname(__file__), self.spec_path)
+        self.spec = Spec.load_spec(self._spec_abspath)
+        self.preload_configuration()
+
+    # We make the resolved path a property so we can display it from the CLI command too
+    @property
+    def resolved_internal_cfg_path(self):
+        """The path to internal config with all placeholders filled,
+        e.g. `$(ThisFile)` and `$(WorkDir)` replaced
+        """
+        # This part is done to resolve any potential `$(ThisFile)`
+        # or `$(WorkDir)` tags used in the internal config path:
+        return _interpolate_all(
+            self.spec.cli_config.internal_config_path,
+            self.spec.test.interp_this_file,
+            self.spec.test.interp_cwd,
+            self._spec_abspath
+        )
+
+    def preload_configuration(self):
+        """Preloads configuration from the internal config.
+        This basically allows users to modify the defaults for
+        their own particular project and run `kalash configure`
+        once instead of having to always specify command
+        line parameters.
+        """
+        resolved_internal_cfg_path = self.resolved_internal_cfg_path
+        
+        if resolved_internal_cfg_path is None:
+            raise ValueError(
+                "Internal configuration path was `None`. This is likely a bug."
+            )
+
+        with open(resolved_internal_cfg_path, "r") as f:
+            yaml_obj = yaml.full_load(f)
+        for k, v in yaml_obj.items():
+            # set only the attributes that already exist,
+            # otherwise we lose type safety and we rely on hidden
+            # state instead of being explicit:
+            if k in self.__dict__.keys():
+                setattr(self, k, v)
+
+    def change_internal_config_path(self, path: str):
+        self.spec.cli_config.internal_config_path = path
+        self.spec.save_spec(self._spec_abspath)
 
 
 class classproperty(object):  # noqa: N801 using lowercase name to emulate function decorator naming
@@ -125,7 +168,7 @@ class classproperty(object):  # noqa: N801 using lowercase name to emulate funct
 
 
 @dataclass
-class SharedMetaElements:
+class InterpolableMixin:
     """Collects Metadata-modifying methods with `CliConfig` instance
     providing a parameter closure. Most methods here are related
     to built-in interpolation of patterns like `$(WorkDir)`.
@@ -144,11 +187,7 @@ class SharedMetaElements:
 
         Returns: interpolated string
         """
-        return os.path.normpath(
-            ipt.replace(
-                self.cli_config.spec.test.interp_cwd, os.getcwd()
-            )
-        )
+        return _interpolate_workdir(ipt, self.cli_config.spec.test.interp_cwd)
 
     def _interpolate_this_file(self, ipt: str, yaml_abspath: str) -> str:
         """Interpolates THIS_FILE variable. THIS_FILE is used to resolve
@@ -161,12 +200,7 @@ class SharedMetaElements:
 
         Returns: interpolated string
         """
-        return os.path.normpath(
-            ipt.replace(
-                self.cli_config.spec.test.interp_this_file,
-                os.path.dirname(yaml_abspath)
-            )
-        )
+        return _interpolate_this_file(ipt, self.cli_config.spec.test.interp_this_file, yaml_abspath)
 
     def _interpolate_all(self, ipt: Union[str, None], yaml_abspath: str) -> Union[str, None]:
         """Interpolates all variable values using a toolz.pipe
@@ -244,7 +278,7 @@ class Meta(Base, JsonSchemaMixin):
         if module:
             module_path = os.path.abspath(module.__file__)  # type: ignore
                                                             # `__file__` always exists in this context
-            SharedMetaElements(self.cli_config).resolve_interpolables(self, module_path)
+            InterpolableMixin(self.cli_config).resolve_interpolables(self, module_path)
 
     @classmethod
     def from_yaml_obj(cls, yaml_obj: ArbitraryYamlObj, cli_config: CliConfig) -> Meta:
@@ -302,7 +336,7 @@ class Test(Meta, JsonSchemaMixin):
         if module:
             module_path = os.path.abspath(module.__file__)  # type: ignore
                                                             # `__file__` always exists in this context
-            SharedMetaElements(self.cli_config).resolve_interpolables(self, module_path)
+            InterpolableMixin(self.cli_config).resolve_interpolables(self, module_path)
 
     @classmethod
     def from_yaml_obj(cls, yaml_obj: ArbitraryYamlObj, cli_config: CliConfig) -> Test:
@@ -351,7 +385,7 @@ class Config(Base, JsonSchemaMixin):
     cli_config: CliConfig = CliConfig()
 
     def __post_init__(self):
-        SharedMetaElements(self.cli_config).resolve_interpolables(self, __file__)
+        InterpolableMixin(self.cli_config).resolve_interpolables(self, __file__)
 
     @classmethod
     def from_yaml_obj(cls, yaml_obj: Optional[ArbitraryYamlObj], cli_config: CliConfig) -> Config:
@@ -401,7 +435,7 @@ class Trigger(JsonSchemaMixin):
         return Trigger(tests, config, cli_config)
 
     def _resolve_interpolables(self, path: str):
-        sm = SharedMetaElements(self.cli_config)
+        sm = InterpolableMixin(self.cli_config)
         for test in self.tests:
             sm.resolve_interpolables(test, path)
         sm.resolve_interpolables(self.config, path)

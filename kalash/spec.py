@@ -25,17 +25,18 @@ class CliConfigSpec(BaseSpec):
     `CliConfig` specification.
 
     Args:
+        internal_config_path (SpecKey): where the internal config is located
         whatif_paths (SpecKey): key used to switch on what-if paths callback
         whatif_ids (SpecKey): key used to switch on what-if IDs callback
         group_device (SpecKey): what key to group log files by - devices element
         group_group (SpecKey): what key to group log files by - group element
         log_formatter (SpecKey): key mapping to the log formatter parameter
     """
+    internal_config_path: SpecKey
     whatif_paths: SpecKey
     whatif_ids: SpecKey
     group_device: SpecKey
     group_group: SpecKey
-    log_formatter: SpecKey
 
 
 @dataclass
@@ -185,3 +186,8 @@ class Spec(BaseSpec):
                 **yaml_obj['meta']
             )
         )
+
+    def save_spec(self, spec_path: SpecPath):
+        # FIXME: unable to dump objects that do not implement `to_yaml` explicitly
+        with open(spec_path, 'w') as f:
+            f.write(yaml.safe_dump(self))

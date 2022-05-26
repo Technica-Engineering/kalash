@@ -3,7 +3,7 @@ import unittest
 from pathlib import Path
 
 from kalash.run import prepare_suite
-from kalash.config import CliConfig, Trigger, SharedMetaElements
+from kalash.config import CliConfig, Trigger, InterpolableMixin
 
 
 class TestYamlVarsInterpolation(unittest.TestCase):
@@ -33,7 +33,7 @@ class TestYamlVarsInterpolation(unittest.TestCase):
         old_cwd = os.getcwd()
         os.chdir("tests")  # change workdir, otherwise we're same as root
         expected = str(Path(os.getcwd()) / 'blah' / 'blah.py')
-        actual = SharedMetaElements(
+        actual = InterpolableMixin(
             self.trigger().cli_config
         )._interpolate_workdir(ipt)
         os.chdir(old_cwd)
@@ -50,7 +50,7 @@ class TestYamlVarsInterpolation(unittest.TestCase):
         old_cwd = os.getcwd()
         os.chdir("tests/test_yamls")  # change workdir, otherwise we're same as root
         expected = os.path.normcase(Path(os.getcwd()) / 'blah' / 'blah.py')
-        actual = os.path.normcase(SharedMetaElements(
+        actual = os.path.normcase(InterpolableMixin(
             self.trigger().cli_config
         )._interpolate_this_file(ipt, self.yaml_path))
         os.chdir(old_cwd)

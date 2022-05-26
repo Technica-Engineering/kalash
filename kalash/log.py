@@ -10,6 +10,12 @@ from .config import CliConfig, Meta, OneOrList
 
 PathType = Union[os.PathLike, str]
 
+# First handle the global logger:
+
+logger = logging.getLogger("kalash")
+
+# Then handle the per-test-case loggers:
+
 _LOGGERS: Set[logging.Logger] = set()
 
 HANDLERS: List[Callable[..., logging.Handler]] = [lambda n: logging.FileHandler(n)]
@@ -100,7 +106,7 @@ def _make_tree(
     class_name: str,
     meta: Meta,
     log_base_path: Optional[PathType] = None,
-    groupby: str = None
+    groupby: Optional[str] = None
 ):
     """Combines `_make_trunk_` with `_make_log_tree_from_id`."""
     return _make_trunk(
