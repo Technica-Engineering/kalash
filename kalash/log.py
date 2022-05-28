@@ -4,11 +4,18 @@ import os
 import sys
 import logging
 from typing import List, Optional, Set, Union, Callable
+from kalash.metaparser import wrap_as_iterable
 
 from .utils import get_ts
-from .config import CliConfig, Meta, OneOrList
+from .model import CliConfig, Meta, OneOrList
 
 PathType = Union[os.PathLike, str]
+
+# First handle the global logger:
+
+logger = logging.getLogger("kalash")
+
+# Then handle the per-test-case loggers:
 
 _LOGGERS: Set[logging.Logger] = set()
 
@@ -16,6 +23,9 @@ HANDLERS: List[Callable[..., logging.Handler]] = [lambda n: logging.FileHandler(
 
 
 def _get_logger_from_state(logger_name: str) -> Optional[logging.Logger]:
+    """Attempt getting a logger of a specific name from the set of
+    existing loggers. Returns `None` if logger wasn't found.
+    """
     loggers = list(filter(lambda l: l.name == logger_name, _LOGGERS))
     if len(loggers) > 0:
         return loggers[0]
@@ -24,15 +34,20 @@ def _get_logger_from_state(logger_name: str) -> Optional[logging.Logger]:
 
 
 def _create_tree_if_not_exists(path: PathType) -> None:
+    """Creates a tree of directories if the directories don't
+    exist already.
+    """
+    # TODO: move to utils
     if not os.path.exists(path):
         os.makedirs(path)
 
 
+# TODO: make log tree segregation more flexible by allowing
+# a callback to be injected with a signature like this function here
 def _make_log_tree_from_id(
     id: str,
     class_name: str,
-    meta: Meta,
-    groupby: Optional[str] = None
+    meta: Meta
 ):
     """Creates log tree structure representation based on the
     test template keys. By default it does not group
@@ -50,10 +65,21 @@ def _make_log_tree_from_id(
             be stored.
     """
     dir_name = id + '_' + class_name
+    ts_separator = meta.cli_config.timestamp_separator_for_log_filenames
+    interp_map = {
+        meta.cli_config.spec.test.interp_test_class_name: class_name,
+        meta.cli_config.spec.test.interp_test_id: meta.id,
+        meta.cli_config.spec.test.interp_timestamp: get_ts(sep=ts_separator),
+    }
+    log_name = meta.cli_config.log_file_name_format
+    for k, v in interp_map.items():
+        log_name = log_name.replace(k, v or "")
     log_name = get_ts(sep='') + '_' + dir_name
     full_path = ""
-    if groupby:
-        _group_dir_name: OneOrList[str] = getattr(meta, groupby)
+    group_by = meta.cli_config.group_by
+    if group_by:
+        group_name = getattr(meta, group_by, None) or []
+        _group_dir_name: OneOrList[str] = wrap_as_iterable(group_name) or []
         group_dir_name: Optional[str] = ""
         if type(_group_dir_name) is list:
             group_dir_name = "_".join(_group_dir_name)
@@ -78,7 +104,7 @@ def _make_trunk(
     """
     if log_base_path:
         log_path = os.path.join(
-            log_base_path,
+            os.path.abspath(log_base_path),
             log_name
         )
 
@@ -95,17 +121,16 @@ def _make_trunk(
     return log_path + '.log'
 
 
+# TODO: this is clunky, it's hard to follow, refactor
 def _make_tree(
     id: str,
     class_name: str,
-    meta: Meta,
-    log_base_path: Optional[PathType] = None,
-    groupby: str = None
+    meta: Meta
 ):
     """Combines `_make_trunk_` with `_make_log_tree_from_id`."""
     return _make_trunk(
-        _make_log_tree_from_id(id, class_name, meta, groupby=groupby),
-        log_base_path
+        _make_log_tree_from_id(id, class_name, meta),
+        meta.cli_config.log_dir
     )
 
 
@@ -139,6 +164,11 @@ def register_logger(
 ) -> Optional[logging.Logger]:
     """
     Creates and registers logger instances.
+
+    Can be used to register custom names with custom log
+    file paths with `config` parameter set to
+    `meta.config`.
+
     Declares default path handlers and if `no_log_echo`
     is `False` (default) a STDOUT handler will be added
     so all log calls will be echoed to the calling console.
@@ -174,8 +204,7 @@ def register_logger(
 def get(
     id: str,
     class_name: str,
-    meta: Meta,
-    config: CliConfig
+    meta: Meta
 ) -> logging.Logger:
     """Creates or returns an existing `logging.Logger` instance
     associated with a particular `class_name`.
@@ -190,12 +219,16 @@ def get(
     Returns:
         Associated `logging.Logger` instance
     """
-    path = _make_tree(id, class_name, meta, config.log_dir, config.group_by)
+    path = _make_tree(
+        id,
+        class_name,
+        meta
+    )
 
     l = _get_logger_from_state(class_name)  # noqa: E741
 
     if not l:
-        new_logger = register_logger(class_name, path, config)
+        new_logger = register_logger(class_name, path, meta.cli_config)
         if not new_logger:
             raise ValueError(f"Logger not registered correctly! {class_name}")
         else:

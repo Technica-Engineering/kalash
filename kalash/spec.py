@@ -3,7 +3,7 @@ from __future__ import annotations
 __docformat__ = "google"
 
 from dataclasses import dataclass
-from typing import Dict, List
+from typing import List
 
 import yaml
 
@@ -12,7 +12,7 @@ SpecKey = str
 
 
 @dataclass
-class BaseSpec:
+class BaseSpec(yaml.YAMLObject):
 
     @classmethod
     def from_kwargs(cls, **kwargs):
@@ -25,17 +25,18 @@ class CliConfigSpec(BaseSpec):
     `CliConfig` specification.
 
     Args:
+        internal_config_path (SpecKey): where the internal config is located
         whatif_paths (SpecKey): key used to switch on what-if paths callback
         whatif_ids (SpecKey): key used to switch on what-if IDs callback
         group_device (SpecKey): what key to group log files by - devices element
         group_group (SpecKey): what key to group log files by - group element
         log_formatter (SpecKey): key mapping to the log formatter parameter
     """
+    internal_config_path: SpecKey
     whatif_paths: SpecKey
     whatif_ids: SpecKey
     group_device: SpecKey
     group_group: SpecKey
-    log_formatter: SpecKey
 
 
 @dataclass
@@ -89,6 +90,7 @@ class TestSpec(BaseSpec):
         ok (SpecKey): value used for a test that passed last time
         nok (SpecKey): value used for a test that failed or errored out last time
         non_filters (SpecKey): list of properties that cannot be used like standard filters
+        group_by (SpecKey): which metadata tag should the logs be grouped on
     """
     tests: SpecKey
     path: SpecKey
@@ -104,8 +106,12 @@ class TestSpec(BaseSpec):
     functionality: SpecKey
     interp_cwd: SpecKey
     interp_this_file: SpecKey
+    interp_timestamp: SpecKey
+    interp_test_id: SpecKey
+    interp_test_class_name: SpecKey
     ok: SpecKey
     nok: SpecKey
+    group_by: SpecKey
 
     def __post_init__(self):
         self.non_filters: List[SpecKey] = [
@@ -114,7 +120,11 @@ class TestSpec(BaseSpec):
             self.setup_script,
             self.teardown_script,
             self.interp_cwd,
-            self.interp_this_file
+            self.interp_this_file,
+            self.interp_timestamp,
+            self.interp_test_id,
+            self.interp_test_class_name,
+            self.group_by
         ]
 
 
@@ -169,8 +179,9 @@ class Spec(BaseSpec):
     @classmethod
     def load_spec(cls, spec_path: SpecPath) -> Spec:
         with open(spec_path, 'r') as f:
-            yaml_obj = yaml.full_load(f)
-        yaml_obj: Dict[str, Dict[str, SpecKey]] = yaml_obj
+            yaml_obj = yaml.load(f, yaml.Loader)
+        if isinstance(yaml_obj, Spec):
+            return yaml_obj
         return cls(
             CliConfigSpec.from_kwargs(
                 **yaml_obj['cli_config']
@@ -185,3 +196,15 @@ class Spec(BaseSpec):
                 **yaml_obj['meta']
             )
         )
+
+    # TODO: Migrate the model from Python's `dataclasses` to `marshmallow`
+    #       Serialization of dataclasses is a nightmare, in `marshmallow`
+    #       one can change the serializer simply from `json` to `yaml`.
+    #       The stability of it needs to be tested first in the context
+    #       of what we're doing here.
+    # TODO: Checkout Hydra as the config provider!
+
+    def save_spec(self, spec_path: SpecPath):
+        # FIXME: unable to dump objects that do not implement `to_yaml` explicitly
+        with open(spec_path, 'w') as f:
+            f.write(yaml.dump(self))

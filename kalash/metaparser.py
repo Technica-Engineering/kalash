@@ -9,10 +9,10 @@ import re
 from collections.abc import Iterable
 from functools import reduce
 
-from .config import CliConfig, OneOrList, TestModule, TestPath
+from .model import CliConfig, OneOrList, TestModule, TestPath
 
 
-def iterable_or_scalar(item: OneOrList[Any]):
+def wrap_as_iterable(item: OneOrList[Any]):
     """
     Simple helper function that wraps scalars into
     a list.
@@ -169,7 +169,7 @@ def match_id(test_id: Optional[str], patterns: Optional[Union[str, List[str]]]) 
         # and return `True`
         return True
     source_of_truth = []
-    patterns_iter = iterable_or_scalar(patterns)
+    patterns_iter = wrap_as_iterable(patterns)
     if not patterns_iter:
         # if there are no patterns, the filter should ignore
         # filtering by pattern and thus return True

@@ -4,7 +4,7 @@ from typing import List, Optional
 import unittest
 import logging
 
-from .config import CliConfig, Meta, Trigger
+from .model import CliConfig, Meta, Trigger
 from .log import get, close
 
 
@@ -65,8 +65,7 @@ class TestCase(unittest.TestCase):
                 self.logger = get(
                     id,
                     self.__class__.__name__,
-                    self.meta,
-                    cli_config
+                    self.meta
                 )
             else:
                 # create dummy non-functional logger on the spot when

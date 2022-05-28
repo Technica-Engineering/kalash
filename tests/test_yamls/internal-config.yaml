@@ -1,0 +1,6 @@
+spec_path: '$(ThisFile)/spec.yaml'
+log_format: '%(message)s'
+no_log: false
+no_log_echo: false
+log_dir: "logs"
+log_level: 20  # `logging` level `INFO`

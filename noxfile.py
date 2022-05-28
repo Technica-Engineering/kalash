@@ -85,7 +85,7 @@ def quality(session: nox.Session):
 @nox.session()
 def json_schema(session: nox.Session):
     session.install('.')
-    from kalash.config import Trigger
+    from kalash.model import Trigger
     with open('kalash/spec.schema.json', 'w') as f:
         json.dump(Trigger.json_schema(), f, indent=4)
 
