@@ -162,6 +162,11 @@ def register_logger(
 ) -> Optional[logging.Logger]:
     """
     Creates and registers logger instances.
+
+    Can be used to register custom names with custom log
+    file paths with `config` parameter set to
+    `meta.config`.
+
     Declares default path handlers and if `no_log_echo`
     is `False` (default) a STDOUT handler will be added
     so all log calls will be echoed to the calling console.
