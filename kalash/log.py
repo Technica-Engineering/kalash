@@ -6,8 +6,6 @@ import logging
 from typing import List, Optional, Set, Union, Callable
 from kalash.metaparser import wrap_as_iterable
 
-from kalash.spec import Spec
-
 from .utils import get_ts
 from .model import CliConfig, Meta, OneOrList
 
@@ -44,7 +42,8 @@ def _create_tree_if_not_exists(path: PathType) -> None:
         os.makedirs(path)
 
 
-# TODO: make log tree segregation more flexible by allowing a callback to be injected with a signature like this function here
+# TODO: make log tree segregation more flexible by allowing
+# a callback to be injected with a signature like this function here
 def _make_log_tree_from_id(
     id: str,
     class_name: str,

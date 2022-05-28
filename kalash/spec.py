@@ -3,7 +3,7 @@ from __future__ import annotations
 __docformat__ = "google"
 
 from dataclasses import dataclass
-from typing import ClassVar, Dict, List, Type
+from typing import List
 
 import yaml
 

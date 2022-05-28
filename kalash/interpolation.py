@@ -16,14 +16,14 @@ InterpolationMap = Dict[str, InterpolatorFunc]
 # I suspect we need to go from declarative back to procedural for all those topics
 
 
-class AmbigouosInterpolationException(Exception):
+class AmbigouosInterpolationError(Exception):
     pass
 
 
 def _disambiguate_interpolation_map(interpolation_map: InterpolationMap):
     lowercase_interp_map = map(lambda k: k.lower(), interpolation_map.keys())
     if len(set(lowercase_interp_map)) != len(list(lowercase_interp_map)):
-        raise AmbigouosInterpolationException(
+        raise AmbigouosInterpolationError(
             "At least two tags in the interpolation map are the same when "
             "brought to lowercase. All your map items should be unique keys "
             "and case-insensitive."

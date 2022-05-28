@@ -138,7 +138,7 @@ class CliConfig:
         line parameters.
         """
         resolved_internal_cfg_path = self.resolved_internal_cfg_path
-        
+
         if resolved_internal_cfg_path is None:
             raise ValueError(
                 "Internal configuration path was `None`. This is likely a bug."
@@ -282,7 +282,7 @@ class Meta(Base, JsonSchemaMixin):
         module = inspect.getmodule(frame[0])
         if module:
             module_path = os.path.abspath(module.__file__)  # type: ignore
-                                                            # `__file__` always exists in this context
+                # `__file__` always exists in this context
             InterpolableMixin(self.cli_config).resolve_interpolables(self, module_path)
 
     @classmethod
@@ -341,7 +341,7 @@ class Test(Meta, JsonSchemaMixin):
         module = inspect.getmodule(frame[0])
         if module:
             module_path = os.path.abspath(module.__file__)  # type: ignore
-                                                            # `__file__` always exists in this context
+                # `__file__` always exists in this context
             InterpolableMixin(self.cli_config).resolve_interpolables(self, module_path)
 
     @classmethod
