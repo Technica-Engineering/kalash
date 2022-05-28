@@ -1,5 +1,5 @@
 import unittest
-from kalash.interpolation import _disambiguate_interpolation_map
+from kalash.interpolation import AmbigouosInterpolationException, _disambiguate_interpolation_map
 
 
 class TestInterpolation(unittest.TestCase):
@@ -15,7 +15,7 @@ class TestInterpolation(unittest.TestCase):
         }
 
     def test_ambiguous_map(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(AmbigouosInterpolationException):
             _disambiguate_interpolation_map(self.interpolation_map_ambiguous)
 
     def test_interpolation_with_fake_map(self):
