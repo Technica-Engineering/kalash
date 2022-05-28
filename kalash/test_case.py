@@ -65,8 +65,7 @@ class TestCase(unittest.TestCase):
                 self.logger = get(
                     id,
                     self.__class__.__name__,
-                    self.meta,
-                    cli_config
+                    self.meta
                 )
             else:
                 # create dummy non-functional logger on the spot when
