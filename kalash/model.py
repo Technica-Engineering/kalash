@@ -111,7 +111,9 @@ class CliConfig:
     def __post_init__(self):
         self._spec_abspath = os.path.join(os.path.dirname(__file__), self.spec_path)
         self.spec = Spec.load_spec(self._spec_abspath)
-        self.preload_configuration()
+        # WARNING: don't call `preload_configuration()` here
+        # This will result in the state initialized by the ctor always
+        # being overridden. Call `preload_configuration()` when needed after instantiation
 
     # We make the resolved path a property so we can display it from the CLI command too
     @property
@@ -294,7 +296,8 @@ class Meta(Base, JsonSchemaMixin):
             workbenches=yaml_obj.get(meta_spec.workbench, None),
             devices=yaml_obj.get(block_spec.devices, None),
             suites=yaml_obj.get(block_spec.suites, None),
-            functionality=yaml_obj.get(block_spec.functionality, None)
+            functionality=yaml_obj.get(block_spec.functionality, None),
+            cli_config=cli_config
         )
         return Meta(
             **params
