@@ -3,7 +3,7 @@ from __future__ import annotations
 __docformat__ = "google"
 
 from dataclasses import dataclass
-from typing import Dict, List
+from typing import ClassVar, Dict, List, Type
 
 import yaml
 
@@ -12,7 +12,7 @@ SpecKey = str
 
 
 @dataclass
-class BaseSpec:
+class BaseSpec(yaml.YAMLObject):
 
     @classmethod
     def from_kwargs(cls, **kwargs):
@@ -179,7 +179,7 @@ class Spec(BaseSpec):
     @classmethod
     def load_spec(cls, spec_path: SpecPath) -> Spec:
         with open(spec_path, 'r') as f:
-            yaml_obj = yaml.full_load(f)
+            yaml_obj = yaml.load(f, yaml.Loader)
         yaml_obj: Dict[str, Dict[str, SpecKey]] = yaml_obj
         return cls(
             CliConfigSpec.from_kwargs(
@@ -201,8 +201,10 @@ class Spec(BaseSpec):
     #       one can change the serializer simply from `json` to `yaml`.
     #       The stability of it needs to be tested first in the context
     #       of what we're doing here.
+    # TODO: Checkout Hydra as the config provider!
 
     def save_spec(self, spec_path: SpecPath):
         # FIXME: unable to dump objects that do not implement `to_yaml` explicitly
         with open(spec_path, 'w') as f:
-            f.write(yaml.safe_dump(self))
+            f.write(yaml.dump(self))
+
