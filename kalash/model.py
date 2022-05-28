@@ -94,17 +94,19 @@ class CliConfig:
     """
     file:        Optional[str] = None
     # if not running in CLI context we initialize reasonable defaults:
-    log_dir:     str           = '.'
-    group_by:    Optional[str] = None
-    no_recurse:  bool          = False
-    debug:       bool          = False
-    no_log:      bool          = False
-    no_log_echo: bool          = False
-    spec_path:   str           = 'spec.yaml'
-    log_level:   int           = logging.INFO
-    log_format:  str           = '%(message)s'
-    what_if:     Optional[str] = None
-    fail_fast:   bool          = False
+    log_dir:                               str           = '.'
+    group_by:                              Optional[str] = None
+    no_recurse:                            bool          = False
+    debug:                                 bool          = False
+    no_log:                                bool          = False
+    no_log_echo:                           bool          = False
+    spec_path:                             str           = 'spec.yaml'
+    log_level:                             int           = logging.INFO
+    log_format:                            str           = '%(message)s'
+    what_if:                               Optional[str] = None
+    fail_fast:                             bool          = False
+    log_file_name_format:                  str           = "$(Timestamp)_$(ID)_$(TestClassName)"
+    timestamp_separator_for_log_filenames: str           = ""
 
     def __post_init__(self):
         self._spec_abspath = os.path.join(os.path.dirname(__file__), self.spec_path)
@@ -271,7 +273,6 @@ class Meta(Base, JsonSchemaMixin):
     devices:       Optional[OneOrList[Device]] = None
     suites:        Optional[OneOrList[Suite]] = None
     functionality: Optional[OneOrList[FunctionalityItem]] = None
-    group_by:      Optional[OneOrList[GroupingItem]] = None
     cli_config:    CliConfig = CliConfig()
 
     def __post_init__(self):
@@ -293,7 +294,6 @@ class Meta(Base, JsonSchemaMixin):
             workbenches=yaml_obj.get(meta_spec.workbench, None),
             devices=yaml_obj.get(block_spec.devices, None),
             suites=yaml_obj.get(block_spec.suites, None),
-            group_by=yaml_obj.get(block_spec.group_by, None),
             functionality=yaml_obj.get(block_spec.functionality, None)
         )
         return Meta(

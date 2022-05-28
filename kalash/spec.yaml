@@ -19,6 +19,9 @@ test:
   functionality: "functionality"
   interp_cwd: "$(WorkDir)"
   interp_this_file: "$(ThisFile)"
+  interp_timestamp: "$(Timestamp)"
+  interp_test_id: "$(ID)"
+  interp_test_class_name: "$(TestClassName)"
   ok: 'OK'
   nok: 'NOK'
   group_by: "group_by"

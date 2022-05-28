@@ -1,3 +1,4 @@
+from typing import List, Tuple, Union
 import unittest
 import shutil
 import os
@@ -17,6 +18,13 @@ class TestLogging(unittest.TestCase):
         cls.log_path_pattern = lambda cls, group: \
             r'000000001_Blah_TestLog[\\\/]' + group + r'[\\\/]\d+_000000001_Blah_TestLog'
         cls.expected_log_path = f'logs/{cls.testid}_TestLog/000000001_Blah'
+    
+    @classmethod
+    def make_meta(cls, possible_vals_for_a_group: Union[str, List[str]], group_by: str) -> Meta:
+        return Meta.from_yaml_obj(
+            {"id": cls.testid, group_by: possible_vals_for_a_group},
+            CliConfig(group_by=group_by)
+        )
 
     def test_grouping_devices(self):
         """Tests directory tree restructure based on device category."""
@@ -24,8 +32,7 @@ class TestLogging(unittest.TestCase):
         path = _make_log_tree_from_id(
             self.testid,
             "TestLog",
-            Meta.from_yaml_obj({"id": self.testid, "devices": device_group}, CliConfig(None)),
-            "devices"
+            self.make_meta(device_group, "devices")
         )
         self.assertRegex(path, self.log_path_pattern(device_group))
 
@@ -34,8 +41,7 @@ class TestLogging(unittest.TestCase):
         path = _make_log_tree_from_id(
             self.testid,
             "TestLog",
-            Meta.from_yaml_obj({"id": self.testid, "devices": device_group}, CliConfig(None)),
-            "devices"
+            self.make_meta(device_group, "devices")
         )
         self.assertRegex(path, self.log_path_pattern("_".join(device_group)))
 
@@ -44,8 +50,7 @@ class TestLogging(unittest.TestCase):
         path = _make_log_tree_from_id(
             self.testid,
             "TestLog",
-            Meta.from_yaml_obj({"id": self.testid, "use_cases": use_cases}, CliConfig(None)),
-            "use_cases"
+            self.make_meta(use_cases, "use_cases")
         )
         self.assertRegex(path, self.log_path_pattern(use_cases))
 
@@ -60,8 +65,9 @@ class TestLogging(unittest.TestCase):
                 |-> test_some_other_script_1_param_set_1
                 |-> test_some_other_script_1_param_set_2
         """
-        meta = Meta(id=self.testid)
-        _make_tree(self.testid, "TestLog", meta, "logs", "id")
+        cfg = CliConfig(group_by="id", log_dir="logs")
+        meta = Meta(id=self.testid, cli_config=cfg)
+        _make_tree(self.testid, "TestLog", meta)
         if not os.path.exists(self.expected_log_path):
             self.fail('Target path for logs not created properly!')
 
@@ -74,12 +80,11 @@ class TestLogging(unittest.TestCase):
         logger = get(
             self.testid,
             "TestLog",
-            Meta(),
-            CliConfig(
+            Meta(cli_config=CliConfig(
                 None,
                 log_dir='logs2',
                 no_log_echo=True
-            )
+            )),
         )
         logger.info('hello')
         close(logger)

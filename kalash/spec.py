@@ -196,6 +196,12 @@ class Spec(BaseSpec):
             )
         )
 
+    # TODO: Migrate the model from Python's `dataclasses` to `marshmallow`
+    #       Serialization of dataclasses is a nightmare, in `marshmallow`
+    #       one can change the serializer simply from `json` to `yaml`.
+    #       The stability of it needs to be tested first in the context
+    #       of what we're doing here.
+
     def save_spec(self, spec_path: SpecPath):
         # FIXME: unable to dump objects that do not implement `to_yaml` explicitly
         with open(spec_path, 'w') as f:

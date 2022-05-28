@@ -1,10 +1,12 @@
 from typing import Callable, Dict
 
+from kalash.spec import Spec
 
 InterpolableStr = str
 InterpolationTag = str
 ReplacementStr = str
-State = object  # TODO: pass state, perhaps the `Trigger` itself
+State = Spec  # `Spec` is aliased as `State` in case we want to change which class
+              # is responsible for the state injection
 InterpolatorFunc = Callable[[InterpolableStr, InterpolationTag, State], ReplacementStr]
 InterpolationMap = Dict[str, InterpolatorFunc]
 

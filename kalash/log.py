@@ -5,6 +5,8 @@ import sys
 import logging
 from typing import List, Optional, Set, Union, Callable
 
+from kalash.spec import Spec
+
 from .utils import get_ts
 from .model import CliConfig, Meta, OneOrList
 
@@ -45,8 +47,7 @@ def _create_tree_if_not_exists(path: PathType) -> None:
 def _make_log_tree_from_id(
     id: str,
     class_name: str,
-    meta: Meta,
-    groupby: Optional[str] = None
+    meta: Meta
 ):
     """Creates log tree structure representation based on the
     test template keys. By default it does not group
@@ -64,11 +65,19 @@ def _make_log_tree_from_id(
             be stored.
     """
     dir_name = id + '_' + class_name
-    # TODO: it should be possible to inject log file format too!
+    ts_separator = meta.cli_config.timestamp_separator_for_log_filenames
+    interp_map = {
+        meta.cli_config.spec.test.interp_test_class_name: class_name,
+        meta.cli_config.spec.test.interp_test_id: meta.id,
+        meta.cli_config.spec.test.interp_timestamp: get_ts(sep=ts_separator),
+    }
+    log_name = meta.cli_config.log_file_name_format
+    for k, v in interp_map.items():
+        log_name = log_name.replace(k, v or "")
     log_name = get_ts(sep='') + '_' + dir_name
     full_path = ""
-    if groupby:
-        _group_dir_name: OneOrList[str] = meta.group_by or []
+    if meta.cli_config.group_by:
+        _group_dir_name: OneOrList[str] = meta.cli_config.group_by or []
         group_dir_name: Optional[str] = ""
         if type(_group_dir_name) is list:
             group_dir_name = "_".join(_group_dir_name)
@@ -93,7 +102,7 @@ def _make_trunk(
     """
     if log_base_path:
         log_path = os.path.join(
-            log_base_path,
+            os.path.abspath(log_base_path),
             log_name
         )
 
@@ -114,14 +123,12 @@ def _make_trunk(
 def _make_tree(
     id: str,
     class_name: str,
-    meta: Meta,
-    log_base_path: Optional[PathType] = None,
-    groupby: Optional[str] = None
+    meta: Meta
 ):
     """Combines `_make_trunk_` with `_make_log_tree_from_id`."""
     return _make_trunk(
-        _make_log_tree_from_id(id, class_name, meta, groupby=groupby),
-        log_base_path
+        _make_log_tree_from_id(id, class_name, meta),
+        meta.cli_config.log_dir
     )
 
 
@@ -190,8 +197,7 @@ def register_logger(
 def get(
     id: str,
     class_name: str,
-    meta: Meta,
-    config: CliConfig
+    meta: Meta
 ) -> logging.Logger:
     """Creates or returns an existing `logging.Logger` instance
     associated with a particular `class_name`.
@@ -206,12 +212,16 @@ def get(
     Returns:
         Associated `logging.Logger` instance
     """
-    path = _make_tree(id, class_name, meta, config.log_dir, config.group_by)
+    path = _make_tree(
+        id,
+        class_name,
+        meta
+    )
 
     l = _get_logger_from_state(class_name)  # noqa: E741
 
     if not l:
-        new_logger = register_logger(class_name, path, config)
+        new_logger = register_logger(class_name, path, meta.cli_config)
         if not new_logger:
             raise ValueError(f"Logger not registered correctly! {class_name}")
         else:
