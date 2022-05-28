@@ -1,44 +1,64 @@
-cli_config:
-  internal_config_path: "$(ThisFile)/internal-config.yaml"
-  whatif_paths: "paths"
-  whatif_ids: "ids"
-  group_device: "device"
-  group_group: "group"
-test:
-  tests: "tests"
-  path: "path"
-  usecase: "use_case"
-  no_recurse: "no_recurse"
-  last_result: "last_result"
-  devices: "devices"
-  workbench: "workbench"
-  id: "id"
-  setup_script: "setup"
-  teardown_script: "teardown"
-  suites: "suites"
-  functionality: "functionality"
-  interp_cwd: "$(WorkDir)"
-  interp_this_file: "$(ThisFile)"
-  interp_timestamp: "$(Timestamp)"
-  interp_test_id: "$(ID)"
-  interp_test_class_name: "$(TestClassName)"
-  ok: 'OK'
-  nok: 'NOK'
-  group_by: "group_by"
-config:
-  cfg: 'config'
-  report: 'report'
-  one_time_setup_script: 'setup'
-  one_time_teardown_script: 'teardown'
-  run_only_with: 'run_only_with'
-meta:
-  tts: "META_START\n"
-  tte: "META_END\n"
-  asc: "ASC"
-  dsc: "DSC"
-  related_usecase: "use_cases"
-  workbench: "workbenches"
-  template_version: "version"
-  devices: "devices"
-  suites: "suites"
-  functionality: "functionality"
+!!python/object:kalash.spec.Spec
+cli_config: !!python/object:kalash.spec.CliConfigSpec
+  group_device: device
+  group_group: group
+  internal_config_path: $(ThisFile)/internal-config.yaml
+  whatif_ids: ids
+  whatif_paths: paths
+config: !!python/object:kalash.spec.ConfigSpec
+  cfg: config
+  non_attachable:
+  - report
+  - setup
+  - teardown
+  one_time_setup_script: setup
+  one_time_teardown_script: teardown
+  report: report
+  run_only_with: run_only_with
+meta: !!python/object:kalash.spec.MetaSpec
+  asc: ASC
+  devices: devices
+  dsc: DSC
+  functionality: functionality
+  related_usecase: use_cases
+  suites: suites
+  template_version: version
+  tte: 'META_END
+
+    '
+  tts: 'META_START
+
+    '
+  workbench: workbenches
+test: !!python/object:kalash.spec.TestSpec
+  devices: devices
+  functionality: functionality
+  group_by: group_by
+  id: id
+  interp_cwd: $(WorkDir)
+  interp_test_class_name: $(TestClassName)
+  interp_test_id: $(ID)
+  interp_this_file: $(ThisFile)
+  interp_timestamp: $(Timestamp)
+  last_result: last_result
+  no_recurse: no_recurse
+  nok: NOK
+  non_filters:
+  - path
+  - no_recurse
+  - setup
+  - teardown
+  - $(WorkDir)
+  - $(ThisFile)
+  - $(Timestamp)
+  - $(ID)
+  - $(TestClassName)
+  - group_by
+  ok: OK
+  path: path
+  setup_script: setup
+  suites: suites
+  teardown_script: teardown
+  tests: tests
+  usecase: use_case
+  workbench: workbench

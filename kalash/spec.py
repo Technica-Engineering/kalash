@@ -180,7 +180,8 @@ class Spec(BaseSpec):
     def load_spec(cls, spec_path: SpecPath) -> Spec:
         with open(spec_path, 'r') as f:
             yaml_obj = yaml.load(f, yaml.Loader)
-        yaml_obj: Dict[str, Dict[str, SpecKey]] = yaml_obj
+        if isinstance(yaml_obj, Spec):
+            return yaml_obj
         return cls(
             CliConfigSpec.from_kwargs(
                 **yaml_obj['cli_config']
