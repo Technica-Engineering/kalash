@@ -106,6 +106,9 @@ class TestSpec(BaseSpec):
     functionality: SpecKey
     interp_cwd: SpecKey
     interp_this_file: SpecKey
+    interp_timestamp: SpecKey
+    interp_test_id: SpecKey
+    interp_test_class_name: SpecKey
     ok: SpecKey
     nok: SpecKey
     group_by: SpecKey
@@ -118,6 +121,9 @@ class TestSpec(BaseSpec):
             self.teardown_script,
             self.interp_cwd,
             self.interp_this_file,
+            self.interp_timestamp,
+            self.interp_test_id,
+            self.interp_test_class_name,
             self.group_by
         ]
 
@@ -173,10 +179,24 @@ class Spec(BaseSpec):
     @classmethod
     def load_spec(cls, spec_path: SpecPath) -> Spec:
         with open(spec_path, 'r') as f:
-            yaml_obj = yaml.unsafe_load(f)
-        return yaml_obj
+            yaml_obj = yaml.full_load(f)
+        yaml_obj: Dict[str, Dict[str, SpecKey]] = yaml_obj
+        return cls(
+            CliConfigSpec.from_kwargs(
+                **yaml_obj['cli_config']
+            ),
+            TestSpec.from_kwargs(
+                **yaml_obj['test']
+            ),
+            ConfigSpec.from_kwargs(
+                **yaml_obj['config']
+            ),
+            MetaSpec(
+                **yaml_obj['meta']
+            )
+        )
 
     def save_spec(self, spec_path: SpecPath):
         # FIXME: unable to dump objects that do not implement `to_yaml` explicitly
         with open(spec_path, 'w') as f:
-            f.write(yaml.dump(self))
+            f.write(yaml.safe_dump(self))
