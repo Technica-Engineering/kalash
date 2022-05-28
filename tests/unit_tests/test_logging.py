@@ -77,14 +77,16 @@ class TestLogging(unittest.TestCase):
         close_all()
 
     def test_logger_user_facing_functions(self):
+        cfg = CliConfig(
+            None,
+            log_dir='logs2',
+            no_log_echo=True
+        )
+        meta = Meta(cli_config=cfg)
         logger = get(
             self.testid,
             "TestLog",
-            Meta(cli_config=CliConfig(
-                None,
-                log_dir='logs2',
-                no_log_echo=True
-            )),
+            meta
         )
         logger.info('hello')
         close(logger)

@@ -4,6 +4,7 @@ import os
 import sys
 import logging
 from typing import List, Optional, Set, Union, Callable
+from kalash.metaparser import wrap_as_iterable
 
 from kalash.spec import Spec
 
@@ -76,8 +77,10 @@ def _make_log_tree_from_id(
         log_name = log_name.replace(k, v or "")
     log_name = get_ts(sep='') + '_' + dir_name
     full_path = ""
-    if meta.cli_config.group_by:
-        _group_dir_name: OneOrList[str] = meta.cli_config.group_by or []
+    group_by = meta.cli_config.group_by
+    if group_by:
+        group_name = getattr(meta, group_by, None) or []
+        _group_dir_name: OneOrList[str] = wrap_as_iterable(group_name) or []
         group_dir_name: Optional[str] = ""
         if type(_group_dir_name) is list:
             group_dir_name = "_".join(_group_dir_name)
