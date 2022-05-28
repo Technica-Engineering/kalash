@@ -5,7 +5,7 @@ from typing import Callable
 import unittest
 
 from .model import (Collector, CollectorArtifact,
-                     OneOrList, PathOrIdForWhatIf, TestPath, Trigger)
+                    OneOrList, PathOrIdForWhatIf, TestPath, Trigger)
 
 
 def make_test_loader(trigger: Trigger) -> Callable[

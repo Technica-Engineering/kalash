@@ -11,7 +11,8 @@ class TestYamlVendorIo(unittest.TestCase):
     def test_yaml_vendor_serialization_spec_object(self):
         spec = Spec(
             CliConfigSpec("1", "2", "3", "4", "5"),
-            TestSpec("1", "2", "3", "4", "1", "2", "3", "4", "1", "2", "3", "4", "1", "2", "3", "4", "1", "2", "3", "4"),
+            TestSpec("1", "2", "3", "4", "1", "2", "3", "4", "1", "2",
+                     "3", "4", "1", "2", "3", "4", "1", "2", "3", "4"),
             ConfigSpec("1", "2", "3", "4", "5"),
             MetaSpec("1", "2", "3", "4", "1", "2", "3", "4", "5", "6")
         )
@@ -23,6 +24,7 @@ class TestYamlVendorIo(unittest.TestCase):
             spec.load_spec(str(Path(__file__).parent / "../../kalash/spec.yaml")),
             Spec
         )
+
 
 if __name__ == "__main__":
     unittest.main()

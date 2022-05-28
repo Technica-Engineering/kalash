@@ -17,7 +17,7 @@ import os
 import inspect
 
 from .model import (CollectorArtifact, Meta,
-                     PathOrIdForWhatIf, TestModule, Trigger)
+                    PathOrIdForWhatIf, TestModule, Trigger)
 from .smuggle import smuggle
 from .metaparser import parse_metadata_section
 from .test_case import TestCase
@@ -57,10 +57,10 @@ def _collect_test_case_from_module(
                             elif _trigger.cli_config.what_if == \
                                     _trigger.cli_config.spec.cli_config.whatif_paths:
                                 identifiers.append(os.path.abspath(test.__file__))  # type: ignore
-                                                        # `__file__` always exists in this context
+                                # `__file__` always exists in this context
                             else:
-                                identifiers.append(os.path.abspath(test.__file__)) # type: ignore
-                                                        # `__file__` always exists in this context
+                                identifiers.append(os.path.abspath(test.__file__))  # type: ignore
+                                # `__file__` always exists in this context
 
                         if _trigger.cli_config and _trigger.cli_config.debug:
                             print(f"ADDED: {funcname} from {test.__file__}")

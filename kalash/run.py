@@ -21,7 +21,7 @@ from .utils import get_ts
 from .filter import apply_filters
 from .smuggle import smuggle
 from .model import (Collector, CollectorArtifact, Config,
-                     PathOrIdForWhatIf, CliConfig, Trigger)
+                    PathOrIdForWhatIf, CliConfig, Trigger)
 from .test_case import TestCase
 from .log import close_all
 from .collectors import (_collect_test_case_v1_x, _collect_test_case_v2_0,
@@ -465,9 +465,10 @@ def main_cli():
                        f'{config.spec.cli_config.whatif_ids}> '
                        'to modify the output behavior of the what-if flag.'
     )
-    
+
     # `configure` subcommand
-    parser_configure = subparsers.add_parser('configure', help='Perfoms stateful configuration of Kalash')
+    parser_configure = subparsers.add_parser(
+        'configure', help='Perfoms stateful configuration of Kalash')
     parser_configure.add_argument(
         '-cfg', '--config-file',
         type=str, help='Path to the internal config file that you want to use instead of '

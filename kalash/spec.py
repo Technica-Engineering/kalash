@@ -208,4 +208,3 @@ class Spec(BaseSpec):
         # FIXME: unable to dump objects that do not implement `to_yaml` explicitly
         with open(spec_path, 'w') as f:
             f.write(yaml.dump(self))
-

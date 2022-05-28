@@ -6,7 +6,7 @@ InterpolableStr = str
 InterpolationTag = str
 ReplacementStr = str
 State = Spec  # `Spec` is aliased as `State` in case we want to change which class
-              # is responsible for the state injection
+# is responsible for the state injection
 InterpolatorFunc = Callable[[InterpolableStr, InterpolationTag, State], ReplacementStr]
 InterpolationMap = Dict[str, InterpolatorFunc]
 
@@ -34,7 +34,7 @@ def interpolate(ipt: InterpolableStr, interpolation_map: InterpolationMap):
     """Takes in any interpolable input string and replaces values like
     `$(ID)` or `$(TestClassName)` to vaules injected from the
     `interpolation_map`
-    
+
     Returns a closure that accepts a state object that allows context-aware
     interpolation of values.
     """

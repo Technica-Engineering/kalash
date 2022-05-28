@@ -18,7 +18,7 @@ class TestLogging(unittest.TestCase):
         cls.log_path_pattern = lambda cls, group: \
             r'000000001_Blah_TestLog[\\\/]' + group + r'[\\\/]\d+_000000001_Blah_TestLog'
         cls.expected_log_path = f'logs/{cls.testid}_TestLog/000000001_Blah'
-    
+
     @classmethod
     def make_meta(cls, possible_vals_for_a_group: Union[str, List[str]], group_by: str) -> Meta:
         return Meta.from_yaml_obj(

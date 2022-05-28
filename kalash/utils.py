@@ -68,18 +68,18 @@ def _interpolate_all(
     workdir_tag: str,
     yaml_abspath: str
 ) -> Union[str, None]:
-        """Interpolates all variable values using a toolz.pipe
+    """Interpolates all variable values using a toolz.pipe
 
-        Args:
-            ipt (str): input string to interpolate
-            yaml_abspath (str): path to the Kalash YAML file
-                or the `.py` configuration file
+    Args:
+        ipt (str): input string to interpolate
+        yaml_abspath (str): path to the Kalash YAML file
+            or the `.py` configuration file
 
-        Returns: interpolated string
-        """
-        if ipt:
-            return pipe(
-                _interpolate_this_file(ipt, thisfile_tag, yaml_abspath),
-                lambda ipt: _interpolate_workdir(ipt, workdir_tag)
-            )
-        return ipt
+    Returns: interpolated string
+    """
+    if ipt:
+        return pipe(
+            _interpolate_this_file(ipt, thisfile_tag, yaml_abspath),
+            lambda ipt: _interpolate_workdir(ipt, workdir_tag)
+        )
+    return ipt
