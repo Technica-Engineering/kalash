@@ -1,11 +1,14 @@
 __docformat__ = "google"
 
-from typing import List, Optional
+import asyncio
+from contextlib import asynccontextmanager, contextmanager
+from inspect import isfunction
+from typing import Callable, List, Optional, Union
 import unittest
 import logging
 
 from .model import CliConfig, Meta, Trigger
-from .log import get, close
+from .log import get, close, logger
 
 
 class TestCase(unittest.TestCase):
@@ -111,6 +114,31 @@ class TestCase(unittest.TestCase):
                     import inspect
                     caller = inspect.stack()[1].function
                     self.skipTest(f"{parameter_on_test_case} made test function {caller} skip")
+
+    @asynccontextmanager
+    async def expect(
+        self,
+        awaitable: Union[asyncio.Future, Callable[..., asyncio.Future]],
+        timeout: Optional[int] = None,
+        **kwargs
+    ):
+        logger.debug("Entering async context")
+        if isfunction(awaitable):
+            logger.debug(
+                f"Awaitable {awaitable} is a function, calling with "
+                f"kwargs = {kwargs}"
+            )
+            yield await asyncio.wait_for(awaitable(**kwargs), timeout=timeout)
+        elif isinstance(awaitable, asyncio.Future):
+            logger.debug(f"Awaitable {awaitable} is a `Future` object")
+            yield await asyncio.wait_for(awaitable, timeout=timeout)
+        else:
+            raise TypeError(
+                f"{awaitable} is of type {type(awaitable)} which is "
+                "neither an `asyncio.Future`, nor a function returning "
+                "an `asyncio.Future`"
+            )
+        logger.debug("Future returned, leaving async context")
 
     def __del__(self):
         if hasattr(self, 'logger'):

@@ -1,37 +1,51 @@
+import asyncio
+import time
 from typing import Callable
 import unittest
-from kalash.model import Meta
+from aiounittest import async_test
+from kalash.model import CliConfig, Meta, Trigger
 from kalash.test_case import TestCase
 
 
-def make_test_method(callback_to_run_in_await: Callable) -> Callable:
-    def test_something(self: TestCase):
-        with self.awaitTrue(callback):
-            # TODO: `asyncio`
-            # TODO: `Condition`
-            callback()
-    return test_something
+def make_test_case(callback_to_run_in_await: Callable) -> TestCase:
+    class FakeTestCase(TestCase):
+        
+        async def test_something(self: TestCase):
+            async with self.expect(callback_to_run_in_await) as f:
+                return f
 
-
-def make_test_case(test_method: Callable[[Callable], Callable]) -> TestCase:
-    test_case = TestCase(
+    test_case = FakeTestCase(
         "test_something",
         "1234_ID",
         Meta("1234_ID"),
-        None
+        Trigger(cli_config=CliConfig(no_log=True))
     )
-    setattr(test_case, "test_something", test_method)
+
     return test_case
-
-
-
 
 
 class TestOnlineTesting(unittest.TestCase):
 
-    def test_online_testing(self):
-        test_case = make_test_case(make_test_method())
-        
+    @async_test
+    async def test_online_testing(self):
+        sleep_time = 0.25
+
+        async def wait():
+            start = time.time()
+            await asyncio.sleep(sleep_time)
+            end = time.time()
+            return end
+
+        test_case = make_test_case(wait)
+
+        time_elapsed = await test_case.test_something()  # type: ignore
+        if time_elapsed < sleep_time:
+            self.fail(
+                "The async operation seems to have lasted less than "
+                "the configured sleep time. Make sure your async logic "
+                "for online testing is on point."
+            )
+
 
 if __name__ == "__main__":
     unittest.main()
