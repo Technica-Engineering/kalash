@@ -1,14 +1,22 @@
 __docformat__ = "google"
 
 import asyncio
-from contextlib import asynccontextmanager, contextmanager
+from contextlib import asynccontextmanager
+from aiounittest import async_test  # don't remove - this is re-exported to User API
 from inspect import isfunction
-from typing import Callable, List, Optional, Union
+from typing import Callable, Coroutine, List, Optional, Union
 import unittest
 import logging
 
 from .model import CliConfig, Meta, Trigger
 from .log import get, close, logger
+
+
+Awaitable = Union[
+    asyncio.Future,
+    Coroutine,
+    asyncio.Task
+]
 
 
 class TestCase(unittest.TestCase):
@@ -118,7 +126,10 @@ class TestCase(unittest.TestCase):
     @asynccontextmanager
     async def expect(
         self,
-        awaitable: Union[asyncio.Future, Callable[..., asyncio.Future]],
+        awaitable: Union[
+            Awaitable,
+            Callable[..., Awaitable]
+        ],
         timeout: Optional[int] = None,
         **kwargs
     ):
