@@ -2,14 +2,17 @@ import asyncio
 import time
 from typing import Callable
 import unittest
-from aiounittest import async_test
 from kalash.model import CliConfig, Meta, Trigger
-from kalash.test_case import TestCase
+from kalash.test_case import TestCase, async_test
 
 
 def make_test_case(callback_to_run_in_await: Callable) -> TestCase:
     class FakeTestCase(TestCase):
-        
+
+        # @async_test  # used in user API, but needs to be turned off
+                       # for testing since you cannot run two event loops
+                       # (notice that `async_test` is used below in
+                       # `TestOnlineTesting` class)
         async def test_something(self: TestCase):
             async with self.expect(callback_to_run_in_await) as f:
                 return f
