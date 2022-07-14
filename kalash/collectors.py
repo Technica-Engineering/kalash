@@ -59,7 +59,7 @@ def _collect_test_case_from_module(
                                 identifiers.append(os.path.abspath(test.__file__))  # type: ignore
                                                         # `__file__` always exists in this context
                             else:
-                                identifiers.append(os.path.abspath(test.__file__)) # type: ignore
+                                identifiers.append(os.path.abspath(test.__file__))  # type: ignore
                                                         # `__file__` always exists in this context
 
                         if _trigger.cli_config and _trigger.cli_config.debug:

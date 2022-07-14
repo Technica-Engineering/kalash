@@ -243,7 +243,8 @@ class Meta(Base, JsonSchemaMixin):
         module = inspect.getmodule(frame[0])
         if module:
             module_path = os.path.abspath(module.__file__)  # type: ignore
-                                                            # `__file__` always exists in this context
+                                                            # `__file__` always exists
+                                                            # in this context
             SharedMetaElements(self.cli_config).resolve_interpolables(self, module_path)
 
     @classmethod
@@ -301,7 +302,8 @@ class Test(Meta, JsonSchemaMixin):
         module = inspect.getmodule(frame[0])
         if module:
             module_path = os.path.abspath(module.__file__)  # type: ignore
-                                                            # `__file__` always exists in this context
+                                                            # `__file__` always exists
+                                                            # in this context
             SharedMetaElements(self.cli_config).resolve_interpolables(self, module_path)
 
     @classmethod
